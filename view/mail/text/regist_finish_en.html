@@ -1,0 +1,31 @@
+Dear {$name},
+
+Thank you very much for registering to participate in Chiba Prefecture's quarantine work.
+Your worker registration has been completed as follows.
+
+This email was sent to you at the time of registration for confirmation.
+
+━━━━━━━━━━━━━━━━━
+
+■Registered employee information
+
+Name：{$name}
+Furigana : {$name_kana}
+Telephone number : {$tel}
+Email{$email}
+Post Code : {$post_code}
+Address : {$address}
+Birthday : {$birth_day|date_format:"%B %e, %Y"}
+Sex : {$gender_type_name}
+Nationality : {$country_name}
+Employment : {$employ_type_name}
+Affiliated company : {$company_name}
+
+━━━━━━━━━━━━━━━━━
+
+Please remember your email address and password as they will be required to log in to the service.
+
+▼Login here
+{UtilCommon::get_base_url('login')}
+
+{include file="`$smarty.const.VIEW_DIR`/mail/text/signature.html"}

@@ -1,0 +1,233 @@
+<script type="text/javascript">
+$(function(){
+    //表示非表示切替
+    $("#aShowHide").on("click",function(){
+        $("#caution").slideToggle(500);
+    });//
+});
+</script>
+
+<div>
+	<div class="page_titile">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			従事者マイページ
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Mypage
+		{/if}
+	</div>
+	<br>
+
+	{* QRコード*}
+	<div class="div_qr_code">
+		{if $smarty.const.PARAM_CONST_USER_APPROVE_TYPE_PASSED == $login_user->approve_type}
+
+			{if $smarty.const.IS_DISPLAY_MEMBER_CODE_QR}
+				<img src="{UtilCommon::get_base_url('api', 'generateQr')}" class="qr_code">
+				<div>{$login_user->code}</div>
+				<br>
+			{/if}
+
+			{if $smarty.const.IS_DISPLAY_MEMBER_CODE_BAR}
+				<img src="{UtilCommon::get_base_url('api', 'generateBar')}" class="qr_code">
+				<div>{$login_user->code}</div>
+				<br>
+			{/if}
+
+		{else if $smarty.const.PARAM_CONST_USER_APPROVE_TYPE_WAIT == $login_user->approve_type}
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				<span class="notice_s">現在、受付済みとなります。承認までしばらくお待ちください。</span>
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				<span class="notice_s">Your application has now been accepted. Please wait for approval.</span>
+			{/if}
+			<br>
+		{else}
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				<span class="notice_s">承認が見送られたため、QRコードは表示されません。</span>
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				<span class="notice_s">The QR code will not be displayed because approval has been declined.</span>
+			{/if}
+		{/if}
+		<br>
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			{$login_user->name} 様
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Hi {$login_user->name},
+		{/if}
+	</div>
+	<br>
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+		作業参加ルール・注意事項は<a href="#" id="aShowHide">こちら</a>
+		<div id="caution" style="display:none;">
+			<br>
+			＜作業の持ち物＞<br>
+			<br>
+			・着替え<br>
+			　　汗をかく場合があります。非常に寒くなる場合があります。<br>
+			・軽食・飲み物<br>
+			　　すぐに食べられる軽食を持参してください。<br>
+			・携帯電話・スマートフォン<br>
+			　　緊急時の連絡が取れるように持参してください。<br>
+			・免許書・資格証・外国人登録証<br>
+			　　必ず持参してください。<br>
+			<br>
+			＜作業参加のルール＞<br>
+			<br>
+			以下の場合は作業に参加できません。<br>
+			<br>
+			・遅刻厳禁　バスが行ってしまいます。<br>
+			・発熱がある場合はお帰りいただきます。<br>
+			・ルールや決まり事を遵守できない場合は退場となります。<br>
+			・怠けている人には、リーダーの権限により退場していただきます。出入り禁止。<br>
+			・県庁職員さんや従事者同士での暴言、暴力は即退場、出入り禁止になります。<br>
+			・所定場所以外での喫煙は厳禁です。<br>
+			・貴重品はSSや農場内へ持ち込まないでください。一切保証できません。<br>
+			・駐車場内の事故や盗難におきましては一切責任を負えません。<br>
+			・車両や機械の運転は安全を最も重視して行ってください。<br>
+		</div>
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+		<a href="#" id="aShowHide"> Click here</a> for work participation rules and precautions
+		<div id="caution" style="display:none;">
+			<br>
+			＜What to bring to work＞<br>
+			<br>
+			・Change of clothes<br>
+			　　You may sweat. It may get very cold.<br>
+			・Snacks and drinks<br>
+			　　Please bring snacks that you can eat quickly.<br>
+			・Cell phone/smartphone<br>
+			　　Please be sure to bring it with you as a means of emergency contact.<br>
+			・Driver's license/certificate of qualification/alien registration card<br>
+			　　Please be sure to bring it with you.<br>
+			<br>
+			＜Rules for participating in work＞<br>
+			<br>
+			You cannot participate in the work if:<br>
+			<br>
+			・Being late is strictly prohibited or the bus will leave.<br>
+			・If you have a fever, you will be asked to leave.<br>
+			・If you do not follow the rules and regulations, you will be asked to leave.<br>
+			・Anyone who is lazy will be asked to leave by the leader. No entry or exit.<br>
+			・Abusive language or violence between prefectural government employees or other workers will result in immediate expulsion and a ban on entry.<br>
+			・Smoking is strictly prohibited outside designated areas.<br>
+			・Please do not bring valuables into the service station or farm. We cannot guarantee their safety.<br>
+			・We cannot be held responsible for any accidents or thefts that occur in the parking lot.<br>
+			・Please always prioritize safety when operating vehicles or machinery.<br>
+		</div>
+	{/if}
+	<br>
+	<br>
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			マイメニュー
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Menu
+		{/if}
+	</div>
+	<br>
+	<ul class="menu">
+		<li>
+			<a href="/mypage/requestShiftAddForm/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						希望シフト登録
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Register desired shift
+					{/if}
+				</p>
+			</a>
+		</li>
+		<li>
+			<a href="/mypage/requestShiftList/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						希望シフト一覧
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Desired shift
+					{/if}
+				</p>
+			</a>
+		</li>
+		<li>
+			<a href="/mypage/resultList/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						確定シフト一覧
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Confirmed shift
+					{/if}
+				</p>
+			</a>
+		</li>
+	</ul>
+	<br>
+	<br>
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			従事者情報の確認・変更
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Checking and modifing information
+		{/if}
+	</div>
+	<br>
+	<ul class="menu">
+		<li>
+			<a href="/mypage/detail/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						従事者情報詳細
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Information details
+					{/if}
+				</p>
+			</a>
+		</li>
+		<li>
+			<a href="/mypage/editPasswordForm/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						パスワードの変更
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Change password
+					{/if}
+				</p>
+			</a>
+		</li>
+		<li>
+			<a href="/mypage/uploadCertForm/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						資格証アップロード
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Upload certificate
+					{/if}
+				</p>
+			</a>
+		</li>
+		<li>
+			<a href="/mypage/resignForm/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						退会をご希望の方
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Cancel your membership
+					{/if}
+				</p>
+			</a>
+		</li>
+	</ul>
+	<br />
+	<ul class="menu">
+		<li>
+			<a href="/login/logout/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						ログアウト
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Logout
+					{/if}
+				</p>
+			</a>
+		</li>
+	</ul>
+
+</div>

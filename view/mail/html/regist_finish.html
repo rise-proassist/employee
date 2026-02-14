@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<style>h1 { font-size:16pt; }</style>
+</head>
+<body>
+
+{$name} 様
+
+会員登録が完了しました。
+
+このメールは、ご登録時に確認のため送信させて頂いております。
+
+━━━━━━━━━━━━━━━━━
+
+■ご登録いただいた会員ID
+
+氏名：{$name}
+メールアドレス：{$email}
+作業者番号：{$j_no}
+
+━━━━━━━━━━━━━━━━━
+
+ユーザIDおよびパスワードは、
+サービスにログインする際に必要となりますので
+忘れず保管をお願いいたします。
+
+
+{include file="`$smarty.const.VIEW_DIR`/mail/html/signature.html"}
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+{* jsForm *}
+{include file="`$smarty.const.ADMIN_VIEW_DIR`/common/form_exec_js.html"}
+
+<div class="panel">
+	
+	<div class="panel-heading">
+		<h3 class="panel-title">現場更新</h3>
+	</div>
+	
+	<div class="panel-body">
+
+		現場情報を入力してください。<br />
+		<br />
+
+		{if isset($error_messages)}
+			{foreach from=$error_messages item=$error_message}
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<i class="fa fa-times-circle"></i> {$error_message}<br>
+			</div>
+			{/foreach}
+		{/if}
+
+		{* フォーム *}
+		<form method="post" action="{UtilCommon::get_base_url('location', 'updFinish')}" id="frm" name="frm" novalidate="novalidate">
+			<input type="hidden" name="id" value="{$location->id}" />
+			<table class="input_form">
+				<tbody>
+					<tr>
+						<th>
+							現場名<span class="reqire">*</span>
+						</th>
+						<td>
+							{if isset($smarty.post.name)}
+								{assign var="input_name" value=$smarty.post.name}
+							{else}
+								{assign var="input_name" value=$location->name}
+							{/if}
+							<input type="text" name="name" class="form-control" placeholder="XXXXX" value="{$input_name}">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							現場日付<span class="reqire">*</span>
+						</th>
+						<td>
+							{if isset($smarty.post.location_date)}
+								{assign var="input_location_date" value=$smarty.post.location_date}
+							{else}
+								{assign var="input_location_date" value=$location->location_date}
+							{/if}
+							<input type="date" name="location_date" class="form-control" placeholder="" value="{$input_location_date}">
+						</td>
+					</tr>
+					<tr>
+						<th>現場住所（集合場所）</th>
+						<td>
+							{if isset($smarty.post.address)}
+								{assign var="input_address" value=$smarty.post.address}
+							{else}
+								{assign var="input_address" value=$location->address}
+							{/if}
+							<input type="text" name="address" class="form-control" placeholder="XXXXX" value="{$input_address}">
+						</td>
+					</tr>
+					<tr>
+						<th>現場詳細</th>
+						<td>
+							{if isset($smarty.post.detail)}
+								{assign var="input_detail" value=$smarty.post.detail}
+							{else}
+								{assign var="input_detail" value=$location->detail}
+							{/if}
+							<textarea class="form-control" name="detail" rows="6">{$input_detail}</textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-default" onclick="javascript:history.back();">戻る</button>
+			<button type="button" class="btn btn-primary" onclick="upd_exec();">更新</button>
+		</div>
+	</div>
+</div>

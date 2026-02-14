@@ -1,0 +1,45 @@
+<div>
+	
+	{* 従事者情報詳細 共通ヘッダ *}
+	{include file="`$smarty.const.VIEW_DIR`/common/mypage_detail_header.html"}
+
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			メールアドレスの変更
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Change email address
+		{/if}
+	</div>
+	<br>
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+		メールアドレスを更新します。よろしいですか？
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+		We'll update your email address. Is this OK?
+	{/if}
+	<br>
+	<form method="post" action="{UtilCommon::get_base_url('mypage', editEmailFinish)}" >
+
+		<div class="div_form">
+			<label class="lb_form">
+				{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+					メールアドレス
+				{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+					Email
+				{/if}
+			</label>
+			<div class="input_form">{$input_data.email}</div>
+		</div>
+		<br>
+		<div class="div_input_button">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				<input type="submit" value="更新する" class="input_button">
+				<input type="button" value="戻　　る" class="input_button" onclick="window.history.back();">
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				<input type="submit" value="　　　Update　　" class="input_button">
+				<input type="button" value="　　　Back　　　" class="input_button" onclick="window.history.back();">
+			{/if}
+		</div>
+
+	</form>
+
+</div>

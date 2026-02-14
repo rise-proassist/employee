@@ -1,0 +1,70 @@
+{* jsForm *}
+{include file="`$smarty.const.ADMIN_VIEW_DIR`/common/form_exec_js.html"}
+
+<div class="panel">
+	
+	<div class="panel-heading">
+		<h3 class="panel-title">源泉徴収金額マスタ削除</h3>
+	</div>
+	
+	<div class="panel-body">
+
+		以下のマスタを削除します。よろしいですか？
+		<br /><br />
+
+		{if isset($error_messages)}
+			{foreach from=$error_messages item=$error_message}
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<i class="fa fa-times-circle"></i> {$error_message}<br>
+			</div>
+			{/foreach}
+		{/if}
+
+		{* フォーム *}
+		<form method="post" action="{UtilCommon::get_base_url('masterData', 'withholdTaxDelFinish')}" id="frm" name="frm" novalidate="novalidate">
+			<input type="hidden" name="id" value="{$withhold_tax->id}" />
+			<table class="input_form">
+				<tbody>
+					<tr>
+						<th>算出種別</th>
+						<td>{$withhold_tax_calc_types[$withhold_tax->calc_type]}</td>
+					</tr>
+					<tr>
+						<th>給与金額範囲（開始）</th>
+						<td>¥{$withhold_tax->amount_range_from|number_format}</td>
+					</tr>
+					<tr>
+						<th>給与金額範囲（終了）</th>
+						<td>¥{$withhold_tax->amount_range_to|number_format}</td>
+					</tr>
+					<tr>
+						<th>給与金額加算割合</th>
+						<td>
+							{if WITHHOLD_TAX_CALC_TYPE_RATIO == $withhold_tax->calc_type}
+								{$withhold_tax->amount_ratio}%
+							{else}
+								---
+							{/if}
+						</td>
+					</tr>
+					<tr>
+						<th>税金額</th>
+						<td>
+							{if WITHHOLD_TAX_CALC_TYPE_RAGE == $withhold_tax->calc_type}
+								¥{$withhold_tax->tax_amount|number_format}
+							{else}
+								---
+							{/if}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-default" onclick="javascript:history.back();">戻る</button>
+			<button type="button" class="btn btn-primary" onclick="del_exec();">削除</button>
+		</div>
+	</div>
+</div>

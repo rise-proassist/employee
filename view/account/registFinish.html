@@ -1,0 +1,31 @@
+<div>
+	<div class="page_titile">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+			新規従事者の登録
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+			New registration
+		{/if}
+	</div>
+	<hr>
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+			登録完了
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+			Registration completed
+		{/if}
+	</div>
+	<br>
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+		ご登録ありがとうございます。<br>
+		従事者登録が完了しました。<br>
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+		Thank you for registering. <br>
+		registration is complete.<br>
+	{/if}
+	<br>
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+		<b>▶︎&nbsp;ログインは <a href="/login/">こちら</a></b>
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+		<b>▶︎&nbsp;Login <a href="/login/">here</a></b>
+	{/if}
+</div>

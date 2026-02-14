@@ -1,0 +1,101 @@
+<div class="panel">
+	
+	<div class="panel-body">
+
+		{* 検索フォーム *}
+		<form method="get" action="/settele/locationList/" id="form" name="frm" novalidate="novalidate">
+			<table class="search_form">
+				<tbody>
+					<tr>
+						<th>現場名</th>
+						<td>
+							{assign var="input_name" value=""}
+							{if isset($smarty.get.name)}
+								{assign var="input_name" value=$smarty.get.name}
+							{/if}
+							<input type="text" name="name" class="form-control" placeholder="" value="{$input_name}">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-primary" onclick="frm.submit();">検索</button>
+		</div>
+	</div>
+</div>
+
+<div class="panel">
+	<div class="panel-heading">
+		<div class="div_title_are">
+			<h3 class="panel-title">日当入力</h3>
+		</div>
+	</div>
+	<div class="panel-body">
+		日当を入力する現場を選択してください。<br><br>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th style="width: 2%;">
+						{UtilCommon::gen_sort_button('#', 'id')}
+					</th>
+					<th style="width: 8%;">
+						{UtilCommon::gen_sort_button('現場日', 'location_date')}
+					</th>
+					<th style="width: 12%;">
+						{UtilCommon::gen_sort_button('現場名', 'name')}
+					</th>
+					<th style="width: 6%;">
+						{UtilCommon::gen_sort_button('アサイン', 'is_assigned')}
+					</th>
+					<th style="width: 6%;">
+						{UtilCommon::gen_sort_button('締め処理', 'is_closed')}
+					</th>
+					<th style="width: 14%;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{if $locations}
+					{foreach from=$locations item=location}
+						<tr>
+							<td>{$location->id}</td>
+							<td>{$location->location_date|date_format:'%Y年%m月%d日'}（{UtilCommon::get_yb($location->location_date)}）</td>
+							<td>{$location->name}</td>
+							<td>
+								{if $location->is_assigned}
+									<span class="text_disabled">確定済み</span>
+								{else}
+									<span style="color: red">未確定</span>
+								{/if}
+							</td>
+							<td>
+								{if $location->is_closed}
+									<span class="text_disabled">処理済み</span>
+								{else}
+									<span style="color: red">未処理</span>
+								{/if}
+							</td>
+							<td>
+								{if $location->is_assigned && $location->is_closed}
+									<a href="/settle/wageList/?id={$location->id}" class="btn btn-info btn-xs">日当入力・確定</a>
+								{else}
+									<span class="text_disabled">日当入力・確定できません</span>
+								{/if}
+							</td>
+						</tr>
+					{/foreach}
+				{else}
+					<tr>
+						<td colspan="6">現場が登録されていません。</td>
+					</tr>					
+				{/if}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{* ページャ *}
+<div align="center" style="margin-top: 10px; margin-bottom: 10px;">
+	{$pager->put_link_tag()}
+</div>

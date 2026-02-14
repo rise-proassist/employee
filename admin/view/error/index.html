@@ -1,0 +1,17 @@
+<div>
+
+	<h4>エラーが発生しました。</h4>
+	<br />
+
+	{if isset($error_message)}
+
+		{$error_message}({$error_code})
+	
+	{else}
+
+		システム管理者へご連絡ください。
+
+	{/if}
+
+
+</div>

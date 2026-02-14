@@ -1,0 +1,159 @@
+<div>
+	
+	{* 従事者情報詳細 共通ヘッダ *}
+	{include file="`$smarty.const.VIEW_DIR`/common/mypage_detail_header.html"}
+
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			従事者メールアドレス
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Employee email address
+		{/if}
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				メールアドレス :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				email address :
+			{/if}	
+		</label>
+		<div class="input_form">{$user->email}</div>
+	</div>
+	<div style="width: 100%; text-align: right;">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			<b>▶︎&nbsp;メールアドレスの変更は<a href="/mypage/editEmailForm/">こちら</a></b>
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			<b>▶︎&nbsp;Click <a href="/mypage/editEmailForm/">here</a> to your email address</b>
+		{/if}	
+	</div>
+	<hr>
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			従事者情報詳細
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Employee information details
+		{/if}
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				氏名 :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Name :
+			{/if}
+		</label>
+		<div class="input_form">{$user->name}</div>
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				ふりがな :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Furigana :
+			{/if}
+		</label>
+		<div class="input_form">{$user->name_kana}</div>
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				電話番号 :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Telephone number :
+			{/if}
+		</label>
+		<div class="input_form">{$user->tel}</div>
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				性別 :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Sex :
+			{/if}
+		</label>
+		<div class="input_form">{$user->gender_type_name}</div>
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				住所 :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Address :
+			{/if}
+		</label>
+		<div class="input_form">〒{$user->post_code}<br>{$user->address}</div>
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				生年月日 :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Birthday :
+			{/if}
+		</label>
+		<div class="input_form">{$user->birth_day|date_format:'%Y年%m月%d日'} 生（{$user->age} 歳）</div>
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				国籍 :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Nationality :
+			{/if}
+		</label>
+		<div class="input_form">{$user->country_name}</div>
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				雇用形態 :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Employment type :
+			{/if}
+		</label>
+		<div class="input_form">{$user->employ_type_name}</div>
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				所属会社 :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Affiliated company :
+			{/if}
+		</label>
+		<div class="input_form">
+			{if $user->etc_company_name}
+				{$user->etc_company_name}
+			{else}
+				{$user->company_name}
+			{/if}
+		</div>
+	</div>
+	<div class="div_form">
+		<label class="lb_form">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				言語 :
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				Language :
+			{/if}
+		</label>
+		<div class="input_form">{$user->lang_type_name}</div>
+	</div>
+	<div style="width: 100%; text-align: right;">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+				<b>▶︎&nbsp;従事者情報の変更は<a href="/mypage/editAccountForm/">こちら</a></b>
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+				<b>▶︎&nbsp;Click <a href="/mypage/editAccountForm/">here</a> to change employee information</b>
+			{/if}
+	</div>
+	<br><br>
+	<div class="div_input_button">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			<input type="button" value="マイページへ戻る" class="input_button" onclick="location.href='/mypage'">
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			<input type="button" value="Return to Mypage" class="input_button" onclick="location.href='/mypage'">
+		{/if}
+	</div>
+</div>

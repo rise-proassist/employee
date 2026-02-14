@@ -1,0 +1,138 @@
+<script type="text/javascript">
+
+$(function() {
+
+	$('.upd-is-paid').on('click', function(){
+		if (window.confirm('選択した従事者のシフトを精算します。よろしいですか？\r\nこの操作を取り消すことが出来ません。')) {
+			$(this).next('.submit-upd-is-paid').children('.user_code').val({if isset($smarty.get.user_code)}'{$smarty.get.user_code}'{/if});
+			$(this).next('.submit-upd-is-paid').children('.user_name').val({if isset($smarty.get.user_name)}'{$smarty.get.user_name}'{/if});
+			$(this).next('.submit-upd-is-paid').submit();
+		}
+	});
+
+});
+
+</script>
+
+<div class="panel">
+	
+	<div class="panel-body">
+
+		{* 検索フォーム *}
+		<form method="get" action="/settle/receptList/" id="form" name="frm" novalidate="novalidate">
+			<table class="search_form">
+				<tbody>
+					<tr>
+						<th>従事者コード</th>
+						<td>
+							{assign var="input_user_code" value=""}
+							{if isset($smarty.get.user_code)}
+								{assign var="input_user_code" value=$smarty.get.user_code}
+							{/if}
+							<input type="text" name="user_code" class="form-control" placeholder="" value="{$input_user_code}">
+						</td>
+						<th>従事者名</th>
+						<td>
+							{assign var="input_user_name" value=""}
+							{if isset($smarty.get.user_name)}
+								{assign var="input_user_name" value=$smarty.get.user_name}
+							{/if}
+							<input type="text" name="user_name" class="form-control" placeholder="" value="{$input_user_name}">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-primary" onclick="frm.submit();">検索</button>
+		</div>
+	</div>
+</div>
+
+<div class="panel">
+	<div class="panel-heading">
+		<div class="div_title_are">
+			<h3 class="panel-title">精算受付</h3>
+		</div>
+	</div>
+	<div class="panel-body">
+		精算する従事者をを選択してください。<br><br>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th style="width: 2%;">
+						{UtilCommon::gen_sort_button('#', 'id')}
+					</th>
+					<th style="width: 8%;">
+						{UtilCommon::gen_sort_button('現場名', 'l.name')}
+					</th>
+					<th style="width: 6%;">
+						{UtilCommon::gen_sort_button('シフト名', 'ls.name')}
+					</th>
+					<th style="width: 6%;">
+						{UtilCommon::gen_sort_button('氏名', 'lau.receipt_user_name')}
+					</th>
+					<th style="width: 10%;">
+						{UtilCommon::gen_sort_button('稼働時刻', 'lau.work_date_from')}
+					</th>
+					<th style="width: 6%;">
+						{UtilCommon::gen_sort_button('精算金額', 'lau.total_wage')}
+					</th>
+					<th style="width: 2%;">精算</th>
+					<th style="width: 2%;">領収書</th>
+				</tr>
+			</thead>
+			<tbody>
+				{if $location_assign_users}
+					{foreach from=$location_assign_users item=location_assign_user}
+						<tr>
+							<td>{$location_assign_user->id}</td>
+							<td>{$location_assign_user->location_name}</td>
+							<td>{$location_assign_user->location_shift_name}</td>
+							<td>
+								{$location_assign_user->user->name}<br>
+								{$location_assign_user->user->code}
+							</td>
+							<td>
+								始業 : {$location_assign_user->work_date_from|date_format:'%Y年%m月%d日 %H:%M:%S'}<br>
+								終業 : {$location_assign_user->work_date_to|date_format:'%Y年%m月%d日 %H:%M:%S'}
+							</td>
+							<td><a href="/settle/wageDetail/?id={$location_assign_user->id}">¥{$location_assign_user->total_wage|number_format}</a></td>
+							<td>
+								{if !$location_assign_user->is_confirmed}
+									<button class="btn btn-danger btn-xs">精算不可</button>
+								{else if $location_assign_user->is_confirmed && !$location_assign_user->is_paid}
+									<button class="btn btn-info btn-xs upd-is-paid">精算する</button>
+									<form method="post" action="/settle/updisPaidFinish/" class="submit-upd-is-paid">
+										<input type="hidden" name="id" value="{$location_assign_user->id}" />
+										<input type="hidden" class="user_code" name="user_code" value="" />
+										<input type="hidden" class="user_name" name="user_name" value="" />	
+									</form>
+								{else if $location_assign_user->is_paid}
+									<button class="btn btn-disnable btn-xs">精算済み</button>
+								{/if}
+							</td>
+							<td>
+								{if !$location_assign_user->is_paid}
+									<a href="#" class="btn btn-danger btn-xs">発行不可</a>
+								{else}
+									<a href="/settle/outputReceipt/?id={$location_assign_user->id}" class="btn btn-info btn-xs" target="_blank">発行する</a>
+								{/if}
+							</td>
+						</tr>
+					{/foreach}
+				{else}
+					<tr>
+						<td colspan="7">精算対象の従事者がいません。</td>
+					</tr>					
+				{/if}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{* ページャ *}
+<div align="center" style="margin-top: 10px; margin-bottom: 10px;">
+	{$pager->put_link_tag()}
+</div>

@@ -1,0 +1,174 @@
+{* jsForm *}
+{include file="`$smarty.const.ADMIN_VIEW_DIR`/common/form_exec_js.html"}
+
+<script>
+$(function(){
+
+	// 自動フォーカス
+	$(document).ready(function() {
+		$('#code').val('');
+		$("#code").focus();
+	});
+
+	// 強制フォーカス
+	$(document).click(function() {
+		$('#code').val('');
+		$("#code").focus();
+	});
+
+	$("#code").change(function() {
+
+		var code = this.value;
+		if (!code)
+			return false;
+
+		code = toHalfWidth(code);
+
+		var location_shift_id = $(this).nextAll('.location_shift_id').val();
+		var type = $(this).nextAll('.type').val();
+
+		// 業務時間記録API 
+		$.ajax({
+			url:'/api/workRecord/',
+			type:'POST',
+			data:{
+				'code' : code,
+				'location_shift_id': location_shift_id,
+				'type': type
+			},
+			dataType: 'json',
+			cache: false,
+			timeout: 10000
+		})
+		.done( (data) => {
+
+			if (200 == data.code) {
+
+				// OK
+				document.getElementById("result_ok_sound").currentTime = 0; //再生秒数を 0 にセット
+				document.getElementById("result_ok_sound").play();
+
+				$('#input_form').css('display', 'none');
+				$('#result_ok').css('display', 'block');
+				$("#message").text(data.message);
+
+				setTimeout(function(){
+
+					// location.reload();
+					$('#input_form').css('display', 'block');
+					$('#result_ok').css('display', 'none');
+					$('#code').val('');
+					$("#code").focus();
+
+				},2000);
+
+			} else {
+
+				// NG
+				document.getElementById("result_ng_sound").currentTime = 0; //再生秒数を 0 にセット
+				document.getElementById("result_ng_sound").play();
+				$('#input_form').css('display', 'none');
+				$('#result_ng').css('display', 'initial');
+				$("#error_message").text(data.message + '(' + data.code + ')');
+
+				setTimeout(function(){
+
+					// location.reload();
+					$('#input_form').css('display', 'initial');
+					$('#result_ng').css('display', 'none');
+					$('#code').val('');
+					$("#code").focus();
+
+				},3000);
+
+			}
+
+			// location.reload();
+		})
+		.fail( (jqXHR, textStatus, errorThrown) => {
+			alert('Ajax通信に失敗しました。');
+			console.log("jqXHR          : " + jqXHR.status); // HTTPステータスを表示
+			console.log("textStatus     : " + textStatus);    // タイムアウト、パースエラーなどのエラー情報を表示
+			console.log("errorThrown    : " + errorThrown.message); // 例外情報を表示
+		})
+		.always( (data) => {
+		});
+	});
+
+});
+
+function toHalfWidth(str) {
+  // 全角英数字を半角に変換
+  str = str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+    return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+  });
+  return str;
+}
+</script>
+
+<div class="panel">
+	
+	<div class="panel-heading">
+		<h3 class="panel-title">{$work_type_name}打刻</h3>
+	</div>
+	
+	<div class="panel-body">
+
+		<table class="input_form">
+			<tbody>
+				<tr>
+					<th>現場名</th>
+					<td>{$location_shift->location_name}</td>
+					<th>現場シフト名</th>
+					<td>{$location_shift->shift_name}</td>
+				</tr>
+				<tr>
+					<th>シフト時間</th>
+					<td colspan="3">{$location_shift->shift_date_from|date_format:'%Y年%-m月%d日 %-H:%M'} 〜 {$location_shift->shift_date_to|date_format:'%Y年%-m月%d日 %-H:%M'}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="panel">
+
+	<div class="panel-body">
+
+		マイページのQRコードをかざしてください。<br />
+
+		{* フォーム *}
+		<table class="input_form" id="input_form">
+			<tbody>
+				<tr>
+					<td>
+						<input type="text" id="code" name="code" class="form-control" placeholder="" value="" style="width: 200px;" pattern="^[0-9A-Za-z]+$">
+						<input type="hidden" class="location_shift_id" value="{$location_shift->id}">
+						<input type="hidden" class="type" value="{$type}">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div id="result_ok" style="display: none; margin: 50px;">
+			<img src="../../assets/img/chk_ok.png" alt="記録成功"/>
+			<div id="message" class="record_success"></div>
+		</div>
+
+		<div id="result_ng" style="display: none; margin: 50px;">
+			<img src="../../assets/img/chk_ng.png" alt="記録失敗"/>
+			<div id="error_message" class="record_error"></div>
+		</div>
+
+	</div>
+</div>
+
+<audio id="result_ok_sound" preload="auto">
+	<source src="../../assets/se/chk_ok.mp3" type="audio/mp3">
+	※お使いの環境では再生できません。[記録OK]
+</audio>
+
+<audio id="result_ng_sound" preload="auto">
+	<source src="../../assets/se/chk_ng.mp3" type="audio/mp3">
+	※お使いの環境では再生できません。[記録NG]
+</audio>

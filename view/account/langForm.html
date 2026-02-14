@@ -1,0 +1,37 @@
+<div>
+	<div class="page_titile">
+		言語選択<br><br>
+		Language selection
+	</div>
+	<br>
+	言語を選択してください。<br>
+	Please select your language.
+	<br>
+	<hr>
+
+	<form method="post" action="/account/registForm/" enctype="multipart/form-data">
+
+		<div class="div_form">
+			<label class="lb_form">言語</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_lang_type" value=""}
+				{if isset($smarty.post.lang_type)}
+					{assign var="input_lang_type" value=$smarty.post.lang_type}
+				{/if}
+				{foreach from=$lang_types key=lang_type item=lang_type_name}
+					<label><input type="radio" name="lang_type" value="{$lang_type}" {if $input_lang_type == $lang_type}checked{/if}>&nbsp;{$lang_type_name}</label><br>
+				{/foreach}
+				{if isset($error_messages.lang_type)}
+					<div class="alert">{$error_messages.lang_type}</div>
+				{/if}
+			</div>
+		</div>
+
+		<br>
+		<div class="div_input_button">
+			<input type="submit" value="従事者情報登録へ / Register information" class="input_button">
+		</div>
+
+	</form>
+
+</div>

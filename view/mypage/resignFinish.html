@@ -1,0 +1,39 @@
+<div>
+	
+	<div class="page_titile">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			退会をご希望の方
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			If you wish to cancel your membership
+		{/if}
+	</div>
+	<hr>
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			退会の手続き
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Cancellation procedure
+		{/if}
+	</div>
+	<br>
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+		退会のお手続きが完了しました。<br>
+		<br>
+		またのご利用をお待ちしております。
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+		Your cancellation procedure has been completed. <br>
+		<br>
+		We look forward to seeing you again.
+	{/if}
+	<br>
+	<br>
+	<div class="div_input_button">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			<input type="button" value="トップページへ" class="input_button" onclick="location.href='/'">
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			<input type="button" value="Go to top page" class="input_button" onclick="location.href='/'">
+		{/if}
+	</div>
+	<br>
+
+</div>
