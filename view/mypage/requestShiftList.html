@@ -4,18 +4,17 @@
 		var isDragging = false;
 		var dragStartDate = null;
 		var $popupOverlay = $('.shift-popup-overlay');
-		var $startSlider = $('#shift-start-hour');
-		var $endSlider = $('#shift-end-hour');
+		var $hourSlider = $('#shift-hour');
 		var $timeLabel = $('.shift-popup-time-label');
 		var $timeRange = $('.shift-popup-time-range');
+		var DEFAULT_SHIFT_HOURS = 8;
 
 		var updateShiftPopupPreview = function() {
-			var startHour = parseInt($startSlider.val(), 10);
-			var endHour = parseInt($endSlider.val(), 10);
+			var startHour = parseInt($hourSlider.val(), 10);
+			var endHour = startHour + DEFAULT_SHIFT_HOURS;
 
-			if (endHour < startHour) {
-				endHour = startHour;
-				$endSlider.val(endHour);
+			if (endHour > 24) {
+				endHour = 24;
 			}
 
 			var startLabel = ('0' + startHour).slice(-2);
@@ -32,8 +31,7 @@
 
 		var openShiftPopup = function(dateKey) {
 			$popupOverlay.attr('data-date', dateKey).addClass('is-open');
-			$startSlider.val(9);
-			$endSlider.val(17);
+			$hourSlider.val(9);
 			updateShiftPopupPreview();
 		};
 
@@ -103,17 +101,7 @@
 			openShiftPopup($(this).closest('.calendar-day-cell').data('date'));
 		});
 
-		$startSlider.on('input change', function() {
-			if (parseInt($startSlider.val(), 10) > parseInt($endSlider.val(), 10)) {
-				$endSlider.val($startSlider.val());
-			}
-			updateShiftPopupPreview();
-		});
-
-		$endSlider.on('input change', function() {
-			if (parseInt($endSlider.val(), 10) < parseInt($startSlider.val(), 10)) {
-				$startSlider.val($endSlider.val());
-			}
+		$hourSlider.on('input change', function() {
 			updateShiftPopupPreview();
 		});
 
@@ -243,12 +231,8 @@
 	<div class="shift-popup-overlay" aria-hidden="true">
 		<div class="shift-popup-window" role="dialog" aria-modal="true">
 			<div class="shift-popup-slider-block">
-				<label class="shift-popup-label" for="shift-start-hour">開始時刻</label>
-				<input id="shift-start-hour" class="shift-popup-slider" type="range" min="0" max="23" step="1" value="9">
-			</div>
-			<div class="shift-popup-slider-block">
-				<label class="shift-popup-label" for="shift-end-hour">終了時刻</label>
-				<input id="shift-end-hour" class="shift-popup-slider" type="range" min="0" max="23" step="1" value="17">
+				<label class="shift-popup-label" for="shift-hour">開始時刻</label>
+				<input id="shift-hour" class="shift-popup-slider" type="range" min="0" max="23" step="1" value="9">
 			</div>
 			<div class="shift-popup-graph">
 				<div class="shift-popup-time-range"></div>
