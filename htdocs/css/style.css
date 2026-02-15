@@ -769,7 +769,7 @@ body {
 }
 
 .legend-confirmed {
-    background: #ff00ff;
+    background: #16a34a;
     font-weight: 700;
 }
 
@@ -1159,7 +1159,7 @@ a:focus-visible {
 }
 
 .calendar-shift-item.is-confirmed {
-    color: #ff00ff;
+    color: #16a34a;
     font-weight: 700;
 }
 
