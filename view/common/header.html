@@ -20,31 +20,60 @@
 </title>
 
 <header>
-
-	<div class="site_name"><a href="{$smarty.const.WEB_SRC}" class="site_name">{if isset($controller) && 'mypage' == $controller && isset($login_user) && $login_user}{$login_user->name} ({$login_user->code}){elseif $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Chiba Avian Flu{else}{$smarty.const.SITE_NAME}{/if}</a></div>
-	{if isset($lang_types)}
-		<details class="header-lang-toggle">
-			<summary class="header-lang-button" aria-label="Language selector">
-				<svg class="header-lang-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-					<path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="currentColor" stroke-width="1.8"/>
-					<path d="M2.5 12H21.5" stroke="currentColor" stroke-width="1.8"/>
-					<path d="M12 2C14.5 4.7 16 8.2 16 12C16 15.8 14.5 19.3 12 22" stroke="currentColor" stroke-width="1.8"/>
-					<path d="M12 2C9.5 4.7 8 8.2 8 12C8 15.8 9.5 19.3 12 22" stroke="currentColor" stroke-width="1.8"/>
-				</svg>
-				<span class="header-lang-current">
-					{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}EN{else}JP{/if}
-				</span>
-			</summary>
-			<div class="header-lang-menu">
-				{foreach from=$lang_types key=lang_type item=lang_name}
-					<form method="post" action="/login/changeLang/" class="header-lang-item-form">
-						<input type="hidden" name="redirect_url" value="{$smarty.server.REQUEST_URI|escape}">
-						<input type="hidden" name="lang_type" value="{$lang_type}">
-						<button type="submit" class="header-lang-item{if $selected_lang_type == $lang_type} is-active{/if}">{$lang_name}</button>
-					</form>
-				{/foreach}
-			</div>
-		</details>
-	{/if}
+	<div class="header-main-row">
+		<div class="site_name"><a href="{$smarty.const.WEB_SRC}" class="site_name">{if isset($controller) && 'mypage' == $controller && isset($login_user) && $login_user}{$login_user->name} ({$login_user->code}){elseif $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Chiba Avian Flu{else}{$smarty.const.SITE_NAME}{/if}</a></div>
+		{if isset($lang_types)}
+			<details class="header-lang-toggle">
+				<summary class="header-lang-button" aria-label="Language selector">
+					<svg class="header-lang-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+						<path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="currentColor" stroke-width="1.8"/>
+						<path d="M2.5 12H21.5" stroke="currentColor" stroke-width="1.8"/>
+						<path d="M12 2C14.5 4.7 16 8.2 16 12C16 15.8 14.5 19.3 12 22" stroke="currentColor" stroke-width="1.8"/>
+						<path d="M12 2C9.5 4.7 8 8.2 8 12C8 15.8 9.5 19.3 12 22" stroke="currentColor" stroke-width="1.8"/>
+					</svg>
+					<span class="header-lang-current">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}EN{else}JP{/if}
+					</span>
+				</summary>
+				<div class="header-lang-menu">
+					{foreach from=$lang_types key=lang_type item=lang_name}
+						<form method="post" action="/login/changeLang/" class="header-lang-item-form">
+							<input type="hidden" name="redirect_url" value="{$smarty.server.REQUEST_URI|escape}">
+							<input type="hidden" name="lang_type" value="{$lang_type}">
+							<button type="submit" class="header-lang-item{if $selected_lang_type == $lang_type} is-active{/if}">{$lang_name}</button>
+						</form>
+					{/foreach}
+				</div>
+			</details>
+		{/if}
+	</div>
+	<div class="header-sub-row">
+		{if isset($controller) && 'mypage' == $controller}
+			{assign var=header_active_tab value=$smarty.get.tab|default:'qr'}
+			<span class="header-tab-name">
+				{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}
+					{if 'rules' == $header_active_tab}
+						Work Rules
+					{else if 'shift' == $header_active_tab}
+						Shift
+					{else if 'settings' == $header_active_tab}
+						Settings
+					{else}
+						QR Code
+					{/if}
+				{else}
+					{if 'rules' == $header_active_tab}
+						作業ルール
+					{else if 'shift' == $header_active_tab}
+						シフト
+					{else if 'settings' == $header_active_tab}
+						設定
+					{else}
+						QRコード
+					{/if}
+				{/if}
+			</span>
+		{/if}
+	</div>
 
 </header>

@@ -724,11 +724,34 @@ div.header_detail {
 header {
     background: #333333;
     color: #ffffff;
-    height: 56px;
+    height: 88px;
     padding: 0 24px;
+    display: block;
+}
+
+body {
+    padding-top: 88px;
+}
+
+.header-main-row {
+    height: 56px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.header-sub-row {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-tab-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
 }
 
 .header-lang-toggle {
@@ -948,7 +971,7 @@ a:focus-visible {
 
 @media screen and (max-width: 767px) {
     body {
-        padding-top: 56px;
+        padding-top: 88px;
     }
 
     .wrap {
