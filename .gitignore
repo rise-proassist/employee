@@ -11,3 +11,4 @@ docker/certs/*
 **/.DS_Store
 log/*.log
 session/sess_*
+.context/*
