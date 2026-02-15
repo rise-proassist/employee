@@ -142,6 +142,8 @@ class MypageController extends BaseController {
 			$shift_calendar_map[$date_key][] = array(
 				'id' => $user_request_shift->id,
 				'label' => $time_label,
+				'start_hour' => (int)date('G', $from),
+				'end_hour' => (int)date('G', $to),
 				'type' => 'request',
 			);
 		}
@@ -155,6 +157,8 @@ class MypageController extends BaseController {
 			$shift_calendar_map[$date_key][] = array(
 				'id' => null,
 				'label' => $time_label,
+				'start_hour' => (int)date('G', $from),
+				'end_hour' => (int)date('G', $to),
 				'type' => 'confirmed',
 			);
 		}

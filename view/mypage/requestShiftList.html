@@ -11,33 +11,19 @@
 		var $endTimeLabel = $('.shift-popup-handle-label.is-end');
 		var $targetDateList = $('.shift-popup-target-date-list');
 
-		var parseShiftHours = function(labelText) {
-			var matched = String(labelText || '').match(/(\d{1,2})(?::\d{2})?\s*-\s*(\d{1,2})(?::\d{2})?/);
-			if (!matched) {
-				return null;
-			}
-
-			var startHour = parseInt(matched[1], 10);
-			var endHour = parseInt(matched[2], 10);
-
-			if (isNaN(startHour) || isNaN(endHour) || endHour < startHour) {
-				return null;
-			}
-
-			return {
-				start: startHour,
-				end: endHour
-			};
-		};
-
 		var collectRegisteredRanges = function(dateKey) {
 			var ranges = [];
 			var $targetCell = $('.calendar-day-cell[data-date="' + dateKey + '"]').first();
 
-			$targetCell.find('.calendar-shift-label').each(function() {
-				var parsed = parseShiftHours($(this).text());
-				if (parsed) {
-					ranges.push(parsed);
+			$targetCell.find('.calendar-shift-item').each(function() {
+				var startHour = parseInt($(this).attr('data-start-hour'), 10);
+				var endHour = parseInt($(this).attr('data-end-hour'), 10);
+
+				if (!isNaN(startHour) && !isNaN(endHour) && endHour >= startHour) {
+					ranges.push({
+						start: startHour,
+						end: endHour
+					});
 				}
 			});
 
@@ -281,7 +267,7 @@
 												{if $calendar_day.shifts}
 													<div class="calendar-shift-list">{strip}
 														{foreach from=$calendar_day.shifts item=calendar_shift}
-															<div class="calendar-shift-item {if 'confirmed' == $calendar_shift.type}is-confirmed{else}is-request{/if}">
+															<div class="calendar-shift-item {if 'confirmed' == $calendar_shift.type}is-confirmed{else}is-request{/if}" data-start-hour="{$calendar_shift.start_hour}" data-end-hour="{$calendar_shift.end_hour}">
 																<span class="calendar-shift-type-icon" aria-hidden="true">
 																	{if 'confirmed' == $calendar_shift.type}
 																		<svg viewBox="0 0 24 24" fill="none">
