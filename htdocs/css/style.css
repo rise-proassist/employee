@@ -851,6 +851,14 @@ header {
     color: dodgerblue;
 }
 
+.mypage-footer-nav-item.is-active {
+    color: dodgerblue;
+}
+
+.mypage-tab-content.is-hidden {
+    display: none;
+}
+
 .mypage-footer-spacer {
     height: 88px;
 }

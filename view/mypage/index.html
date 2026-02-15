@@ -1,6 +1,8 @@
 <div>
+	{assign var=active_tab value=$smarty.get.tab|default:'qr'}
 
 	{* QRコード*}
+	<div class="mypage-tab-content {if 'qr' != $active_tab}is-hidden{/if}" id="qr-section">
 	<div class="h_form">
 		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
 			QRコード
@@ -9,7 +11,7 @@
 		{/if}
 	</div>
 	<br>
-	<div class="div_qr_code" id="qr-section">
+	<div class="div_qr_code">
 		{if $smarty.const.PARAM_CONST_USER_APPROVE_TYPE_PASSED == $login_user->approve_type}
 			{if $smarty.const.IS_DISPLAY_MEMBER_CODE_QR}
 				<img src="{UtilCommon::get_base_url('api', 'generateQr')}" class="qr_code">
@@ -36,8 +38,10 @@
 			{/if}
 		{/if}
 	</div>
+	</div>
 	<br>
-	<div class="h_form" id="work-rule-section">
+	<div class="mypage-tab-content {if 'rules' != $active_tab}is-hidden{/if}" id="work-rule-section">
+	<div class="h_form">
 		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
 			作業ルール
 		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
@@ -84,8 +88,10 @@
 		</ul>
 	{/if}
 	</div>
+	</div>
 	<br>
-	<div class="h_form" id="shift-section">
+	<div class="mypage-tab-content {if 'shift' != $active_tab}is-hidden{/if}" id="shift-section">
+	<div class="h_form">
 		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
 			シフト
 		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
@@ -128,9 +134,10 @@
 			</a>
 		</li>
 	</ul>
+	</div>
 	<br>
-	<br>
-	<div class="h_form" id="setting-section">
+	<div class="mypage-tab-content {if 'settings' != $active_tab}is-hidden{/if}" id="setting-section">
+	<div class="h_form">
 		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
 			設定
 		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
@@ -173,6 +180,17 @@
 			</a>
 		</li>
 		<li>
+			<a href="/login/logout/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						ログアウト
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Logout
+					{/if}
+				</p>
+			</a>
+		</li>
+		<li>
 			<a href="/mypage/resignForm/">
 				<p>
 					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
@@ -184,19 +202,6 @@
 			</a>
 		</li>
 	</ul>
-	<br />
-	<ul class="menu">
-		<li>
-			<a href="/login/logout/">
-				<p>
-					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-						ログアウト
-					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-						Logout
-					{/if}
-				</p>
-			</a>
-		</li>
-	</ul>
+	</div>
 
 </div>
