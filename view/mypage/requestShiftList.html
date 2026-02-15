@@ -3,9 +3,22 @@
 	$(function() {
 		var isDragging = false;
 		var dragSelectState = true;
+		var dragStartDate = null;
 
 		var setCellSelected = function($cell, selected) {
 			$cell.toggleClass('is-selected', selected);
+		};
+
+		var applyDateRangeSelection = function($table, startDate, endDate, selected) {
+			var from = startDate <= endDate ? startDate : endDate;
+			var to = startDate <= endDate ? endDate : startDate;
+
+			$table.find('.calendar-day-cell').each(function() {
+				var cellDate = $(this).data('date');
+				if (cellDate >= from && cellDate <= to) {
+					setCellSelected($(this), selected);
+				}
+			});
 		};
 
 		$('.request-shift-calendar').on('mousedown', '.calendar-day-cell', function(e) {
@@ -15,6 +28,7 @@
 
 			e.preventDefault();
 			isDragging = true;
+			dragStartDate = $(this).data('date');
 			dragSelectState = !$(this).hasClass('is-selected');
 			setCellSelected($(this), dragSelectState);
 		});
@@ -24,11 +38,17 @@
 				return;
 			}
 
-			setCellSelected($(this), dragSelectState);
+			applyDateRangeSelection(
+				$(this).closest('.request-shift-calendar'),
+				dragStartDate,
+				$(this).data('date'),
+				dragSelectState
+			);
 		});
 
 		$(document).on('mouseup', function() {
 			isDragging = false;
+			dragStartDate = null;
 		});
 
 		$('.request-shift-calendar').on('keydown', '.calendar-day-cell', function(e) {
@@ -94,7 +114,7 @@
 									{strip}
 									<tr>
 										{foreach from=$calendar_week item=calendar_day}
-											<td class="calendar-day-cell {if !$calendar_day.in_month}is-other-month{/if} {if $calendar_day.is_sunday}is-sunday{/if} {if $calendar_day.is_saturday}is-saturday{/if}" tabindex="0">
+											<td class="calendar-day-cell {if !$calendar_day.in_month}is-other-month{/if} {if $calendar_day.is_sunday}is-sunday{/if} {if $calendar_day.is_saturday}is-saturday{/if}" tabindex="0" data-date="{$calendar_day.date_key}">
 												<div class="calendar-day-number">{$calendar_day.day}</div>
 												{if $calendar_day.shifts}
 													<div class="calendar-shift-list">{strip}
