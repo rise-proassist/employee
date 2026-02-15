@@ -1644,3 +1644,53 @@ body.login-page .login-note-area li:last-child {
     font-size: 13px;
     color: #e5e7eb;
 }
+
+.debug-query-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #0b0b0b;
+    border-top: 1px solid #1f2937;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+}
+
+.debug-query-footer.is-mypage {
+    bottom: 88px;
+}
+
+.debug-query-footer-resizer {
+    height: 8px;
+    cursor: ns-resize;
+    background: #111827;
+    border-top: 1px solid #374151;
+    border-bottom: 1px solid #374151;
+}
+
+.debug-query-footer-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #9ca3af;
+    padding: 6px 10px;
+}
+
+.debug-query-footer-body {
+    margin: 0;
+    padding: 10px;
+    flex: 1;
+    overflow: auto;
+    color: #e5e7eb;
+    background: #000000;
+    font-size: 12px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+    border-top: 1px solid #111827;
+}
+
+body.is-debug-resizing {
+    user-select: none;
+    cursor: ns-resize;
+}

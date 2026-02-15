@@ -28,6 +28,56 @@ class MypageController extends BaseController {
 
 	const RESULT_LIST_LIMIT = 6;
 
+	private function get_formatted_query_logs($limit = 100) {
+
+		$query_logs = array();
+		$log_file = LOG_DIR . '/app_' . date('Ymd') . '.log';
+		if (!is_readable($log_file))
+			return $query_logs;
+
+		$lines = @file($log_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		if (!is_array($lines))
+			return $query_logs;
+
+		$current = null;
+		foreach ($lines as $line) {
+			if (false !== strpos($line, '[SQL] ')) {
+				if ($current && !empty($current)) {
+					$query_logs[] = $current;
+				}
+
+				$sql = trim(substr($line, strpos($line, '[SQL] ') + 6));
+				if (preg_match('/^SELECT\b/i', ltrim($sql))) {
+					$current = null;
+					continue;
+				}
+
+				$current = $sql;
+				continue;
+			}
+
+			if (!$current)
+				continue;
+		}
+
+		if ($current && !empty($current)) {
+			$query_logs[] = $current;
+		}
+
+		if (count($query_logs) > $limit) {
+			$query_logs = array_slice($query_logs, -$limit);
+		}
+
+		$formatted_query_logs = array();
+		foreach ($query_logs as $index => $query_log) {
+			$sql = preg_replace('/\s+/', ' ', trim($query_log));
+			$sql = wordwrap($sql, 110, "\n      ", false);
+			$formatted_query_logs[] = '-- Query ' . str_pad((string)($index + 1), 3, '0', STR_PAD_LEFT) . "\n" . '   ' . $sql;
+		}
+
+		return array_reverse($formatted_query_logs);
+	}
+
 	function __construct() {
 	
 		parent::__construct();
@@ -51,6 +101,8 @@ class MypageController extends BaseController {
 
 		$this->_view->assign('login_user', $user);
 		$this->_login_user = $user;
+		$formatted_query_logs = $this->get_formatted_query_logs(100);
+		$this->_view->assign('debug_query_log_text', implode("\n\n", $formatted_query_logs));
 
 		// サイトタイトル（ヘッダ）
 		switch ($this->_action) {
@@ -102,55 +154,10 @@ class MypageController extends BaseController {
 		if (!$user)
 			echo false;
 
-		$query_logs = array();
-		$log_file = LOG_DIR . '/app_' . date('Ymd') . '.log';
-		if (is_readable($log_file)) {
-			$lines = @file($log_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-			if (is_array($lines)) {
-
-				$current = null;
-				foreach ($lines as $line) {
-					if (false !== strpos($line, '[SQL] ')) {
-						if ($current && !empty($current)) {
-							$query_logs[] = $current;
-						}
-
-						$sql = trim(substr($line, strpos($line, '[SQL] ') + 6));
-						if (preg_match('/^SELECT\b/i', ltrim($sql))) {
-							$current = null;
-							continue;
-						}
-
-						$current = $sql;
-
-						continue;
-					}
-
-					if (!$current)
-						continue;
-				}
-
-				if ($current && !empty($current)) {
-					$query_logs[] = $current;
-				}
-			}
-		}
-
-		if (count($query_logs) > 100) {
-			$query_logs = array_slice($query_logs, -100);
-		}
-
-		$formatted_query_logs = array();
-		foreach ($query_logs as $index => $query_log) {
-			$sql = preg_replace('/\s+/', ' ', trim($query_log));
-			$sql = wordwrap($sql, 110, "\n      ", false);
-			$formatted_query_logs[] = '-- Query ' . str_pad((string)($index + 1), 3, '0', STR_PAD_LEFT) . "\n" . '   ' . $sql;
-		}
-		$formatted_query_logs = array_reverse($formatted_query_logs);
+		$formatted_query_logs = $this->get_formatted_query_logs(100);
 
 		$this->_view->assign('user', $user);
 		$this->_view->assign('query_logs', $formatted_query_logs);
-		$this->_view->assign('query_log_file', basename($log_file));
 	}
 
 	/**

@@ -52,3 +52,80 @@
 	{/if}
 	© 2023 chiba-chikusan Co.,Ltd. All Rights Reserved. <br>
 </footer>
+
+{if isset($controller) && 'mypage' == $controller}
+<div id="debug-query-footer" class="debug-query-footer is-mypage" data-min-height="140" data-default-height="240" data-max-ratio="0.7">
+	<div id="debug-query-footer-resizer" class="debug-query-footer-resizer"></div>
+	<div class="debug-query-footer-title">Debug Query Log</div>
+	<pre class="debug-query-footer-body">{$debug_query_log_text|default:''|escape}</pre>
+</div>
+<script defer>
+	(function() {
+		var footer = document.getElementById('debug-query-footer');
+		var resizer = document.getElementById('debug-query-footer-resizer');
+		if (!footer || !resizer) {
+			return;
+		}
+
+		var minHeight = parseInt(footer.getAttribute('data-min-height'), 10) || 140;
+		var defaultHeight = parseInt(footer.getAttribute('data-default-height'), 10) || 240;
+		var maxRatio = parseFloat(footer.getAttribute('data-max-ratio')) || 0.7;
+		var storageKey = 'mypageDebugFooterHeight';
+
+		var getMaxHeight = function() {
+			return Math.floor(window.innerHeight * maxRatio);
+		};
+
+		var clampHeight = function(height) {
+			var maxHeight = getMaxHeight();
+			if (height < minHeight) {
+				return minHeight;
+			}
+			if (height > maxHeight) {
+				return maxHeight;
+			}
+			return height;
+		};
+
+		var applyHeight = function(height) {
+			footer.style.height = clampHeight(height) + 'px';
+		};
+
+		var savedHeight = parseInt(localStorage.getItem(storageKey), 10);
+		applyHeight(isNaN(savedHeight) ? defaultHeight : savedHeight);
+
+		window.addEventListener('resize', function() {
+			applyHeight(parseInt(footer.style.height, 10) || defaultHeight);
+		});
+
+		var dragging = false;
+		var startY = 0;
+		var startHeight = 0;
+
+		resizer.addEventListener('mousedown', function(event) {
+			dragging = true;
+			startY = event.clientY;
+			startHeight = footer.offsetHeight;
+			document.body.classList.add('is-debug-resizing');
+			event.preventDefault();
+		});
+
+		document.addEventListener('mousemove', function(event) {
+			if (!dragging) {
+				return;
+			}
+			var nextHeight = startHeight + (startY - event.clientY);
+			applyHeight(nextHeight);
+		});
+
+		document.addEventListener('mouseup', function() {
+			if (!dragging) {
+				return;
+			}
+			dragging = false;
+			document.body.classList.remove('is-debug-resizing');
+			localStorage.setItem(storageKey, String(parseInt(footer.style.height, 10) || defaultHeight));
+		});
+	})();
+</script>
+{/if}
