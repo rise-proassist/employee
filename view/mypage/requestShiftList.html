@@ -6,8 +6,9 @@
 		var $popupOverlay = $('.shift-popup-overlay');
 		var $startSlider = $('#shift-start-hour');
 		var $endSlider = $('#shift-end-hour');
-		var $timeLabel = $('.shift-popup-time-label');
 		var $timeRange = $('.shift-popup-time-range');
+		var $startTimeLabel = $('.shift-popup-handle-label.is-start');
+		var $endTimeLabel = $('.shift-popup-handle-label.is-end');
 
 		var updateShiftPopupPreview = function() {
 			var startHour = parseInt($startSlider.val(), 10);
@@ -20,7 +21,8 @@
 
 			var startLabel = ('0' + startHour).slice(-2);
 			var endLabel = ('0' + endHour).slice(-2);
-			$timeLabel.text(startLabel + ':00 - ' + endLabel + ':00');
+			$startTimeLabel.text(startLabel + ':00');
+			$endTimeLabel.text(endLabel + ':00');
 
 			var leftPercent = (startHour / 24) * 100;
 			var widthPercent = ((endHour - startHour) / 24) * 100;
@@ -28,6 +30,9 @@
 				left: leftPercent + '%',
 				width: (widthPercent > 0 ? widthPercent : 1.5) + '%'
 			});
+
+			$startTimeLabel.css('left', leftPercent + '%');
+			$endTimeLabel.css('left', (endHour / 24) * 100 + '%');
 		};
 
 		var openShiftPopup = function(dateKey) {
@@ -249,9 +254,10 @@
 					<div class="shift-popup-time-range"></div>
 					<input id="shift-start-hour" class="shift-popup-slider is-start" type="range" min="0" max="24" step="1" value="9" aria-label="開始時刻">
 					<input id="shift-end-hour" class="shift-popup-slider is-end" type="range" min="0" max="24" step="1" value="17" aria-label="終了時刻">
+					<div class="shift-popup-handle-label is-start">09:00</div>
+					<div class="shift-popup-handle-label is-end">17:00</div>
 				</div>
 			</div>
-			<div class="shift-popup-time-label">09:00 - 17:00</div>
 			<div class="shift-popup-buttons">
 				<button type="button" class="shift-popup-ok">OK</button>
 				<button type="button" class="shift-popup-cancel">キャンセル</button>
