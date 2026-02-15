@@ -892,7 +892,7 @@ body {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: var(--debug-footer-height, 0px);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -947,7 +947,7 @@ body {
 }
 
 .mypage-footer-spacer {
-    height: 88px;
+    height: calc(88px + var(--debug-footer-height, 0px));
 }
 
 .site_name,
@@ -1652,13 +1652,9 @@ body.login-page .login-note-area li:last-child {
     bottom: 0;
     background: #0b0b0b;
     border-top: 1px solid #1f2937;
-    z-index: 1100;
+    z-index: 900;
     display: flex;
     flex-direction: column;
-}
-
-.debug-query-footer.is-mypage {
-    bottom: 88px;
 }
 
 .debug-query-footer-resizer {
