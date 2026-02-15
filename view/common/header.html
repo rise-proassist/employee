@@ -20,8 +20,24 @@
 </title>
 
 <header>
+	{assign var=header_active_tab value=$smarty.get.tab|default:'qr'}
+	{assign var=header_top_title value=''}
+	{if isset($controller) && 'mypage' == $controller}
+		{if 'rules' == $header_active_tab}
+			{assign var=header_top_title value='作業ルール'}
+		{else if 'request-shift' == $header_active_tab || 'requestShiftList' == $action || 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action || 'requestShiftDelFinish' == $action}
+			{assign var=header_top_title value='希望シフト'}
+		{else if 'result-shift' == $header_active_tab || 'resultList' == $action}
+			{assign var=header_top_title value='確定シフト'}
+		{else if 'settings' == $header_active_tab || 'detail' == $action || 'uploadCertForm' == $action || 'uploadCertConfirm' == $action || 'uploadCertFinish' == $action || 'editPasswordForm' == $action || 'editPasswordConfirm' == $action || 'editPasswordFinish' == $action || 'resignForm' == $action || 'resignFinish' == $action}
+			{assign var=header_top_title value='設定'}
+		{else}
+			{assign var=header_top_title value="`$login_user->name` (`$login_user->code`)"}
+		{/if}
+	{/if}
+
 	<div class="header-main-row">
-		<div class="site_name"><a href="{$smarty.const.WEB_SRC}" class="site_name">{if isset($controller) && 'mypage' == $controller && isset($login_user) && $login_user}{$login_user->name} ({$login_user->code}){elseif $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Chiba Avian Flu{else}{$smarty.const.SITE_NAME}{/if}</a></div>
+		<div class="site_name"><a href="{$smarty.const.WEB_SRC}" class="site_name">{if isset($controller) && 'mypage' == $controller}{$header_top_title}{elseif $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Chiba Avian Flu{else}{$smarty.const.SITE_NAME}{/if}</a></div>
 		{if isset($lang_types)}
 			<details class="header-lang-toggle">
 				<summary class="header-lang-button" aria-label="Language selector">
@@ -49,7 +65,6 @@
 	</div>
 	<div class="header-sub-row">
 		{if isset($controller) && 'mypage' == $controller}
-			{assign var=header_active_tab value=$smarty.get.tab|default:'qr'}
 			<nav class="header-breadcrumb" aria-label="Breadcrumb">
 				{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action}
 					<a class="header-breadcrumb-item" href="/mypage/?tab=qr">
