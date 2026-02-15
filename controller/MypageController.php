@@ -137,15 +137,7 @@ class MypageController extends BaseController {
 			$from = strtotime($user_request_shift->shift_date_from);
 			$to = strtotime($user_request_shift->shift_date_to);
 			$date_key = date('Y-m-d', $from);
-			$from_ymd = date('Ymd', $from);
-			$to_ymd = date('Ymd', $to);
-
-			$time_label = date('H:i', $from) . ' 〜 ';
-			if ($from_ymd == $to_ymd) {
-				$time_label .= date('H:i', $to);
-			} else {
-				$time_label .= '(翌) ' . date('H:i', $to);
-			}
+			$time_label = date('H', $from) . ' - ' . date('H', $to);
 
 			$shift_calendar_map[$date_key][] = array(
 				'id' => $user_request_shift->id,
@@ -158,15 +150,7 @@ class MypageController extends BaseController {
 			$from = strtotime($confirmed_shift->shift_date_from);
 			$to = strtotime($confirmed_shift->shift_date_to);
 			$date_key = date('Y-m-d', $from);
-			$from_ymd = date('Ymd', $from);
-			$to_ymd = date('Ymd', $to);
-
-			$time_label = date('H:i', $from) . ' 〜 ';
-			if ($from_ymd == $to_ymd) {
-				$time_label .= date('H:i', $to);
-			} else {
-				$time_label .= '(翌) ' . date('H:i', $to);
-			}
+			$time_label = date('H', $from) . ' - ' . date('H', $to);
 
 			$shift_calendar_map[$date_key][] = array(
 				'id' => null,
