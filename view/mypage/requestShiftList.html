@@ -23,22 +23,26 @@
 	<br>
 	<div class="div_form">
 		{if $user_request_shifts}
-			<table class="input_list">
+			<table class="input_list request-shift-list-table">
 				{foreach from=$user_request_shifts item=user_request_shift}
 					<tr>
 						<td class="left">
-							{$user_request_shift->shift_date_from|date_format:"%Y年%m月%d日"}({UtilCommon::get_yb($user_request_shift->shift_date_from)}）
-							{$user_request_shift->shift_date_from|date_format:"%-H:%M"} 〜 
-							{$user_request_shift->shift_date_to|date_format:"%Y年%m月%d日"}({UtilCommon::get_yb($user_request_shift->shift_date_from)}）
-							{$user_request_shift->shift_date_to|date_format:"%-H:%M"}
-							<button type="button" class="icon-delete-button" onclick="location.href='/mypage/requestShiftDelFinish/?id={$user_request_shift->id}'" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Delete{else}削除{/if}">
-								<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-									<path d="M4 7H20" stroke="currentColor" stroke-width="1.8"/>
-									<path d="M9 7V5C9 4.45 9.45 4 10 4H14C14.55 4 15 4.45 15 5V7" stroke="currentColor" stroke-width="1.8"/>
-									<path d="M7 7L8 20H16L17 7" stroke="currentColor" stroke-width="1.8"/>
-									<path d="M10 11V17M14 11V17" stroke="currentColor" stroke-width="1.8"/>
-								</svg>
-							</button>
+							<div class="request-shift-row">
+								<span class="request-shift-row-text">
+									{$user_request_shift->shift_date_from|date_format:"%Y年%m月%d日"}({UtilCommon::get_yb($user_request_shift->shift_date_from)}）
+									{$user_request_shift->shift_date_from|date_format:"%-H:%M"} 〜 
+									{$user_request_shift->shift_date_to|date_format:"%Y年%m月%d日"}({UtilCommon::get_yb($user_request_shift->shift_date_from)}）
+									{$user_request_shift->shift_date_to|date_format:"%-H:%M"}
+								</span>
+								<button type="button" class="icon-delete-button" onclick="location.href='/mypage/requestShiftDelFinish/?id={$user_request_shift->id}'" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Delete{else}削除{/if}">
+									<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+										<path d="M4 7H20" stroke="currentColor" stroke-width="1.8"/>
+										<path d="M9 7V5C9 4.45 9.45 4 10 4H14C14.55 4 15 4.45 15 5V7" stroke="currentColor" stroke-width="1.8"/>
+										<path d="M7 7L8 20H16L17 7" stroke="currentColor" stroke-width="1.8"/>
+										<path d="M10 11V17M14 11V17" stroke="currentColor" stroke-width="1.8"/>
+									</svg>
+								</button>
+							</div>
 						</td>
 					</tr>
 				{/foreach}
