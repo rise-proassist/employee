@@ -2,7 +2,7 @@
 
 const DISPLAY_ERROR = 1;
 
-const WEB_SRC = 'http://localhost:8080';
+const WEB_SRC = 'https://localhost:8080';
 
 const ADMIN_SRC = 'http://localhost:8081';
 

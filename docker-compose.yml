@@ -5,10 +5,13 @@ services:
       dockerfile: docker/php/Dockerfile
     container_name: employee-app
     ports:
-      - "8080:80"
+      - "8080:443"
+      - "8082:80"
     volumes:
       - ./:/var/www/html
       - ./docker/php/php.ini:/usr/local/etc/php/conf.d/99-local.ini
+      - ./docker/apache/app-vhost-ssl.conf:/etc/apache2/sites-available/000-default.conf
+      - ./docker/certs:/etc/apache2/certs
     environment:
       XDEBUG_MODE: debug,develop
       XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003 start_with_request=yes idekey=VSCODE

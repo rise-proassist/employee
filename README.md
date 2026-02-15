@@ -7,6 +7,7 @@
 - Docker Desktop
 - VS Code
 - 拡張機能 `PHP Debug`（`xdebug.php-debug`）
+- `mkcert`（ローカル証明書生成）
 
 ### 2. ローカル設定ファイル作成
 
@@ -22,21 +23,29 @@ cp admin/conf/systemConst.local.php.example admin/conf/systemConst.local.php
 
 ### 3. コンテナ起動
 
+初回のみ、ローカル証明書を作成します。
+
+```bash
+mkcert -install
+mkcert -key-file docker/certs/localhost-key.pem -cert-file docker/certs/localhost.pem localhost 127.0.0.1 ::1
+```
+
+`mkcert -install` は管理者パスワード入力が必要です。実行後にブラウザ再起動すると証明書警告なしでアクセスできます。
+
 ```bash
 docker compose up -d --build
 ```
 
-- フロント: `http://localhost:8080`
+- フロント(HTTPS): `https://localhost:8080`
+- フロント(HTTP): `http://localhost:8082`
 - 管理画面: `http://localhost:8081`
 - MySQL: `localhost:33060`
-
-※ ローカル環境は HTTPS 未設定のため、`https://localhost:...` ではなく `http://localhost:...` を使用してください。
 
 ### 4. VS Code でデバッグ開始
 
 1. VS Code の「実行とデバッグ」で `Listen for Xdebug` を選択
 2. `htdocs` または `admin` 配下にブレークポイントを設定
-3. ブラウザで `http://localhost:8080` または `http://localhost:8081` にアクセス
+3. ブラウザで `https://localhost:8080` または `http://localhost:8081` にアクセス
 
 Xdebug は `docker/php/php.ini` で `start_with_request=yes` に設定済みです。
 

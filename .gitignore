@@ -4,3 +4,5 @@ admin/conf/systemConst.local.php
 .env
 tmp/*
 !tmp/.gitkeep
+docker/certs/*
+!docker/certs/.gitkeep
