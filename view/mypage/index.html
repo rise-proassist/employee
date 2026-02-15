@@ -21,7 +21,6 @@
 			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
 				<span class="notice_s">Pending</span>
 			{/if}
-			<br>
 		{else}
 			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
 				<span class="notice_s">承認見送り</span>
@@ -31,7 +30,6 @@
 		{/if}
 	</div>
 	</div>
-	<br>
 	<div class="mypage-tab-content {if 'rules' != $active_tab}is-hidden{/if}" id="work-rule-section">
 	<div>
 	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
@@ -73,7 +71,6 @@
 	{/if}
 	</div>
 	</div>
-	<br>
 	<div class="mypage-tab-content {if 'shift' != $active_tab}is-hidden{/if}" id="shift-section">
 	<ul class="menu">
 		<li>
@@ -111,7 +108,6 @@
 		</li>
 	</ul>
 	</div>
-	<br>
 	<div class="mypage-tab-content {if 'settings' != $active_tab}is-hidden{/if}" id="setting-section">
 	<ul class="menu">
 		<li>
