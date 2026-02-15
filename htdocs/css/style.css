@@ -748,28 +748,21 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.header-breadcrumb ol {
+.header-breadcrumb {
     display: flex;
     align-items: center;
     gap: 8px;
     margin: 0;
     padding: 0;
-    list-style: none;
 }
 
-.header-breadcrumb li {
-    display: inline-flex;
-    align-items: center;
-}
-
-.header-breadcrumb li + li::before {
+.header-breadcrumb-item + .header-breadcrumb-item::before {
     content: ">";
     margin-right: 8px;
     color: rgba(255, 255, 255, 0.75);
 }
 
-.header-breadcrumb a,
-.header-breadcrumb li[aria-current="page"] {
+.header-breadcrumb-item {
     font-size: 14px;
     font-weight: 700;
     color: #ffffff;

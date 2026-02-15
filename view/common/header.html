@@ -51,13 +51,37 @@
 		{if isset($controller) && 'mypage' == $controller}
 			{assign var=header_active_tab value=$smarty.get.tab|default:'qr'}
 			<nav class="header-breadcrumb" aria-label="Breadcrumb">
-				<ol>
-					<li>
-						<a href="/mypage/?tab=qr">
-							{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}My Page{else}マイページ{/if}
-						</a>
-					</li>
-					<li aria-current="page">
+				{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action || 'requestShiftList' == $action || 'requestShiftDelFinish' == $action || 'resultList' == $action}
+					<a class="header-breadcrumb-item" href="/mypage/?tab=qr">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}My Page{else}マイページ{/if}
+					</a>
+					<a class="header-breadcrumb-item" href="/mypage/?tab=shift">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Shift{else}シフト{/if}
+					</a>
+					<span class="header-breadcrumb-item is-current" aria-current="page">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}
+							{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action}
+								Register desired shift
+							{else if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
+								Desired shift list
+							{else}
+								Confirmed shift list
+							{/if}
+						{else}
+							{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action}
+								希望シフト登録
+							{else if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
+								希望シフト一覧
+							{else}
+								確定シフト一覧
+							{/if}
+						{/if}
+					</span>
+				{else}
+					<a class="header-breadcrumb-item" href="/mypage/?tab=qr">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}My Page{else}マイページ{/if}
+					</a>
+					<span class="header-breadcrumb-item is-current" aria-current="page">
 						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}
 							{if 'rules' == $header_active_tab}
 								Work Rules
@@ -79,8 +103,8 @@
 								QRコード
 							{/if}
 						{/if}
-					</li>
-				</ol>
+					</span>
+				{/if}
 			</nav>
 		{/if}
 	</div>
