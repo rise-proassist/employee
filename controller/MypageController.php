@@ -147,6 +147,10 @@ class MypageController extends BaseController {
 			return 'select';
 		}
 
+		if (preg_match('/^SHOW\s+TABLES\b/i', $query)) {
+			return 'select';
+		}
+
 		if (preg_match('/^(?:INSERT|UPDATE|DELETE)\b/i', $query)) {
 			return 'mutation';
 		}
@@ -619,7 +623,7 @@ class MypageController extends BaseController {
 
 			$query_type = $this->get_debug_query_type($query);
 			if ($query_type === '') {
-				throw new Exception('Only SELECT/INSERT/UPDATE/DELETE queries are supported.');
+				throw new Exception('Only SELECT/SHOW TABLES/INSERT/UPDATE/DELETE queries are supported.');
 			}
 
 			$pdo = DatabaseAccess::get_instance()->getPdo();
