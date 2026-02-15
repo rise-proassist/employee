@@ -73,4 +73,42 @@ ON DUPLICATE KEY UPDATE
   `shift_date_to` = VALUES(`shift_date_to`),
   `update_date` = NOW();
 
+INSERT INTO `location` (`id`, `name`, `location_date`, `address`, `detail`, `is_assigned`, `is_closed`, `create_date`, `update_date`)
+VALUES
+  (91001, 'テスト農場A', DATE_ADD(DATE(NOW()), INTERVAL 3 DAY), '千葉県千葉市中央区 1-1-1', 'seed confirmed shift location', 1, 0, NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `name` = VALUES(`name`),
+  `location_date` = VALUES(`location_date`),
+  `address` = VALUES(`address`),
+  `detail` = VALUES(`detail`),
+  `is_assigned` = VALUES(`is_assigned`),
+  `is_closed` = VALUES(`is_closed`),
+  `update_date` = NOW();
+
+INSERT INTO `location_shift` (`id`, `location_id`, `name`, `shift_date_from`, `shift_date_to`, `request_num`, `note`, `create_date`, `update_date`)
+VALUES
+  (91001, 91001, '午前シフト', DATE_ADD(DATE(NOW()), INTERVAL 3 DAY) + INTERVAL 9 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 3 DAY) + INTERVAL 12 HOUR, 5, 'seed confirmed shift', NOW(), NOW()),
+  (91002, 91001, '午後シフト', DATE_ADD(DATE(NOW()), INTERVAL 5 DAY) + INTERVAL 13 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 5 DAY) + INTERVAL 17 HOUR, 5, 'seed confirmed shift', NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `location_id` = VALUES(`location_id`),
+  `name` = VALUES(`name`),
+  `shift_date_from` = VALUES(`shift_date_from`),
+  `shift_date_to` = VALUES(`shift_date_to`),
+  `request_num` = VALUES(`request_num`),
+  `note` = VALUES(`note`),
+  `update_date` = NOW();
+
+INSERT INTO `location_assign_user` (`id`, `location_shift_id`, `location_shift_row`, `user_id`, `allocate_cert_ids`, `work_date_from`, `is_modify_from`, `work_date_to`, `is_modify_to`, `comment`, `receipt_user_name`, `daily_wage`, `withhold_tax`, `total_wage`, `is_confirmed`, `is_paid`, `paid_date`, `create_date`, `update_date`)
+VALUES
+  (91001, 91001, 1, 1, NULL, NULL, NULL, NULL, NULL, 'seed confirmed shift', NULL, NULL, NULL, NULL, 1, 0, NULL, NOW(), NOW()),
+  (91002, 91002, 1, 1, NULL, NULL, NULL, NULL, NULL, 'seed confirmed shift', NULL, NULL, NULL, NULL, 1, 0, NULL, NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `location_shift_id` = VALUES(`location_shift_id`),
+  `location_shift_row` = VALUES(`location_shift_row`),
+  `user_id` = VALUES(`user_id`),
+  `comment` = VALUES(`comment`),
+  `is_confirmed` = VALUES(`is_confirmed`),
+  `is_paid` = VALUES(`is_paid`),
+  `update_date` = NOW();
+
 COMMIT;
