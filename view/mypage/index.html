@@ -3,14 +3,6 @@
 
 	{* QRコード*}
 	<div class="mypage-tab-content {if 'qr' != $active_tab}is-hidden{/if}" id="qr-section">
-	<div class="h_form">
-		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-			QRコード
-		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-			QR Code
-		{/if}
-	</div>
-	<br>
 	<div class="div_qr_code">
 		{if $smarty.const.PARAM_CONST_USER_APPROVE_TYPE_PASSED == $login_user->approve_type}
 			{if $smarty.const.IS_DISPLAY_MEMBER_CODE_QR}
@@ -41,14 +33,6 @@
 	</div>
 	<br>
 	<div class="mypage-tab-content {if 'rules' != $active_tab}is-hidden{/if}" id="work-rule-section">
-	<div class="h_form">
-		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-			作業ルール
-		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-			Work Rules
-		{/if}
-	</div>
-	<br>
 	<div>
 	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
 		<ul class="menu">
@@ -91,14 +75,6 @@
 	</div>
 	<br>
 	<div class="mypage-tab-content {if 'shift' != $active_tab}is-hidden{/if}" id="shift-section">
-	<div class="h_form">
-		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-			シフト
-		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-			Shift
-		{/if}
-	</div>
-	<br>
 	<ul class="menu">
 		<li>
 			<a href="/mypage/requestShiftAddForm/">
@@ -137,14 +113,6 @@
 	</div>
 	<br>
 	<div class="mypage-tab-content {if 'settings' != $active_tab}is-hidden{/if}" id="setting-section">
-	<div class="h_form">
-		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-			設定
-		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-			Settings
-		{/if}
-	</div>
-	<br>
 	<ul class="menu">
 		<li>
 			<a href="/mypage/detail/">
