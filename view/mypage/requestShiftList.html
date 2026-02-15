@@ -11,6 +11,39 @@
 		var $endTimeLabel = $('.shift-popup-handle-label.is-end');
 		var $targetDateList = $('.shift-popup-target-date-list');
 
+		var parseShiftHours = function(labelText) {
+			var matched = String(labelText || '').match(/(\d{1,2})(?::\d{2})?\s*-\s*(\d{1,2})(?::\d{2})?/);
+			if (!matched) {
+				return null;
+			}
+
+			var startHour = parseInt(matched[1], 10);
+			var endHour = parseInt(matched[2], 10);
+
+			if (isNaN(startHour) || isNaN(endHour) || endHour < startHour) {
+				return null;
+			}
+
+			return {
+				start: startHour,
+				end: endHour
+			};
+		};
+
+		var collectRegisteredRanges = function(dateKey) {
+			var ranges = [];
+			var $targetCell = $('.calendar-day-cell[data-date="' + dateKey + '"]').first();
+
+			$targetCell.find('.calendar-shift-label').each(function() {
+				var parsed = parseShiftHours($(this).text());
+				if (parsed) {
+					ranges.push(parsed);
+				}
+			});
+
+			return ranges;
+		};
+
 		var updateShiftPopupPreview = function() {
 			var startHour = parseInt($startSlider.val(), 10);
 			var endHour = parseInt($endSlider.val(), 10);
@@ -59,11 +92,24 @@
 			$.each(targetDates, function(_, targetDate) {
 				var formattedDate = String(targetDate).replace(/-/g, '/');
 				var $targetDateItem = $('<div class="shift-popup-target-date-item">');
+				var $targetDateBar = $('<div class="shift-popup-target-date-bar"><div class="shift-popup-target-date-range"></div></div>');
+
+				$.each(collectRegisteredRanges(targetDate), function(_, range) {
+					var leftPercent = (range.start / 24) * 100;
+					var widthPercent = ((range.end - range.start) / 24) * 100;
+					$targetDateBar.append(
+						$('<div class="shift-popup-target-date-existing-range">').css({
+							left: leftPercent + '%',
+							width: (widthPercent > 0 ? widthPercent : 1.5) + '%'
+						})
+					);
+				});
+
 				$targetDateItem.append(
 					$('<div class="shift-popup-target-date-text">').text(formattedDate)
 				);
 				$targetDateItem.append(
-					$('<div class="shift-popup-target-date-bar"><div class="shift-popup-target-date-range"></div></div>')
+					$targetDateBar
 				);
 				$targetDateList.append(
 					$targetDateItem

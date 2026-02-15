@@ -1320,8 +1320,16 @@ a:focus-visible {
 .shift-popup-target-date-range {
     position: absolute;
     top: 0;
-    bottom: 0;
+    height: 8px;
     background: #10b981;
+    border-radius: 999px;
+}
+
+.shift-popup-target-date-existing-range {
+    position: absolute;
+    bottom: 0;
+    height: 8px;
+    background: #ef4444;
     border-radius: 999px;
 }
 
