@@ -141,8 +141,8 @@ class DaoLocationAssignUser extends DaoBase {
 		if ($offset)
 			$query->offset($offset);
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -309,8 +309,8 @@ class DaoLocationAssignUser extends DaoBase {
 		if ($offset)
 			$query->offset($offset);
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -396,8 +396,8 @@ class DaoLocationAssignUser extends DaoBase {
 
 		}
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)

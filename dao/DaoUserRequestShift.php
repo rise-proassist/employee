@@ -126,8 +126,8 @@ class DaoUserRequestShift extends DaoBase {
 		if ($offset)
 			$query->offset($offset);
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -256,8 +256,8 @@ class DaoUserRequestShift extends DaoBase {
 		if ($offset)
 			$query->offset($offset);
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -368,8 +368,8 @@ class DaoUserRequestShift extends DaoBase {
 		if ($offset)
 			$query->offset($offset);
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -420,12 +420,12 @@ class DaoUserRequestShift extends DaoBase {
 			}
 		}
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params($query->getParameters());
 
 		// 削除
 		$result = $query->execute();
-		$this->_logger->info('[SQL-Result] Delete Record Num : ' . $result);
+		$this->log_sql_result('Delete Record Num : ' . $result);
 
 		return $result;
 		
