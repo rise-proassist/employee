@@ -133,6 +133,100 @@ class MypageController extends BaseController {
 		return array_reverse($formatted_query_logs);
 	}
 
+	private function normalize_debug_query($query) {
+
+		$query = trim((string)$query);
+		$query = preg_replace('/;+\s*$/', '', $query);
+
+		return trim($query);
+	}
+
+	private function get_debug_query_type($query) {
+
+		if (preg_match('/^SELECT\b/i', $query)) {
+			return 'select';
+		}
+
+		if (preg_match('/^(?:INSERT|UPDATE|DELETE)\b/i', $query)) {
+			return 'mutation';
+		}
+
+		return '';
+	}
+
+	private function to_ascii_cell($value) {
+
+		if (is_null($value)) {
+			return 'NULL';
+		}
+
+		if (is_bool($value)) {
+			return $value ? '1' : '0';
+		}
+
+		if (is_scalar($value)) {
+			return (string)$value;
+		}
+
+		return json_encode($value, JSON_UNESCAPED_UNICODE);
+	}
+
+	private function format_ascii_table($rows) {
+
+		if (!$rows) {
+			return "(0 rows)";
+		}
+
+		$columns = array_keys($rows[0]);
+		$widths = array();
+		foreach ($columns as $column) {
+			$widths[$column] = strlen((string)$column);
+		}
+
+		$render_rows = array();
+		foreach ((array)$rows as $row) {
+			$render_row = array();
+			foreach ($columns as $column) {
+				$cell = $this->to_ascii_cell(isset($row[$column]) ? $row[$column] : null);
+				$render_row[$column] = $cell;
+				$cell_len = strlen($cell);
+				if ($cell_len > $widths[$column]) {
+					$widths[$column] = $cell_len;
+				}
+			}
+			$render_rows[] = $render_row;
+		}
+
+		$border_parts = array();
+		foreach ($columns as $column) {
+			$border_parts[] = str_repeat('-', $widths[$column] + 2);
+		}
+		$border = '+' . implode('+', $border_parts) . '+';
+
+		$header_cells = array();
+		foreach ($columns as $column) {
+			$header_cells[] = ' ' . str_pad($column, $widths[$column], ' ', STR_PAD_RIGHT) . ' ';
+		}
+
+		$lines = array();
+		$lines[] = $border;
+		$lines[] = '|' . implode('|', $header_cells) . '|';
+		$lines[] = $border;
+
+		foreach ($render_rows as $render_row) {
+			$cells = array();
+			foreach ($columns as $column) {
+				$cells[] = ' ' . str_pad($render_row[$column], $widths[$column], ' ', STR_PAD_RIGHT) . ' ';
+			}
+			$lines[] = '|' . implode('|', $cells) . '|';
+		}
+
+		$lines[] = $border;
+		$lines[] = '(' . count($render_rows) . ' rows)';
+
+		return implode("\n", $lines);
+	}
+
 	function __construct() {
 	
 		parent::__construct();
@@ -502,6 +596,51 @@ class MypageController extends BaseController {
 		if (!$dao_user_request_shift->delete(array('id' => $id)))
 			throw new Exception(ERR_MSG_DB_ERROR, __LINE__);
 
+	}
+
+	public function executeDebugQueryAction() {
+
+		$executed_at = date('Y-m-d H:i:s');
+		$result = array(
+			'ok' => false,
+			'executedAt' => $executed_at,
+			'output' => '',
+		);
+
+		try {
+			$query = $this->normalize_debug_query($this->_request->getPost('query'));
+			if ($query === '') {
+				throw new Exception('Query is empty.');
+			}
+
+			if (false !== strpos($query, ';')) {
+				throw new Exception('Only one query can be executed at a time.');
+			}
+
+			$query_type = $this->get_debug_query_type($query);
+			if ($query_type === '') {
+				throw new Exception('Only SELECT/INSERT/UPDATE/DELETE queries are supported.');
+			}
+
+			$pdo = DatabaseAccess::get_instance()->getPdo();
+			$stmt = $pdo->prepare($query);
+			$stmt->execute();
+
+			if ($query_type === 'select') {
+				$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$result['output'] = $this->format_ascii_table($rows);
+			} else {
+				$result['output'] = $stmt->rowCount() . ' rows affected.';
+			}
+
+			$result['ok'] = true;
+		} catch (Exception $e) {
+			$result['output'] = $e->getMessage();
+		}
+
+		header('Content-type: application/json; charset=utf-8');
+		echo json_encode($result, JSON_UNESCAPED_UNICODE);
+		exit;
 	}
 
 	/**

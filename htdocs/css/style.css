@@ -1672,6 +1672,39 @@ body.login-page .login-note-area li:last-child {
     padding: 6px 10px;
 }
 
+.debug-query-footer-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-top: 1px solid #111827;
+    border-bottom: 1px solid #111827;
+    background: #050505;
+}
+
+.debug-query-footer-header .debug-query-footer-title {
+    padding: 0;
+    flex: 0 0 auto;
+}
+
+.debug-query-footer-input {
+    flex: 1;
+    min-width: 0;
+    height: 30px;
+    padding: 4px 8px;
+    border: 1px solid #1f2937;
+    border-radius: 4px;
+    background: #000000;
+    color: #e5e7eb;
+    font-size: 12px;
+    line-height: 1.4;
+    font-family: 'Courier New', monospace;
+}
+
+.debug-query-footer-input::placeholder {
+    color: #6b7280;
+}
+
 .debug-query-footer-body {
     margin: 0;
     padding: 10px;

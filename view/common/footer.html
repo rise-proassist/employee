@@ -56,13 +56,18 @@
 {if isset($controller) && 'mypage' == $controller}
 <div id="debug-query-footer" class="debug-query-footer is-mypage" data-min-height="140" data-default-height="240" data-max-ratio="0.7">
 	<div id="debug-query-footer-resizer" class="debug-query-footer-resizer"></div>
-	<div class="debug-query-footer-title">Debug Query Log</div>
-	<pre class="debug-query-footer-body">{$debug_query_log_text|default:''|escape}</pre>
+	<div class="debug-query-footer-header">
+		<div class="debug-query-footer-title">Debug Query Log</div>
+		<input id="debug-query-input" class="debug-query-footer-input" type="text" autocomplete="off" spellcheck="false" placeholder="SQL command... (Enter to execute)">
+	</div>
+	<pre id="debug-query-footer-body" class="debug-query-footer-body">{$debug_query_log_text|default:''|escape}</pre>
 </div>
 <script>
 	(function() {
 		var footer = document.getElementById('debug-query-footer');
 		var resizer = document.getElementById('debug-query-footer-resizer');
+		var queryInput = document.getElementById('debug-query-input');
+		var queryBody = document.getElementById('debug-query-footer-body');
 		if (!footer || !resizer) {
 			return;
 		}
@@ -93,8 +98,33 @@
 			document.body.style.setProperty('--debug-footer-height', applied + 'px');
 		};
 
+		var scrollToBottom = function() {
+			if (!queryBody) {
+				return;
+			}
+			queryBody.scrollTop = queryBody.scrollHeight;
+		};
+
+		var appendLog = function(text) {
+			if (!queryBody) {
+				return;
+			}
+
+			if (queryBody.textContent && queryBody.textContent.slice(-1) !== '\n') {
+				queryBody.textContent += '\n';
+			}
+
+			if (queryBody.textContent.trim() !== '') {
+				queryBody.textContent += '\n';
+			}
+
+			queryBody.textContent += text;
+			scrollToBottom();
+		};
+
 		var savedHeight = parseInt(localStorage.getItem(storageKey), 10);
 		applyHeight(isNaN(savedHeight) ? defaultHeight : savedHeight);
+		scrollToBottom();
 
 		window.addEventListener('resize', function() {
 			applyHeight(parseInt(footer.style.height, 10) || defaultHeight);
@@ -128,6 +158,48 @@
 			document.body.classList.remove('is-debug-resizing');
 			localStorage.setItem(storageKey, String(parseInt(footer.style.height, 10) || defaultHeight));
 		});
+
+		if (queryInput) {
+			queryInput.addEventListener('keydown', function(event) {
+				if (event.key !== 'Enter') {
+					return;
+				}
+
+				event.preventDefault();
+
+				var query = (queryInput.value || '').trim();
+				if (!query) {
+					return;
+				}
+
+				queryInput.disabled = true;
+
+				fetch('/mypage/executeDebugQuery/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+					},
+					credentials: 'same-origin',
+					body: 'query=' + encodeURIComponent(query)
+				})
+					.then(function(response) {
+						return response.json();
+					})
+					.then(function(payload) {
+						var executedAt = payload && payload.executedAt ? payload.executedAt : new Date().toISOString();
+						var output = payload && payload.output ? payload.output : '';
+						appendLog('[' + executedAt + '] > ' + query + '\n' + output);
+					})
+					.catch(function() {
+						appendLog('[' + new Date().toISOString() + '] > ' + query + '\nFailed to execute query.');
+					})
+					.finally(function() {
+						queryInput.disabled = false;
+						queryInput.value = '';
+						queryInput.focus();
+					});
+			});
+		}
 	})();
 </script>
 {/if}
