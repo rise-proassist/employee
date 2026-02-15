@@ -97,19 +97,17 @@
 			<br>
 			<div class="div_input_button">
 				<input type="hidden" name="csrf_token" value="{$csrf_token}">
-				<input type="submit" value="{if $is_en}Log in{else}ログイン{/if}" class="input_button">
+				<input type="submit" value="{if $is_en}Sign in{else}ログイン{/if}" class="input_button">
 			</div>
 		</form>
 		<br>
 		<div class="login-links">
 			{if $is_en}
-				▶︎New registration is <a href="/account/langForm/">here</a><br>
-				<br>
-				▶︎Forgotten your password? Click <a href="/login/reissuePasswordForm/">here</a>
+				<a href="/account/langForm/">Sign up</a>　　
+				<a href="/login/reissuePasswordForm/">Reset password</a>
 			{else}
-				<a href="/account/langForm/">新規登録</a><br>
-				<br>
-				▶︎パスワードを忘れた方は、<a href="/login/reissuePasswordForm/">こちら</a>
+				<a href="/account/langForm/">新規登録</a>　　
+				<a href="/login/reissuePasswordForm/">パスワードリセット</a>
 			{/if}
 		</div>
 	</div>

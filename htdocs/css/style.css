@@ -957,5 +957,9 @@ body.login-page .input_form textarea {
 }
 
 body.login-page .lb_form {
-    text-align: center;
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto 8px;
+    text-align: left;
 }
