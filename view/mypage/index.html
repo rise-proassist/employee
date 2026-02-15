@@ -172,7 +172,7 @@
 	</ul>
 	</div>
 	<div class="mypage-tab-content {if 'query-log' != $active_tab}is-hidden{/if}" id="query-log-section">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
 		<script>
 			document.addEventListener('DOMContentLoaded', function() {
@@ -183,11 +183,8 @@
 		</script>
 		<div class="query-log-panel">
 			{if $query_logs}
-				{foreach from=$query_logs item=query_log}
-					<div class="query-log-item">
-						<pre><code class="language-sql">{$query_log.sql|escape}</code></pre>
-					</div>
-				{/foreach}
+				<pre class="query-log-textbox"><code class="language-sql">{foreach from=$query_logs item=query_log}{$query_log.sql|escape}
+{/foreach}</code></pre>
 			{else}
 				<div class="query-log-empty">
 					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}

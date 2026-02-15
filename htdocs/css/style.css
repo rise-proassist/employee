@@ -1605,29 +1605,35 @@ body.login-page .login-note-area li:last-child {
 }
 
 .query-log-panel {
-    background: #ffffff;
-    border: 1px solid #d1d5db;
+    background: #0b0b0b;
+    border: 1px solid #1f2937;
     border-radius: 8px;
     padding: 12px;
 }
 
-.query-log-item {
-    border-top: 1px solid #e5e7eb;
-    padding-top: 10px;
-    margin-top: 10px;
-}
-
-.query-log-item:first-of-type {
-    border-top: 0;
-    margin-top: 0;
-    padding-top: 0;
-}
-
-.query-log-item pre {
+.query-log-textbox {
+    min-height: 60vh;
+    max-height: 70vh;
     margin: 0;
-    overflow-x: auto;
+    padding: 12px;
+    background: #000000;
+    border: 1px solid #111827;
+    border-radius: 6px;
+    color: #e5e7eb;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-y: auto;
+    margin: 0;
+}
+
+.query-log-textbox code {
+    white-space: inherit;
+    word-break: inherit;
 }
 
 .query-log-empty {
     font-size: 13px;
+    color: #e5e7eb;
 }
