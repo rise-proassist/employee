@@ -903,6 +903,13 @@ body {
 
 .mypage-footer-nav-item.is-active {
     color: dodgerblue;
+    background: rgba(30, 144, 255, 0.12);
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.mypage-footer-nav-item.is-active svg {
+    stroke: dodgerblue;
 }
 
 .mypage-tab-content {
