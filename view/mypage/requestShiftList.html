@@ -1,4 +1,20 @@
 <div>
+	<script type="text/javascript">
+	$(function() {
+		$('.request-shift-calendar').on('click', '.calendar-day-cell', function() {
+			$('.calendar-day-cell.is-selected').removeClass('is-selected');
+			$(this).addClass('is-selected');
+		});
+
+		$('.request-shift-calendar').on('keydown', '.calendar-day-cell', function(e) {
+			if (e.key === 'Enter' || e.key === ' ') {
+				e.preventDefault();
+				$('.calendar-day-cell.is-selected').removeClass('is-selected');
+				$(this).addClass('is-selected');
+			}
+		});
+	});
+	</script>
 	
 	{* 従事者情報詳細 共通ヘッダ *}
 	{include file="`$smarty.const.VIEW_DIR`/common/mypage_forcast_header.html"}
@@ -54,7 +70,7 @@
 									{strip}
 									<tr>
 										{foreach from=$calendar_week item=calendar_day}
-											<td class="{if !$calendar_day.in_month}is-other-month{/if} {if $calendar_day.is_sunday}is-sunday{/if} {if $calendar_day.is_saturday}is-saturday{/if}">
+											<td class="calendar-day-cell {if !$calendar_day.in_month}is-other-month{/if} {if $calendar_day.is_sunday}is-sunday{/if} {if $calendar_day.is_saturday}is-saturday{/if}" tabindex="0">
 												<div class="calendar-day-number">{$calendar_day.day}</div>
 												{if $calendar_day.shifts}
 													<div class="calendar-shift-list">{strip}

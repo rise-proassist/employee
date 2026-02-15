@@ -1133,6 +1133,14 @@ a:focus-visible {
     padding: 4px;
 }
 
+.request-shift-calendar td.calendar-day-cell {
+    cursor: pointer;
+}
+
+.request-shift-calendar td.calendar-day-cell.is-selected {
+    box-shadow: inset 0 0 0 2px dodgerblue;
+}
+
 .request-shift-calendar th.is-sunday,
 .request-shift-calendar td.is-sunday {
     background: #fff1f2;
