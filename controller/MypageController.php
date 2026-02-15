@@ -116,7 +116,7 @@ class MypageController extends BaseController {
 		$user_request_shifts = $dao_user_request_shift->select_where_with_user(
 			array(
 				'urs.user_id' => $this->_login_user->id,
-				'urs.shift_date_from' => date("Y-m-d H:i:s"),
+				'urs.shift_date_to' => date("Y-m-d H:i:s"),
 			),
 			array('shift_date_from' => 'ASC')
 		);
