@@ -836,3 +836,43 @@ a:focus-visible {
         font-size: 16px;
     }
 }
+
+/* /login center layout */
+body.login-page .wrap {
+    max-width: 640px;
+    text-align: center;
+    align-items: center;
+}
+
+body.login-page .page_titile,
+body.login-page .alert,
+body.login-page .login-links {
+    text-align: center;
+    width: 100%;
+}
+
+body.login-page #login_exec {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+body.login-page .div_form,
+body.login-page .input_form,
+body.login-page .div_input_button {
+    text-align: center;
+}
+
+body.login-page .input_form input[type="text"],
+body.login-page .input_form input[type="email"],
+body.login-page .input_form input[type="date"],
+body.login-page .input_form input[type="password"],
+body.login-page .input_form select,
+body.login-page .input_form textarea {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.login-page .lb_form {
+    text-align: center;
+}
