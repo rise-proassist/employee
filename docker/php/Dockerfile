@@ -14,7 +14,7 @@ RUN apt-get update \
     && docker-php-ext-install pdo_mysql mysqli mbstring zip gd \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
-    && a2enmod rewrite \
+    && a2enmod rewrite authz_groupfile \
     && rm -rf /var/lib/apt/lists/*
 
 RUN printf "<VirtualHost *:80>\n    DocumentRoot /var/www/html/htdocs\n    <Directory /var/www/html/htdocs>\n        AllowOverride All\n        Require all granted\n    </Directory>\n</VirtualHost>\n" > /etc/apache2/sites-available/000-default.conf
