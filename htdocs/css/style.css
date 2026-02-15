@@ -1373,7 +1373,7 @@ a:focus-visible {
 
 .shift-popup-handle-label {
     position: absolute;
-    top: 26px;
+    top: 30px;
     transform: translateX(-50%);
     font-size: 12px;
     font-weight: 700;
