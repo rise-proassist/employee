@@ -739,6 +739,7 @@ class MypageController extends BaseController {
 			'ok' => false,
 			'executedAt' => $executed_at,
 			'output' => '',
+			'logText' => '',
 		);
 
 		$query = '';
@@ -763,15 +764,19 @@ class MypageController extends BaseController {
 			if ($query_type === 'select') {
 				$rows = $dao_debug_query->execute_raw_select($query);
 				$result['output'] = $this->format_ascii_table($rows);
+				$dao_debug_query->write_debug_sql_result($result['output']);
 			} else {
 				$affected_rows = $dao_debug_query->execute_raw_mutation($query);
 				$result['output'] = $affected_rows . ' rows affected.';
+				$dao_debug_query->write_debug_sql_result($result['output']);
 			}
 
 			$result['ok'] = true;
 		} catch (Exception $e) {
 			$result['output'] = $e->getMessage();
 		}
+
+		$result['logText'] = $this->get_debug_history_text();
 
 		header('Content-type: application/json; charset=utf-8');
 		echo json_encode($result, JSON_UNESCAPED_UNICODE);

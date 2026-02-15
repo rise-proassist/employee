@@ -105,25 +105,94 @@
 			queryBody.scrollTop = queryBody.scrollHeight;
 		};
 
-		var appendLog = function(text) {
+		var escapeHtml = function(text) {
+			return String(text)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;');
+		};
+
+		var highlightSqlKeywords = function(escapedText) {
+			return escapedText.replace(/\b(SELECT|FROM|WHERE|AND|OR|NOT|IN|IS|NULL|JOIN|LEFT|RIGHT|INNER|OUTER|ON|GROUP|BY|ORDER|LIMIT|OFFSET|HAVING|UNION|ALL|DISTINCT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|SHOW|TABLES|COUNT|AS|ASC|DESC)\b/gi, '<span class="debug-sql-keyword">$1</span>');
+		};
+
+		var normalizeSql = function(sql) {
+			return String(sql || '')
+				.replace(/\t+/g, ' ')
+				.replace(/[\r\n]+/g, ' ')
+				.trim();
+		};
+
+		var toHangingIndentLines = function(sql, width) {
+			var words = String(sql || '').split(/\s+/);
+			var lines = [];
+			var current = '';
+
+			for (var i = 0; i < words.length; i++) {
+				var word = words[i];
+				if (!word) {
+					continue;
+				}
+
+				var candidate = current ? (current + ' ' + word) : word;
+				if (candidate.length <= width || !current) {
+					current = candidate;
+					continue;
+				}
+
+				lines.push(current);
+				current = word;
+			}
+
+			if (current) {
+				lines.push(current);
+			}
+
+			return lines.length ? lines : [''];
+		};
+
+		var formatSqlLogLine = function(line) {
+			var sql = normalizeSql(line.replace(/^\[SQL\]\s*/, ''));
+			var sqlLines = toHangingIndentLines(sql, 110);
+			var formatted = [];
+
+			for (var i = 0; i < sqlLines.length; i++) {
+				var prefix = (i === 0) ? '[SQL] ' : '      ';
+				formatted.push(prefix + highlightSqlKeywords(escapeHtml(sqlLines[i])));
+			}
+
+			return formatted;
+		};
+
+		var renderLogText = function(rawText) {
 			if (!queryBody) {
 				return;
 			}
 
-			if (queryBody.textContent && queryBody.textContent.slice(-1) !== '\n') {
-				queryBody.textContent += '\n';
+			var lines = String(rawText || '').split(/\r?\n/);
+			var rendered = [];
+
+			for (var i = 0; i < lines.length; i++) {
+				var line = lines[i];
+				if (/^\[SQL\]\s*/.test(line)) {
+					var sqlRendered = formatSqlLogLine(line);
+					for (var j = 0; j < sqlRendered.length; j++) {
+						rendered.push(sqlRendered[j]);
+					}
+					continue;
+				}
+
+				rendered.push(escapeHtml(line));
 			}
 
-			if (queryBody.textContent.trim() !== '') {
-				queryBody.textContent += '\n';
-			}
-
-			queryBody.textContent += text;
-			scrollToBottom();
+			queryBody.innerHTML = rendered.join('\n');
 		};
 
 		var savedHeight = parseInt(localStorage.getItem(storageKey), 10);
 		applyHeight(isNaN(savedHeight) ? defaultHeight : savedHeight);
+		renderLogText(queryBody ? queryBody.textContent : '');
 		scrollToBottom();
 
 		window.addEventListener('resize', function() {
@@ -186,12 +255,12 @@
 						return response.json();
 					})
 					.then(function(payload) {
-						var executedAt = payload && payload.executedAt ? payload.executedAt : new Date().toISOString();
-						var output = payload && payload.output ? payload.output : '';
-						appendLog('[' + executedAt + '] > ' + query + '\n' + output);
+						renderLogText(payload && payload.logText ? payload.logText : '');
+						scrollToBottom();
 					})
 					.catch(function() {
-						appendLog('[' + new Date().toISOString() + '] > ' + query + '\nFailed to execute query.');
+						renderLogText((queryBody ? queryBody.textContent : '') + '\n[SQL-Result] Failed to execute query.');
+						scrollToBottom();
 					})
 					.finally(function() {
 						queryInput.disabled = false;

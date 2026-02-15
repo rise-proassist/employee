@@ -1719,6 +1719,11 @@ body.login-page .login-note-area li:last-child {
     border-top: 1px solid #111827;
 }
 
+.debug-query-footer-body .debug-sql-keyword {
+    color: #32cd32;
+    font-weight: 700;
+}
+
 body.is-debug-resizing {
     user-select: none;
     cursor: ns-resize;

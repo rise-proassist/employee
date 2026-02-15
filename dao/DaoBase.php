@@ -128,6 +128,11 @@ abstract class DaoBase {
 		$this->append_debug_footer_log_line($message);
 	}
 
+	public function write_debug_sql_result($result) {
+
+		$this->log_sql_result($result);
+	}
+
 	private function to_sql_literal($value) {
 
 		if (is_null($value)) {
@@ -584,8 +589,6 @@ abstract class DaoBase {
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		$this->log_sql_result('Select Record Num : ' . count((array)$rows));
-
 		return $rows;
 	}
 
@@ -604,8 +607,6 @@ abstract class DaoBase {
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute();
 		$affected = (int)$stmt->rowCount();
-
-		$this->log_sql_result('Affected Record Num : ' . $affected);
 
 		return $affected;
 	}
