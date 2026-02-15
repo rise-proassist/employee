@@ -182,6 +182,39 @@ class LoginController extends BaseController {
 	}
 
 	/**
+	 * 表示言語変更アクション
+	 */
+	public function changeLangAction() {
+
+		$request_lang_type = (int)$this->_request->getPost('lang_type');
+		$redirect_url = $this->_request->getPost('redirect_url');
+
+		$model_session = new ModelSession();
+		$model_session->set_dir(SESSION_DIR);
+		$model_session->open();
+		$user = $model_session->get('user');
+
+		if ($user && isset(PARAM_CONST_LANG_TYPES[$request_lang_type])) {
+			$dao_user = new DaoUser();
+			$sets['lang_type'] = $request_lang_type;
+			$wheres['id'] = $user->id;
+			$dao_user->update($sets, $wheres);
+
+			$user->lang_type = $request_lang_type;
+			$model_session->set('user', $user);
+		}
+
+		$model_session->close();
+
+		if (!$redirect_url || '/' !== substr($redirect_url, 0, 1)) {
+			$redirect_url = '/mypage/';
+		}
+
+		header('Location: ' . $redirect_url);
+		exit;
+	}
+
+	/**
 	 * パスワード再発行フォームアクション
 	 *
 	 */

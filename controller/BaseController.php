@@ -303,6 +303,15 @@ abstract class BaseController {
 		$this->_view->template_dir = ROOT_DIR . '/view/';
 		$this->_view->compile_dir = ROOT_DIR . '/tmp/';
 		$this->_template_path = 'index.html';
+
+		$model_session = new ModelSession();
+		$model_session->set_dir(SESSION_DIR);
+		$model_session->open();
+		$login_user = $model_session->get('user');
+		$model_session->close();
+
+		$this->_view->assign('login_user', $login_user);
+		$this->_view->assign('lang_types', PARAM_CONST_ALL_LANG_TYPES);
 		// $this->_template_path = sprintf('%s/%s.html', $this->_controller, $this->_action);
 
 	}

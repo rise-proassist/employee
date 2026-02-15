@@ -726,6 +726,33 @@ header {
     color: #ffffff;
     height: 56px;
     padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-lang-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.header-lang-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.header-lang-form select {
+    height: 36px;
+    min-width: 150px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    padding: 0 10px;
+    font-size: 14px;
+    background: #ffffff;
+    color: #1f2937;
 }
 
 .footer {
@@ -835,6 +862,14 @@ a:focus-visible {
     .input_form textarea {
         max-width: none;
         font-size: 16px;
+    }
+
+    .header-lang-label {
+        display: none;
+    }
+
+    .header-lang-form select {
+        min-width: 120px;
     }
 }
 
