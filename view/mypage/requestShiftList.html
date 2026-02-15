@@ -1,16 +1,40 @@
 <div>
 	<script type="text/javascript">
 	$(function() {
-		$('.request-shift-calendar').on('click', '.calendar-day-cell', function() {
-			$('.calendar-day-cell.is-selected').removeClass('is-selected');
-			$(this).addClass('is-selected');
+		var isDragging = false;
+		var dragSelectState = true;
+
+		var setCellSelected = function($cell, selected) {
+			$cell.toggleClass('is-selected', selected);
+		};
+
+		$('.request-shift-calendar').on('mousedown', '.calendar-day-cell', function(e) {
+			if ($(e.target).closest('.icon-delete-button').length) {
+				return;
+			}
+
+			e.preventDefault();
+			isDragging = true;
+			dragSelectState = !$(this).hasClass('is-selected');
+			setCellSelected($(this), dragSelectState);
+		});
+
+		$('.request-shift-calendar').on('mouseenter', '.calendar-day-cell', function() {
+			if (!isDragging) {
+				return;
+			}
+
+			setCellSelected($(this), dragSelectState);
+		});
+
+		$(document).on('mouseup', function() {
+			isDragging = false;
 		});
 
 		$('.request-shift-calendar').on('keydown', '.calendar-day-cell', function(e) {
 			if (e.key === 'Enter' || e.key === ' ') {
 				e.preventDefault();
-				$('.calendar-day-cell.is-selected').removeClass('is-selected');
-				$(this).addClass('is-selected');
+				$(this).toggleClass('is-selected');
 			}
 		});
 	});

@@ -1135,6 +1135,7 @@ a:focus-visible {
 
 .request-shift-calendar td.calendar-day-cell {
     cursor: pointer;
+    user-select: none;
 }
 
 .request-shift-calendar td.calendar-day-cell.is-selected {
