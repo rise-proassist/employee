@@ -30,6 +30,8 @@ docker compose up -d --build
 - 管理画面: `http://localhost:8081`
 - MySQL: `localhost:33060`
 
+※ ローカル環境は HTTPS 未設定のため、`https://localhost:...` ではなく `http://localhost:...` を使用してください。
+
 ### 4. VS Code でデバッグ開始
 
 1. VS Code の「実行とデバッグ」で `Listen for Xdebug` を選択
