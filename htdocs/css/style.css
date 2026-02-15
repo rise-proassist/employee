@@ -1611,11 +1611,6 @@ body.login-page .login-note-area li:last-child {
     padding: 12px;
 }
 
-.query-log-meta {
-    font-size: 12px;
-    margin-bottom: 10px;
-}
-
 .query-log-item {
     border-top: 1px solid #e5e7eb;
     padding-top: 10px;
@@ -1631,12 +1626,6 @@ body.login-page .login-note-area li:last-child {
 .query-log-item pre {
     margin: 0;
     overflow-x: auto;
-}
-
-.query-log-sub {
-    font-size: 12px;
-    margin-top: 4px;
-    word-break: break-all;
 }
 
 .query-log-empty {

@@ -182,23 +182,10 @@
 			});
 		</script>
 		<div class="query-log-panel">
-			<div class="query-log-meta">
-				{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-					表示ログ: {$query_log_file|escape}（最新100件）
-				{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-					Log file: {$query_log_file|escape} (latest 100)
-				{/if}
-			</div>
 			{if $query_logs}
 				{foreach from=$query_logs item=query_log}
 					<div class="query-log-item">
 						<pre><code class="language-sql">{$query_log.sql|escape}</code></pre>
-						{if $query_log.params}
-							<div class="query-log-sub">Params: {$query_log.params|escape}</div>
-						{/if}
-						{if $query_log.result}
-							<div class="query-log-sub">Result: {$query_log.result|escape}</div>
-						{/if}
 					</div>
 				{/foreach}
 			{else}
