@@ -34,8 +34,13 @@ class TopController extends BaseController {
 		$model_session->close();
 
 		// ログイン種別チェック
-		if ($is_login)
+		if ($is_login) {
 			header('Location: ' . UtilCommon::get_base_url('mypage'));
+			exit;
+		}
+
+		header('Location: ' . UtilCommon::get_base_url('login'));
+		exit;
 
 		// $this->_view->assign('login_account', $account);
 		// $this->_login_account = $account;
