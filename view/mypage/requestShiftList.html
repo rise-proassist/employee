@@ -21,6 +21,16 @@
 		<span class="caution">※Please note that deleting a date and time for which an assignment has already been confirmed will not cancel the assignment.</span>
 	{/if}
 	<br>
+	<div class="request-shift-list-actions">
+		<a href="/mypage/requestShiftAddForm/" class="request-shift-add-link" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Add desired shift{else}希望シフトを追加{/if}">
+			<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+				<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+				<path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="1.8"/>
+			</svg>
+			<span>+追加</span>
+		</a>
+	</div>
+	<br>
 	<div class="div_form">
 		{if $user_request_shifts}
 			<table class="input_list request-shift-list-table">

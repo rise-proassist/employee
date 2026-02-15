@@ -51,11 +51,24 @@
 		{if isset($controller) && 'mypage' == $controller}
 			{assign var=header_active_tab value=$smarty.get.tab|default:'qr'}
 			<nav class="header-breadcrumb" aria-label="Breadcrumb">
-				{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action || 'requestShiftList' == $action || 'requestShiftDelFinish' == $action || 'resultList' == $action}
+				{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action}
 					<a class="header-breadcrumb-item" href="/mypage/?tab=qr">
 						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}My Page{else}マイページ{/if}
 					</a>
-					{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action || 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
+					<a class="header-breadcrumb-item" href="/mypage/requestShiftList/">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Desired Shift{else}希望シフト{/if}
+					</a>
+					<a class="header-breadcrumb-item" href="/mypage/requestShiftList/">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}List{else}一覧{/if}
+					</a>
+					<span class="header-breadcrumb-item is-current" aria-current="page">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Register{else}登録{/if}
+					</span>
+				{else if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action || 'resultList' == $action}
+					<a class="header-breadcrumb-item" href="/mypage/?tab=qr">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}My Page{else}マイページ{/if}
+					</a>
+					{if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
 						<a class="header-breadcrumb-item" href="/mypage/?tab=request-shift">
 							{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Desired Shift{else}希望シフト{/if}
 						</a>
@@ -66,17 +79,13 @@
 					{/if}
 					<span class="header-breadcrumb-item is-current" aria-current="page">
 						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}
-							{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action}
-								Register
-							{else if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
+							{if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
 								List
 							{else}
 								Confirmed shift list page
 							{/if}
 						{else}
-							{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action}
-								登録
-							{else if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
+							{if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
 								一覧
 							{else}
 								確定シフト一覧ページ

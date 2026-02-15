@@ -1017,6 +1017,31 @@ a:focus-visible {
     margin-right: 0;
 }
 
+.request-shift-list-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.request-shift-add-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: dodgerblue;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.request-shift-add-link svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+}
+
+.request-shift-add-link:hover,
+.request-shift-add-link:focus-visible {
+    color: #187bcd;
+}
+
 .input_form input[type="text"],
 .input_form input[type="email"],
 .input_form input[type="date"],
