@@ -727,6 +727,7 @@ header {
     height: 88px;
     padding: 0 24px;
     display: block;
+    z-index: 1100;
 }
 
 body {
