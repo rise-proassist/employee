@@ -11,6 +11,7 @@
 		var $endTimeLabel = $('.shift-popup-handle-label.is-end');
 		var $targetDateList = $('.shift-popup-target-date-list');
 		var $overwriteWarning = $('.shift-popup-overwrite-warning');
+		var $popupOkButton = $('.shift-popup-ok');
 
 		var collectRegisteredRanges = function(dateKey) {
 			var ranges = [];
@@ -130,6 +131,29 @@
 			$popupOverlay.removeClass('is-open');
 		};
 
+		var getPopupTargetDates = function() {
+			var dates = String($popupOverlay.attr('data-dates') || '').split(',');
+			return $.grep(dates, function(dateKey) {
+				return dateKey;
+			});
+		};
+
+		var registerShiftForDate = function(dateKey) {
+			var startHour = parseInt($startSlider.val(), 10);
+			var endHour = parseInt($endSlider.val(), 10);
+
+			return $.ajax({
+				url: '/mypage/requestShiftAddFinish/',
+				type: 'POST',
+				data: {
+					shift_date_from: dateKey,
+					shift_time_from: startHour + ':00',
+					shift_date_to: dateKey,
+					shift_time_to: endHour + ':00'
+				}
+			});
+		};
+
 		var setCellSelected = function($cell, selected) {
 			$cell.toggleClass('is-selected', selected);
 		};
@@ -235,8 +259,35 @@
 			updateShiftPopupPreview();
 		});
 
-		$('.shift-popup-cancel, .shift-popup-ok').on('click', function() {
+		$('.shift-popup-cancel').on('click', function() {
 			closeShiftPopup();
+		});
+
+		$popupOkButton.on('click', function() {
+			if ($popupOkButton.prop('disabled')) {
+				return;
+			}
+
+			var targetDates = getPopupTargetDates();
+			if (!targetDates.length) {
+				closeShiftPopup();
+				return;
+			}
+
+			$popupOkButton.prop('disabled', true);
+
+			var requests = $.map(targetDates, function(dateKey) {
+				return registerShiftForDate(dateKey);
+			});
+
+			$.when.apply($, requests)
+				.done(function() {
+					window.location.reload();
+				})
+				.fail(function() {
+					$popupOkButton.prop('disabled', false);
+					alert('登録に失敗しました。再度お試しください。');
+				});
 		});
 
 		$popupOverlay.on('click', function(e) {
