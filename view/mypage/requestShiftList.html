@@ -2,7 +2,6 @@
 	<script type="text/javascript">
 	$(function() {
 		var isDragging = false;
-		var dragSelectState = true;
 		var dragStartDate = null;
 
 		var setCellSelected = function($cell, selected) {
@@ -29,8 +28,8 @@
 			e.preventDefault();
 			isDragging = true;
 			dragStartDate = $(this).data('date');
-			dragSelectState = !$(this).hasClass('is-selected');
-			setCellSelected($(this), dragSelectState);
+			$('.calendar-day-cell.is-selected').removeClass('is-selected');
+			setCellSelected($(this), true);
 		});
 
 		$('.request-shift-calendar').on('mouseenter', '.calendar-day-cell', function() {
@@ -38,11 +37,13 @@
 				return;
 			}
 
+			$('.calendar-day-cell.is-selected').removeClass('is-selected');
+
 			applyDateRangeSelection(
 				$(this).closest('.request-shift-calendar'),
 				dragStartDate,
 				$(this).data('date'),
-				dragSelectState
+				true
 			);
 		});
 
@@ -54,7 +55,8 @@
 		$('.request-shift-calendar').on('keydown', '.calendar-day-cell', function(e) {
 			if (e.key === 'Enter' || e.key === ' ') {
 				e.preventDefault();
-				$(this).toggleClass('is-selected');
+				$('.calendar-day-cell.is-selected').removeClass('is-selected');
+				$(this).addClass('is-selected');
 			}
 		});
 	});
