@@ -9,7 +9,7 @@
 					<rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="1.8"/>
 					<path d="M14 14H17V17H14V14ZM17 17H21V21H17V17ZM14 19H16" stroke="currentColor" stroke-width="1.8"/>
 				</svg>
-				<span>{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $selected_lang_type}QR{else}QRコード{/if}</span>
+				<span>{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $selected_lang_type}Punch{else}打刻{/if}</span>
 			</a>
 			<a href="/mypage/requestShiftList/" class="mypage-footer-nav-item {if 'request-shift' == $active_tab || (isset($action) && ('requestShiftList' == $action || 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action || 'requestShiftDelFinish' == $action))}is-active{/if}">
 				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
