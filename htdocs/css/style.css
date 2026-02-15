@@ -1443,6 +1443,14 @@ a:focus-visible {
     padding: 0 14px;
 }
 
+.shift-popup-overwrite-warning {
+    padding: 0 14px;
+    margin: 0 0 10px;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 700;
+}
+
 .shift-popup-ok,
 .shift-popup-cancel {
     height: 32px;

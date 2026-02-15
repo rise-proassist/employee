@@ -10,6 +10,7 @@
 		var $startTimeLabel = $('.shift-popup-handle-label.is-start');
 		var $endTimeLabel = $('.shift-popup-handle-label.is-end');
 		var $targetDateList = $('.shift-popup-target-date-list');
+		var $overwriteWarning = $('.shift-popup-overwrite-warning');
 
 		var collectRegisteredRanges = function(dateKey) {
 			var ranges = [];
@@ -28,6 +29,11 @@
 			});
 
 			return ranges;
+		};
+
+		var hasRequestedShift = function(dateKey) {
+			var $targetCell = $('.calendar-day-cell[data-date="' + dateKey + '"]').first();
+			return $targetCell.find('.calendar-shift-item.is-request').length > 0;
 		};
 
 		var updateShiftPopupPreview = function() {
@@ -101,6 +107,15 @@
 					$targetDateItem
 				);
 			});
+
+			var shouldShowWarning = false;
+			$.each(targetDates, function(_, targetDate) {
+				if (hasRequestedShift(targetDate)) {
+					shouldShowWarning = true;
+					return false;
+				}
+			});
+			$overwriteWarning.toggle(shouldShowWarning);
 
 			$popupOverlay
 				.attr('data-date', dateKey)
@@ -332,6 +347,9 @@
 			<div class="shift-popup-target-date-block">
 				<div class="shift-popup-section-title">Date</div>
 				<div class="shift-popup-target-date-list"></div>
+			</div>
+			<div class="shift-popup-overwrite-warning" style="display:none;">
+				{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Overwrite desired shift?{else}希望シフトを上書きしますか？{/if}
 			</div>
 			<div class="shift-popup-buttons">
 				<button type="button" class="shift-popup-ok">OK</button>
