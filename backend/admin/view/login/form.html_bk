@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>{$smarty.const.SITE_NAME}</title>
+	<link rel="stylesheet" type="text/css" href="../../assets/css/login.css" media="all">
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+</head>
+<body class="login_background">
+	<div class="login_form">
+		<section>
+			<b>{$smarty.const.SITE_NAME} コンテンツ管理システム</b>
+			<form method="post" name="login" action="{UtilCommon::get_base_url('login', 'exec')}">
+				<div class="cp_iptxt">
+					<input type="text" placeholder="メールアドレス" name="email">
+						<i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
+				</div>
+				<div class="cp_iptxt">
+					<input type="password" placeholder="パスワード" name="password">
+					<i class="fa fa-lock fa-lg fa-fw" aria-hidden="true"></i>
+				</div>
+				{if !empty($error_message)}
+					<span class="alert" style="margin-left: 15px;">※{$error_message}（{$error_code}）</span><br /><br />
+				{/if}
+				<div align="center">
+					<a class="button" onclick="document.login.submit();">LOGIN</a>
+					<input type="hidden" name="login" value="1" />
+					<input type="hidden" name="csrf_token" value="{$csrf_token}">
+				</div>
+			</form>
+		</section>
+	</div>
+</body>
+</html>

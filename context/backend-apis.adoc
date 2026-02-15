@@ -1,0 +1,235 @@
+= Backend API Inventory (for Frontend Integration)
+:sectnums:
+:sectnumlevels: 4
+
+ifndef::backend-pdf[]
+++++
+<style>
+	body {
+		background: #ffffff;
+		font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", "MS PMincho", serif;
+		color: #000000;
+	}
+
+	p, li, td, th {
+		font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", "MS PMincho", serif;
+		font-size: 12px;
+		color: #000000;
+	}
+
+	table, tbody, thead, tr {
+		font-family: "Hiragino Mincho ProN", "Yu Mincho", "游明朝", "MS PMincho", serif;
+		color: #000000;
+	}
+
+	pre, code, .literalblock, .listingblock {
+		font-family: "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", monospace;
+		font-size: 12px;
+		color: #000000;
+		background: #f5f5f5;
+	}
+
+	pre, .literalblock pre, .listingblock pre {
+		color: #000000;
+		background: #f5f5f5;
+		border: 1px solid #e5e5e5;
+		border-radius: 4px;
+		padding: 10px 12px;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", "MS PGothic", sans-serif;
+		font-weight: 700;
+		color: #000000;
+	}
+</style>
+++++
+endif::backend-pdf[]
+
+== 調査対象と前提
+
+- 調査対象: `backend/` 配下（`backend/controller` と `backend/admin/controller`）
+- ルーティング方式: `/{controller}/{action}/`（`action` 省略時は `index`）
+- 実行入口:
+	- 従事者サイト: `backend/htdocs/index.php`
+	- 管理サイト: `backend/admin/htdocs/index.php`
+- 本ドキュメントは「フロントエンドから利用可能なエンドポイント」を優先列挙
+- `BK/` 配下は旧実装として除外
+
+== ルーティング仕様（実装ベース）
+
+=== 従事者サイト (`backend/core/classes/Dispatcher.php`)
+
+- URL解析: `$_SERVER['REQUEST_URI']` を `/` 分割
+- `params[1]` を controller として採用（未指定時 `top`）
+- `params[2]` を action として採用（未指定時 `index`）
+- 実行メソッド: `{action}Action`
+
+=== 管理サイト (`backend/admin/core/classes/Dispatcher.php`)
+
+- 基本仕様は同様
+- デフォルト controller は `top`
+
+== 認証境界（Frontend設計で重要）
+
+- `MypageController`: セッションログイン必須（未ログイン時 `/login/` へ遷移）
+- `LoginController`, `AccountController`, `TopController`, `NewsController`, `EtcController`: 非ログインでもアクセス可能
+- `ApiController`（従事者側）: 原則未認証でも到達可能だが、`generateQr`/`generateBar` はセッション `user` が必要
+- 管理API (`backend/admin/controller/ApiController.php`): CSRFトークン検証あり（POST）
+
+== 1) フロントから直接利用しやすい API（JSON/画像）
+
+[cols="1,1,1,1,3,3",options="header"]
+|===
+|分類 |Path |Method |認証 |主な入力 |応答
+
+|従事者API
+|`/api/generateImage/`
+|GET
+|実質ログイン相当（セッション `upload_certs` 依存）
+|`cert_id`, `cert_type` (query)
+|画像バイナリ（jpeg/png/gif）
+
+|従事者API
+|`/api/generateQr/`
+|GET
+|要ログイン（セッション `user` 必須）
+|なし
+|QR画像（png）
+
+|従事者API
+|`/api/generateBar/`
+|GET
+|要ログイン（セッション `user` 必須）
+|なし
+|バーコード画像
+
+|従事者API
+|`/api/entryAccept/`
+|POST
+|未認証
+|`person_id`
+|JSON (`DtoResponseEntryAccept`) ※レガシー依存クラスが見当たらず現行利用は要検証
+
+|従事者API
+|`/api/entryDeny/`
+|POST
+|未認証
+|`person_id`
+|JSON (`DtoResponseEntryAccept`) ※レガシー依存クラスが見当たらず現行利用は要検証
+
+|管理API
+|`/api/setLocationAssginUser/`
+|POST
+|管理画面セッション + CSRF
+|`location_shift_id`, `location_shift_row`, `user_id`, `csrf_token`
+|JSON (`code`, `message`)
+
+|管理API
+|`/api/setAllocateCerts/`
+|POST
+|管理画面セッション + CSRF
+|`location_shift_id`, `location_shift_row`, `allocate_cert_ids[]`, `csrf_token`
+|JSON (`code`, `message`)
+
+|管理API
+|`/api/updLocationAssginUserIsNotified/`
+|POST
+|管理画面セッション
+|`location_id`, `user_id`
+|JSON (`code`, `message`)
+
+|管理API
+|`/api/workRecord/`
+|POST
+|管理画面セッション
+|`location_shift_id`, `type`, `code`
+|JSON (`code`, `message`)
+
+|開発API
+|`/developApi/putPdf/`
+|GET
+|管理画面ログイン
+|なし
+|PDF出力（デバッグ用途）
+
+|開発API
+|`/developApi/sendMailFinish/`
+|POST
+|管理画面ログイン
+|`email`
+|JSON/画面遷移（開発用途）
+|===
+
+== 2) React移植時に利用する既存Webエンドポイント（従事者サイト）
+
+=== 認証・アカウント
+
+[cols="1,1,2",options="header"]
+|===
+|Path |Method |用途
+|`/login/` |GET |ログイン画面
+|`/login/exec/` |POST |ログイン実行
+|`/login/logout/` |GET |ログアウト
+|`/login/reissuePasswordForm/` |GET |PW再発行フォーム
+|`/login/reissuePasswordConfirm/` |POST |PW再発行確認
+|`/login/reissuePasswordFinish/` |POST |PW再発行メール送信
+|`/login/reissuePasswordEditForm/?code=...` |GET |再設定フォーム
+|`/login/reissuePasswordEditFinish/` |POST |新PW確定
+|`/account/langForm/` |GET |新規登録の言語選択
+|`/account/registForm/` |POST |登録フォーム遷移
+|`/account/registCertForm/` |POST |資格アップロード入力へ
+|`/account/registAgree1/` |POST |同意ステップ1
+|`/account/registAgree2/` |POST |同意ステップ2
+|`/account/registAgree3/` |POST |同意ステップ3
+|`/account/registConfirm/` |POST |登録確認
+|`/account/registFinish/` |POST |登録完了
+|===
+
+=== マイページ（ログイン必須）
+
+[cols="1,1,2",options="header"]
+|===
+|Path |Method |用途
+|`/mypage/` |GET |マイページTOP
+|`/mypage/requestShiftList/` |GET |希望シフト一覧
+|`/mypage/requestShiftAddForm/` |GET |希望シフト登録フォーム
+|`/mypage/requestShiftAddFinish/` |POST |希望シフト登録
+|`/mypage/requestShiftDelFinish/?id=...` |GET |希望シフト削除
+|`/mypage/resultList/` |GET |確定シフト一覧
+|`/mypage/detail/` |GET |従事者詳細
+|`/mypage/editEmailForm/` |GET |メール変更フォーム
+|`/mypage/editEmailConfirm/` |POST |メール変更確認
+|`/mypage/editEmailFinish/` |GET/POST |メール変更完了
+|`/mypage/editPasswordForm/` |GET |パスワード変更フォーム
+|`/mypage/editPasswordConfirm/` |POST |パスワード変更確認
+|`/mypage/editPasswordFinish/` |POST |パスワード変更完了
+|`/mypage/editAccountForm/` |GET |会員情報変更フォーム
+|`/mypage/editAccountConfirm/` |POST |会員情報変更確認
+|`/mypage/editAccountFinish/` |GET/POST |会員情報変更完了
+|`/mypage/uploadCertForm/` |GET |資格証アップロードフォーム
+|`/mypage/uploadCertConfirm/` |POST |資格証アップロード確認
+|`/mypage/uploadCertFinish/` |POST |資格証アップロード完了
+|`/mypage/resignForm/` |GET |退会フォーム
+|`/mypage/resignFinish/` |POST |退会完了
+|===
+
+=== その他公開ページ
+
+[cols="1,1,2",options="header"]
+|===
+|Path |Method |用途
+|`/` |GET |TOP（実体は `top/indexAction`）
+|`/top/` |GET |TOP
+|`/news/` |GET |お知らせ一覧（`pg` query対応）
+|`/news/detail/?id=...` |GET |お知らせ詳細
+|`/etc/consent/` |GET |同意書ページ
+|`/etc/privacy/` |GET |プライバシーページ
+|`/error/` |GET |エラー表示
+|===
+
+== 3) フロント実装向け補足
+
+- 現状バックエンドは「画面遷移 + フォームPOST」中心で、JSON API は限定的。
+- React再構築では、まず既存画面フローを上記エンドポイントに合わせて実装し、必要に応じて専用JSON APIを追加する段階移行が現実的。
+- `entryAccept/entryDeny` は参照DAOが現行ツリーに見当たらず、利用する場合はバックエンド側の整合性確認が必要。

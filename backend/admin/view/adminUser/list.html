@@ -1,0 +1,106 @@
+<div class="panel">
+	
+	<div class="panel-body">
+
+		{* フォーム *}
+		<form method="post" action="{UtilCommon::get_base_url('adminUser', 'list')}" id="form" name="frm" novalidate="novalidate">
+			<table class="search_form">
+				<tbody>
+					<tr>
+						<th>ユーザ名</th>
+						<td>
+							{assign var="input_name" value=""}
+							{if isset($smarty.post.name)}
+								{assign var="input_name" value=$smarty.post.name}
+							{/if}
+							<input type="text" name="name" class="form-control" placeholder="" value="{$input_name}">
+						</td>
+						<th>メールアドレス</th>
+						<td>
+							{assign var="input_email" value=""}
+							{if isset($smarty.post.email)}
+								{assign var="input_email" value=$smarty.post.email}
+							{/if}
+							<input type="email" name="email" class="form-control" placeholder="" value="{$input_email}">
+						</td>
+					</tr>
+					<tr>
+						<th>権限</th>
+						<td colspan="3">
+							{assign var="input_auth_level" value=""}
+							{if isset($smarty.post.auth_level)}
+								{assign var="input_auth_level" value=$smarty.post.auth_level}
+							{/if}
+							{if $auth_levels}
+								<select class="form-control" name="auth_level" style="width: 100px;">
+									<option value="">指定なし</option>
+									{foreach from=$auth_levels key=auth_level item=auth_level_name}
+										<option value="{$auth_level}" {if $input_auth_level == $auth_level}selected{/if}>{$auth_level_name}</option>
+									{/foreach}
+								</select>
+							{/if}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-primary" onclick="frm.submit();">検索</button>
+		</div>
+	</div>
+</div>
+
+<div class="panel">
+	<div class="panel-heading">
+		<h3 class="panel-title">システムユーザ一覧</h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th style="width: 5%;">
+						{UtilCommon::gen_sort_button('#', 'id')}
+					</th>
+					<th style="width: 10%;">
+						{UtilCommon::gen_sort_button('名前', 'name')}
+					</th>
+					<th style="width: 25%;">
+						{UtilCommon::gen_sort_button('メールアドレス', 'email')}
+					</th>
+					<th style="width: 10%;">
+						{UtilCommon::gen_sort_button('権限', 'auth_level')}
+					</th>
+					<th style="width: 30%;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{if $admin_users}
+					{foreach from=$admin_users item=admin_user}
+						<tr>
+							<td>{$admin_user->id}</td>
+							<td>{$admin_user->name}</td>
+							<td>{$admin_user->email}</td>
+							<td>{$admin_user->auth_level_name}</td>
+							<td>
+								<a href="/adminUser/updForm/?id={$admin_user->id}" class="btn btn-info btn-xs">更新</a>
+								{if UtilLogin::get_id() != $admin_user->id}
+									<a href="/adminUser/delConfirm/?id={$admin_user->id}" class="btn btn-info btn-xs">削除</a>
+								{/if}
+							</td>
+						</tr>
+					{/foreach}
+				{else}
+					<tr>
+						<td colspan="5">システムユーザが登録されていません。</td>
+					</tr>					
+				{/if}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{* ページャ *}
+<div align="center" style="margin-top: 10px; margin-bottom: 10px;">
+	{$pager->put_link_tag()}
+</div>

@@ -1,0 +1,312 @@
+<?php
+/* Smarty version 3.1.30, created on 2026-02-15 06:49:33
+  from "/var/www/html/view/common/footer.html" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_69916c7de5d261_66459594',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'edc39b00613c152c8b5d319ad5c7b0c92445de2b' => 
+    array (
+      0 => '/var/www/html/view/common/footer.html',
+      1 => 1771138164,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_69916c7de5d261_66459594 (Smarty_Internal_Template $_smarty_tpl) {
+?>
+<footer class="footer">
+	<?php if (isset($_smarty_tpl->tpl_vars['controller']->value) && 'mypage' == $_smarty_tpl->tpl_vars['controller']->value) {?>
+		<?php $_smarty_tpl->_assignInScope('active_tab', (($tmp = @$_GET['tab'])===null||$tmp==='' ? 'qr' : $tmp));
+?>
+		<nav class="mypage-footer-nav" aria-label="Mypage footer navigation">
+			<a href="/mypage/?tab=qr" class="mypage-footer-nav-item <?php if ('qr' == $_smarty_tpl->tpl_vars['active_tab']->value) {?>is-active<?php }?>">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="1.8"/>
+					<rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="1.8"/>
+					<rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="1.8"/>
+					<path d="M14 14H17V17H14V14ZM17 17H21V21H17V17ZM14 19H16" stroke="currentColor" stroke-width="1.8"/>
+				</svg>
+				<span><?php if (@constant('PARAM_CONST_LANG_TYPE_EN') == $_smarty_tpl->tpl_vars['selected_lang_type']->value) {?>Punch<?php } else { ?>打刻<?php }?></span>
+			</a>
+			<a href="/mypage/requestShiftList/" class="mypage-footer-nav-item <?php if ('request-shift' == $_smarty_tpl->tpl_vars['active_tab']->value || (isset($_smarty_tpl->tpl_vars['action']->value) && ('requestShiftList' == $_smarty_tpl->tpl_vars['action']->value || 'requestShiftAddForm' == $_smarty_tpl->tpl_vars['action']->value || 'requestShiftAddFinish' == $_smarty_tpl->tpl_vars['action']->value || 'requestShiftDelFinish' == $_smarty_tpl->tpl_vars['action']->value))) {?>is-active<?php }?>">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/>
+					<path d="M8 3V7M16 3V7M3 10H21" stroke="currentColor" stroke-width="1.8"/>
+					<path d="M8 14H12" stroke="currentColor" stroke-width="1.8"/>
+				</svg>
+				<span><?php if (@constant('PARAM_CONST_LANG_TYPE_EN') == $_smarty_tpl->tpl_vars['selected_lang_type']->value) {?>Shift<?php } else { ?>シフト<?php }?></span>
+			</a>
+			<a href="/mypage/?tab=settings" class="mypage-footer-nav-item <?php if ('settings' == $_smarty_tpl->tpl_vars['active_tab']->value) {?>is-active<?php }?>">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+					<path d="M19.4 15A1.6 1.6 0 0 0 19.72 16.76L19.77 16.81A2 2 0 1 1 16.94 19.64L16.89 19.59A1.6 1.6 0 0 0 15.13 19.27A1.6 1.6 0 0 0 14.2 20.74V20.9A2 2 0 1 1 10.2 20.9V20.82A1.6 1.6 0 0 0 9.16 19.35A1.6 1.6 0 0 0 7.4 19.67L7.35 19.72A2 2 0 1 1 4.52 16.89L4.57 16.84A1.6 1.6 0 0 0 4.89 15.08A1.6 1.6 0 0 0 3.42 14.15H3.26A2 2 0 1 1 3.26 10.15H3.34A1.6 1.6 0 0 0 4.81 9.11A1.6 1.6 0 0 0 4.49 7.35L4.44 7.3A2 2 0 1 1 7.27 4.47L7.32 4.52A1.6 1.6 0 0 0 9.08 4.84H9.16A1.6 1.6 0 0 0 10.09 3.37V3.26A2 2 0 1 1 14.09 3.26V3.34A1.6 1.6 0 0 0 15.02 4.81A1.6 1.6 0 0 0 16.78 4.49L16.83 4.44A2 2 0 1 1 19.66 7.27L19.61 7.32A1.6 1.6 0 0 0 19.29 9.08V9.16A1.6 1.6 0 0 0 20.76 10.09H20.9A2 2 0 1 1 20.9 14.09H20.82A1.6 1.6 0 0 0 19.35 15.02" stroke="currentColor" stroke-width="1.4"/>
+				</svg>
+				<span><?php if (@constant('PARAM_CONST_LANG_TYPE_EN') == $_smarty_tpl->tpl_vars['selected_lang_type']->value) {?>Account Settings<?php } else { ?>アカウント設定<?php }?></span>
+			</a>
+			<a href="/mypage/?tab=query-log" class="mypage-footer-nav-item <?php if ('query-log' == $_smarty_tpl->tpl_vars['active_tab']->value) {?>is-active<?php }?>">
+				<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+					<path d="M4 5H20V19H4V5Z" stroke="currentColor" stroke-width="1.8"/>
+					<path d="M8 9H16M8 12H16M8 15H13" stroke="currentColor" stroke-width="1.8"/>
+				</svg>
+				<span><?php if (@constant('PARAM_CONST_LANG_TYPE_EN') == $_smarty_tpl->tpl_vars['selected_lang_type']->value) {?>Query Log<?php } else { ?>クエリログ<?php }?></span>
+			</a>
+		</nav>
+		<div class="mypage-footer-spacer"></div>
+	<?php }?>
+	© 2023 chiba-chikusan Co.,Ltd. All Rights Reserved. <br>
+</footer>
+
+<?php if (isset($_smarty_tpl->tpl_vars['controller']->value) && 'mypage' == $_smarty_tpl->tpl_vars['controller']->value) {?>
+<div id="debug-query-footer" class="debug-query-footer is-mypage" data-min-height="140" data-default-height="240" data-max-ratio="0.7">
+	<div id="debug-query-footer-resizer" class="debug-query-footer-resizer"></div>
+	<div class="debug-query-footer-header">
+		<div class="debug-query-footer-title">Debug Query Log</div>
+		<input id="debug-query-input" class="debug-query-footer-input" type="text" autocomplete="off" spellcheck="false" placeholder="SQL command... (Enter to execute)">
+	</div>
+	<pre id="debug-query-footer-body" class="debug-query-footer-body"><?php echo htmlspecialchars((($tmp = @$_smarty_tpl->tpl_vars['debug_query_log_text']->value)===null||$tmp==='' ? '' : $tmp), ENT_QUOTES, 'UTF-8', true);?>
+</pre>
+</div>
+<?php echo '<script'; ?>
+>
+	(function() {
+		var footer = document.getElementById('debug-query-footer');
+		var resizer = document.getElementById('debug-query-footer-resizer');
+		var queryInput = document.getElementById('debug-query-input');
+		var queryBody = document.getElementById('debug-query-footer-body');
+		if (!footer || !resizer) {
+			return;
+		}
+
+		var minHeight = parseInt(footer.getAttribute('data-min-height'), 10) || 140;
+		var defaultHeight = parseInt(footer.getAttribute('data-default-height'), 10) || 240;
+		var maxRatio = parseFloat(footer.getAttribute('data-max-ratio')) || 0.7;
+		var storageKey = 'mypageDebugFooterHeight';
+
+		var getMaxHeight = function() {
+			return Math.floor(window.innerHeight * maxRatio);
+		};
+
+		var clampHeight = function(height) {
+			var maxHeight = getMaxHeight();
+			if (height < minHeight) {
+				return minHeight;
+			}
+			if (height > maxHeight) {
+				return maxHeight;
+			}
+			return height;
+		};
+
+		var applyHeight = function(height) {
+			var applied = clampHeight(height);
+			footer.style.height = applied + 'px';
+			document.body.style.setProperty('--debug-footer-height', applied + 'px');
+		};
+
+		var scrollToBottom = function() {
+			if (!queryBody) {
+				return;
+			}
+			queryBody.scrollTop = queryBody.scrollHeight;
+		};
+
+		var escapeHtml = function(text) {
+			return String(text)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;');
+		};
+
+		var highlightSqlKeywords = function(escapedText) {
+			return escapedText.replace(/\b(SELECT|FROM|WHERE|AND|OR|NOT|IN|IS|NULL|JOIN|LEFT|RIGHT|INNER|OUTER|ON|GROUP|BY|ORDER|LIMIT|OFFSET|HAVING|UNION|ALL|DISTINCT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|SHOW|TABLES|COUNT|AS|ASC|DESC)\b/gi, '<span class="debug-sql-keyword">$1</span>');
+		};
+
+		var normalizeSql = function(sql) {
+			return String(sql || '')
+				.replace(/\t+/g, ' ')
+				.replace(/[\r\n]+/g, ' ')
+				.trim();
+		};
+
+		var toHangingIndentLines = function(sql, width) {
+			var words = String(sql || '').split(/\s+/);
+			var lines = [];
+			var current = '';
+
+			for (var i = 0; i < words.length; i++) {
+				var word = words[i];
+				if (!word) {
+					continue;
+				}
+
+				var candidate = current ? (current + ' ' + word) : word;
+				if (candidate.length <= width || !current) {
+					current = candidate;
+					continue;
+				}
+
+				lines.push(current);
+				current = word;
+			}
+
+			if (current) {
+				lines.push(current);
+			}
+
+			return lines.length ? lines : [''];
+		};
+
+		var formatSqlLogLine = function(line) {
+			var sql = normalizeSql(line.replace(/^\[SQL\]\s*/, ''));
+			var sqlLines = toHangingIndentLines(sql, 110);
+			var formatted = [];
+
+			for (var i = 0; i < sqlLines.length; i++) {
+				var prefix = (i === 0) ? '[SQL] ' : '      ';
+				formatted.push(prefix + highlightSqlKeywords(escapeHtml(sqlLines[i])));
+			}
+
+			return formatted;
+		};
+
+		var renderLogText = function(rawText) {
+			if (!queryBody) {
+				return;
+			}
+
+			var lines = String(rawText || '').split(/\r?\n/);
+			var rendered = [];
+
+			for (var i = 0; i < lines.length; i++) {
+				var line = lines[i];
+				if (/^\[SQL\]\s*/.test(line)) {
+					var sqlRendered = formatSqlLogLine(line);
+					for (var j = 0; j < sqlRendered.length; j++) {
+						rendered.push(sqlRendered[j]);
+					}
+					continue;
+				}
+
+				rendered.push(escapeHtml(line));
+			}
+
+			queryBody.innerHTML = rendered.join('\n');
+		};
+
+		var savedHeight = parseInt(localStorage.getItem(storageKey), 10);
+		applyHeight(isNaN(savedHeight) ? defaultHeight : savedHeight);
+
+		var initialLogText = queryBody ? queryBody.textContent : '';
+		var navigationEntries = (window.performance && window.performance.getEntriesByType) ? window.performance.getEntriesByType('navigation') : [];
+		var isReload = navigationEntries.length > 0 ? navigationEntries[0].type === 'reload' : false;
+
+		if (isReload) {
+			renderLogText('');
+		} else {
+			renderLogText(initialLogText);
+		}
+		scrollToBottom();
+
+		if (isReload) {
+			fetch('/mypage/clearDebugFooterLog/', {
+				method: 'POST',
+				credentials: 'same-origin'
+			}).then(function() {
+				renderLogText('');
+				scrollToBottom();
+			}).catch(function() {
+				renderLogText('');
+				scrollToBottom();
+			});
+		}
+
+		window.addEventListener('resize', function() {
+			applyHeight(parseInt(footer.style.height, 10) || defaultHeight);
+		});
+
+		var dragging = false;
+		var startY = 0;
+		var startHeight = 0;
+
+		resizer.addEventListener('mousedown', function(event) {
+			dragging = true;
+			startY = event.clientY;
+			startHeight = footer.offsetHeight;
+			document.body.classList.add('is-debug-resizing');
+			event.preventDefault();
+		});
+
+		document.addEventListener('mousemove', function(event) {
+			if (!dragging) {
+				return;
+			}
+			var nextHeight = startHeight + (startY - event.clientY);
+			applyHeight(nextHeight);
+		});
+
+		document.addEventListener('mouseup', function() {
+			if (!dragging) {
+				return;
+			}
+			dragging = false;
+			document.body.classList.remove('is-debug-resizing');
+			localStorage.setItem(storageKey, String(parseInt(footer.style.height, 10) || defaultHeight));
+		});
+
+		if (queryInput) {
+			queryInput.addEventListener('keydown', function(event) {
+				if (event.key !== 'Enter') {
+					return;
+				}
+
+				event.preventDefault();
+
+				var query = (queryInput.value || '').trim();
+				if (!query) {
+					return;
+				}
+
+				queryInput.disabled = true;
+
+				fetch('/mypage/executeDebugQuery/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+					},
+					credentials: 'same-origin',
+					body: 'query=' + encodeURIComponent(query)
+				})
+					.then(function(response) {
+						return response.json();
+					})
+					.then(function(payload) {
+						renderLogText(payload && payload.logText ? payload.logText : '');
+						scrollToBottom();
+					})
+					.catch(function() {
+						renderLogText((queryBody ? queryBody.textContent : '') + '\n[SQL-Result] Failed to execute query.');
+						scrollToBottom();
+					})
+					.finally(function() {
+						queryInput.disabled = false;
+						queryInput.value = '';
+						queryInput.focus();
+					});
+			});
+		}
+	})();
+<?php echo '</script'; ?>
+>
+<?php }
+}
+}

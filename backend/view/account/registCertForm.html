@@ -1,0 +1,67 @@
+<div>
+	<div class="page_titile">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+			新規従事者の登録
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+			New registration
+		{/if}
+	</div>
+	<br>
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+		ご登録完了後、ご入力いただいたメールアドレスに、ご登録の確認メールをお送りします。
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+		After completing your registration, a confirmation email will be sent to the email address you entered.
+	{/if}
+	<br>
+	<hr>
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+			資格証登録
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+			Register qualifications
+		{/if}
+	</div>
+	<br>
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+		現在お持ちの、資格証をアップロードしてください。
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+		Please upload your current certificate.
+	{/if}
+	<br>
+
+	<form method="post" action="/account/registAgree1/" enctype="multipart/form-data">
+
+		{if isset($error_messages.file)}
+			<div class="alert">{$error_messages.file}</div>
+		{/if}
+
+		{foreach from=$certs item=cert}
+			<div class="div_form">
+				<label class="lb_form">{$cert->name}</label>
+				<div class="input_form">
+					<ul>
+						{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+							<li>表 : <input type="file" name="file_{$cert->id}_1" accept="image/*"></li>
+							<li>裏 : <input type="file" name="file_{$cert->id}_2" accept="image/*"></li>
+						{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+							<li>Front : <input type="file" name="file_{$cert->id}_1" accept="image/*"></li>
+							<li>Back : <input type="file" name="file_{$cert->id}_2" accept="image/*"></li>
+						{/if}
+					</ul>
+				</div>
+			</div>
+		{/foreach}
+		<br>
+		<div class="div_input_button">
+			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $lang_type}
+				<input type="submit" value="同意書の確認へ" class="input_button">
+				<input type="button" value="　戻　　　　る　" class="input_button" onclick="window.history.back();">
+			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $lang_type}
+				<input type="submit" value="Confirmation of consent" class="input_button">
+				<input type="button" value="　　　　Back　　　　" class="input_button" onclick="window.history.back();">
+			{/if}
+		</div>
+
+	</form>
+
+</div>

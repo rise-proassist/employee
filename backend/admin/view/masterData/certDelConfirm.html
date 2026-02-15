@@ -1,0 +1,64 @@
+{* jsForm *}
+{include file="`$smarty.const.ADMIN_VIEW_DIR`/common/form_exec_js.html"}
+
+<div class="panel">
+	
+	<div class="panel-heading">
+		<h3 class="panel-title">資格証明書マスタ削除</h3>
+	</div>
+	
+	<div class="panel-body">
+
+		{if $is_del}
+			以下のマスタを削除します。よろしいですか？
+		{else}
+			マスタに紐づくデータがあるため、削除できません。
+		{/if}
+		<br /><br />
+
+		{if isset($error_messages)}
+			{foreach from=$error_messages item=$error_message}
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<i class="fa fa-times-circle"></i> {$error_message}<br>
+			</div>
+			{/foreach}
+		{/if}
+
+		{* フォーム *}
+		<form method="post" action="{UtilCommon::get_base_url('masterData', 'certDelFinish')}" id="frm" name="frm" novalidate="novalidate">
+			<input type="hidden" name="id" value="{$cert->id}" />
+			<table class="input_form">
+				<tbody>
+					<tr>
+						<th>名称</th>
+						<td>{$cert->name}</td>
+					</tr>
+					<tr>
+						<th>名称（略称）</th>
+						<td>{$cert->short_name}</td>
+					</tr>
+					<tr>
+						<th>手当</th>
+						<td>
+							{if $cert->allowance}
+								¥{$cert->allowance|number_format}
+							{else}
+								-
+							{/if}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-default" onclick="javascript:history.back();">戻る</button>
+			{if $is_del}
+				<button type="button" class="btn btn-primary" onclick="del_exec();">削除</button>
+			{else}
+				<button type="button" class="btn btn-primary" disabled>削除できません</button>
+			{/if}
+		</div>
+	</div>
+</div>

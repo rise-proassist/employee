@@ -1,0 +1,19 @@
+<div class="page_titile">
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+		確定シフト一覧
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+		Confirmed shift
+	{/if}
+</div>
+
+<div class="header_detail">
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+		ここでは、作業予定が確定しているシフトをご確認いただけます。<br>
+		（※直近の作業予定{$result_list_limit}件が表示されます。）
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+		Here you can see the shifts that are scheduled for work.<br>
+		（※The next {$smarty.const.RESULT_LIST_LIMIT} scheduled tasks are displayed.）	
+	{/if}
+</div>
+
+<hr>

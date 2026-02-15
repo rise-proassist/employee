@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>領収書</title>
+  <style>
+    body {
+      padding: 40px;
+      max-width: 700px;
+      margin: auto;
+      background: #f8f8f8;
+    }
+
+    .receipt {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .info_right {
+      margin-bottom: 10px;
+      font-size: 12px;
+      width: 100%;
+      text-align: right;
+    }
+
+    .info_left {
+      margin-bottom: 10px;
+      font-size: 12px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .info div {
+      margin: 5px 0;
+    }
+
+    .amount {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 30px 0;
+      text-align: center;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .tadashi {
+      margin-top: 20px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .signature {
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <h1>請求書</h1>
+
+    <div class="info_right">
+      <div>{$smarty.now|date_format:'%Y年%-m月%-d日'}</div>
+    </div>
+
+    <div class="info_left">
+      <div><u>株式会社ＲＩＳＥ 御中</u></div>
+    </div>
+
+    <div class="tadashi">
+      下記のとおり、ご請求申し上げます。<br>
+      <br>
+      <table>
+        <tr>
+          <td style="background-color: #000; color: #fff; width: 160px; font-size: 16px;"><br><br>ご請求金額<br></td>
+          <td style="width: 100px; font-size: 16px;"><br><br>¥{$total_wage_total|number_format}<br></td>
+        </tr>
+      </table>
+    </div>
+
+    <table style="border-bottom: 1px solid #000;">
+        <tr style="background-color: #000; color: #fff;">
+          <td>摘要</td>
+          <td>金額</td>
+        </tr>
+      {foreach from=$location_assign_users item=location_assign_user}
+        <tr>
+          <td style="border-bottom: 0.1px solid #000;">{$location_assign_user->location_name}</td>
+          <td style="border-bottom: 0.1px solid #000; text-align: right;">¥{$location_assign_user->total_wage|number_format}</td>
+        </tr>
+      {/foreach}
+        <tr>
+          <td style="border-bottom: 0.1px solid #000;"></td>
+          <td style="border-bottom: 0.1px solid #000;"></td>
+        </tr>
+        <tr>
+          <td style="border-bottom: 0.1px solid #000; text-align: right;">小計</td>
+          <td style="border-bottom: 0.1px solid #000; text-align: right;">¥{$daily_wage_total|number_format}</td>
+        </tr>
+        <tr>
+          <td style="border-bottom: 0.1px solid #000; text-align: right;">源泉徴収金額</td>
+          <td style="border-bottom: 0.1px solid #000; text-align: right;">- ¥{$withhold_tax_total|number_format}</td>
+        </tr>
+        <tr>
+          <td style="border-bottom: 0.1px solid #000; text-align: right; font-size: 14px;">合計</td>
+          <td style="border-bottom: 0.1px solid #000; text-align: right; font-size: 14px;">¥{$total_wage_total|number_format}</td>
+        </tr>
+    </table>
+    <br><br>
+    <div class="signature">
+      <table>
+        <tr>
+          <td width="60%"></td>
+          <td width="40%">
+            <span style="font-size: 12px;">
+              {$receipt_user_name}
+            </span>
+            <span style="font-size: 10px;">
+              &nbsp;&nbsp;<br>
+              （住所）<br>
+              &nbsp;&nbsp;〒{$receipt_user_post_code}<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$receipt_user_address}<br>
+              （電話番号）{$receipt_user_tel}<br>
+              （生年月日）{$receipt_user_birth_day|date_format:'%Y年%-m月%-d日'}生
+            </span>          
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+</body>
+</html>

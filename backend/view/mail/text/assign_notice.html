@@ -1,0 +1,28 @@
+{$name} 様
+
+平素より千葉県防疫作業にご協力頂き、誠にありがとうございます。
+ご希望頂いた下記日程にて、アサインが確定いたしまたので、お知らせいたします。
+
+━━━━━━━━━━━━━━━━━
+■アサイン日
+{$location_date|date_format:'%Y年%m月%d日'}（{UtilCommon::get_yb($location_date)}）
+
+■アサイン区分
+{foreach from=$shifts item=shift}
+{$shift.location_shift_name} / {$shift.shift_date_from|date_format:'%-H:%M'} 〜 {$shift.shift_date_to|date_format:'%-H:%M'}
+{/foreach}
+
+■集合場所
+{$address}
+
+■詳細内容
+{$detail}
+
+━━━━━━━━━━━━━━━━━
+
+上記内容を熟読いただき、当日は集合時間厳守でお願いいたします。
+
+▼ログインはこちら
+{$smarty.const.WEB_SRC}/login/
+
+{include file="`$smarty.const.VIEW_DIR`/mail/text/signature.html"}

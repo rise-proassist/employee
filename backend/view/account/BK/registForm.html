@@ -1,0 +1,235 @@
+<div>
+	<div class="page_titile">新規従事者の登録</div>
+	<br>
+	ご登録完了後、ご入力いただいたメールアドレスに、ご登録の確認メールをお送りします。<br>
+	<br>
+	<hr>
+	<div class="h_form">従事者情報</div>
+	<br>
+
+	<form method="post" action="/account/registAgree1" enctype="multipart/form-data">
+		<div class="div_form">
+			<label class="lb_form">氏名</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_name" value=""}
+				{if isset($smarty.post.name)}
+					{assign var="input_name" value=$smarty.post.name}
+				{/if}
+				<input type="text" name="name" value="{$input_name}">
+				{if isset($error_messages.name)}
+					<div class="alert">{$error_messages.name}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">氏名（ふりがな）</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_furigana" value=""}
+				{if isset($smarty.post.furigana)}
+					{assign var="input_furigana" value=$smarty.post.furigana}
+				{/if}
+				<input type="text" name="furigana" value="{$input_furigana}">
+				{if isset($error_messages.furigana)}
+					<div class="alert">{$error_messages.furigana}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">電話番号</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_tel" value=""}
+				{if isset($smarty.post.tel)}
+					{assign var="input_tel" value=$smarty.post.tel}
+				{/if}
+				<input type="text" name="tel" value="{$input_tel}">
+				{if isset($error_messages.tel)}
+					<div class="alert">{$error_messages.tel}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">メールアドレス</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_email" value=""}
+				{if isset($smarty.post.email)}
+					{assign var="input_email" value=$smarty.post.email}
+				{/if}
+				<input type="text" name="email" value="{$input_email}">
+				{if isset($error_messages.email)}
+					<div class="alert">{$error_messages.email}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">パスワード</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_passwd" value=""}
+				{if isset($smarty.post.passwd)}
+					{assign var="input_passwd" value=$smarty.post.passwd}
+				{/if}
+				<input type="password" name="passwd" value="{$input_passwd}">
+				{if isset($error_messages.passwd)}
+					<div class="alert">{$error_messages.passwd}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">パスワード（再入力）</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_re_passwd" value=""}
+				{if isset($smarty.post.re_passwd)}
+					{assign var="input_re_passwd" value=$smarty.post.re_passwd}
+				{/if}
+				<input type="password" name="re_passwd" value="{$input_re_passwd}">
+				{if isset($error_messages.re_passwd)}
+					<div class="alert">{$error_messages.re_passwd}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">郵便番号</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_postcode" value=""}
+				{if isset($smarty.post.postcode)}
+					{assign var="input_postcode" value=$smarty.post.postcode}
+				{/if}
+				<input type="text" name="postcode" value="{$input_postcode}" maxlength="7" placeholder="※000-0000の場合は、0000000">
+				{if isset($error_messages.postcode)}
+					<div class="alert">{$error_messages.postcode}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">住所</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_addr" value=""}
+				{if isset($smarty.post.addr)}
+					{assign var="input_addr" value=$smarty.post.addr}
+				{/if}
+				<input type="text" name="addr" value="{$input_addr}">
+				{if isset($error_messages.addr)}
+					<div class="alert">{$error_messages.addr}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">性別</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_gender_id" value=""}
+				{if isset($smarty.post.gender_id)}
+					{assign var="input_gender_id" value=$smarty.post.gender_id}
+				{/if}
+				{foreach from=$genders item=gender}
+					<label><input type="radio" name="gender_id" value="{$gender->id}" {if $input_gender_id == $gender->id}checked{/if}>&nbsp;{$gender->name}</label><br>
+				{/foreach}
+				{if isset($error_messages.gender_id)}
+					<div class="alert">{$error_messages.gender_id}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">生年月日</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_bday" value=""}
+				{if isset($smarty.post.bday)}
+					{assign var="input_bday" value=$smarty.post.bday}
+				{/if}
+				<input type="date" name="bday" value="{$input_bday}">
+				{if isset($error_messages.bday)}
+					<div class="alert">{$error_messages.bday}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">国籍</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_country_id" value=""}
+				{if isset($smarty.post.country_id)}
+					{assign var="input_country_id" value=$smarty.post.country_id}
+				{/if}
+				<select name="country_id">
+					{foreach from=$countries item=country}
+						<option value="{$country->id}" {if $input_country_id == $country->id}checked{/if}>{$country->name}</option>
+					{/foreach}
+				</select>
+				{if isset($error_messages.country_id)}
+					<div class="alert">{$error_messages.country_id}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">雇用形態</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_cont_id" value=""}
+				{if isset($smarty.post.cont_id)}
+					{assign var="input_cont_id" value=$smarty.post.cont_id}
+				{/if}
+				{foreach from=$conts item=cont}
+					<label><input type="radio" name="cont_id" value="{$cont->id}" {if $input_cont_id == $cont->id}checked{/if}>&nbsp;{$cont->name}</label><br>
+				{/foreach}
+				{if isset($error_messages.cont_id)}
+					<div class="alert">{$error_messages.cont_id}</div>
+				{/if}
+			</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">所属会社</label><span class="caution_s">※必須</span>
+			<div class="input_form">
+				{assign var="input_company_id" value=""}
+				{if isset($smarty.post.company_id)}
+					{assign var="input_company_id" value=$smarty.post.company_id}
+				{/if}
+				<select name="company_id">
+					{foreach from=$companies item=company}
+						<option value="{$company->id}" {if $input_company_id == $company->id}selected{/if}>{$company->name}</option>
+					{/foreach}
+					<option value="0" {if $input_company_id == 0}selected{/if} >その他</option>
+				</select>
+				{if isset($error_messages.company_id)}
+					<div class="alert">{$error_messages.company_id}</div>
+				{/if}
+			</div>
+			※「その他」を選んだ場合のみ、ご入力ください。
+			<div class="input_form">
+				{assign var="input_company_name" value=""}
+				{if isset($smarty.post.company_name)}
+					{assign var="input_company_name" value=$smarty.post.company_name}
+				{/if}
+				<input type="text" name="company_name" value="{$input_company_name}">
+				{if isset($error_messages.company_name)}
+					<div class="alert">{$error_messages.company_name}</div>
+				{/if}
+			</div>
+		</div>
+
+		{foreach from=$certs item=cert}
+			<div class="div_form">
+				<label class="lb_form">{$cert->name}</label>
+				<div class="input_form">
+					<ul>
+						<li>表 : <input type="file" name="file_{$cert->id}_1" accept="image/*" values="" multiple></li>
+						<li>裏 : <input type="file" name="file_{$cert->id}_2" accept="image/*" multiple></li>
+					</ul>
+				</div>
+			</div>
+		{/foreach}
+		<br>
+		<div class="div_input_button">
+			<input type="submit" value="同意書へ" class="input_button">
+		</div>
+
+	</form>
+
+</div>

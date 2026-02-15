@@ -1,0 +1,25 @@
+<div class="wrap">
+
+	{* ページャ *}
+	{* $pager->put_link_tag() *}
+
+	<ul class="news-list">
+		
+		{foreach from=$newss item=news}
+
+			<li class="item">
+				<a href="{UtilCommon::get_base_url('news', 'detail')}?id={$news->id}">
+					<p class="date">{$news->release_date|date_format:'%Y/%m/%d'}</p>
+					<p class="category"><span>お知らせ</span></p>
+					<p class="title">{$news->title}</p>
+				</a>
+			</li>
+
+		{/foreach}
+
+	</ul>
+
+	{* ページャ *}
+	{$pager->put_link_tag()}
+
+</div>

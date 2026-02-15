@@ -1,0 +1,17 @@
+<div class="page_titile">
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+		希望シフト登録
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+		Register desired shift
+	{/if}
+</div>
+
+<div class="header_detail">
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+		ここでは、作業が可能な日のシフトを登録することができます。
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+		Here you can register shifts for the days you are available to work.
+	{/if}
+</div>
+
+<hr>

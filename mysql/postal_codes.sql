@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS `postal_codes` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `zip_code` CHAR(7) NOT NULL,
+  `prefecture` VARCHAR(64) NOT NULL,
+  `city` VARCHAR(128) NOT NULL,
+  `town` VARCHAR(255) NOT NULL,
+  `create_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `update_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_postal_codes_zip_code` (`zip_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -1,0 +1,47 @@
+<div>
+	
+	{* 従事者情報詳細 共通ヘッダ *}
+	{include file="`$smarty.const.VIEW_DIR`/common/mypage_forcast_header.html"}
+
+	<div class="h_form">希望シフト登録</div>
+	<br>
+	作業が可能な希望シフトを選択してください。（複数希望可）<br>
+	<span class="caution">※希望シフトが定員に達した場合は参加できなくなります。より多い選択肢を入力してください。</span>
+	<br>
+	<form method="post" action="/mypage/requestShiftFinish/}">
+		<div class="div_form">
+			<table class="input_list">
+				<tr>
+					<th class="date">日付</th>
+					<th>参加希望</th>
+				</tr>
+				{foreach from=$reserve_dates item=reserve_date}
+					<tr>
+						<td>{$reserve_date|date_format:"%m月%d日"}({UtilCommon::get_yb($reserve_date)}）</td>
+						<td>
+							{foreach from=$smarty.const.PARAM_CONST_SHIFT_TYPES key=shift_type item=shift_type_name}
+								{$shift_type_name}：
+								{assign var="is_reserved" value=0}
+								{foreach from=$request_shift_datas item=$request_shift_data}
+									{if $reserve_date == $request_shift_data->shift_date && $shift_type == $request_shift_data->shift_type}
+										{assign var="is_reserved" value=1}
+									{/if}
+								{/foreach}
+								<label><input type="radio" name="request_shift_dates[{$reserve_date}][{$shift_type}]" value="0" {if !$is_reserved}checked{/if} >いいえ</label>
+								<label><input type="radio" name="request_shift_dates[{$reserve_date}][{$shift_type}]" value="1" {if $is_reserved}checked{/if} >はい</label>
+								<br>
+							{/foreach}
+						</td>
+					</tr>
+				{/foreach}
+			</table>
+		</div>
+		<br>
+		<div class="div_input_button">
+			<input type="submit" value="　登 録 す る 　" class="input_button">
+			<input type="button" value="従事者情報へ戻る" class="input_button" onclick="location.href='{UtilCommon::get_base_url(mypage)}'">
+		</div>
+
+	</form>
+
+</div>

@@ -1,0 +1,55 @@
+{* jsForm *}
+{include file="`$smarty.const.ADMIN_VIEW_DIR`/common/form_exec_js.html"}
+
+<div class="panel">
+	
+	<div class="panel-heading">
+		<h3 class="panel-title">現場シフト削除</h3>
+	</div>
+	
+	<div class="panel-body">
+
+		{if $is_del}
+			以下の現場シフトを削除します。よろしいですか？
+		{else}
+			現場シフトに紐づくデータがあるため、削除できません。
+		{/if}
+		<br /><br />
+
+		{* フォーム *}
+		<form method="post" action="/location/shiftDelFinish/" id="frm" name="frm" novalidate="novalidate">
+			<input type="hidden" name="id" value="{$location_shift->id}">
+			<table class="input_form">
+				<tbody>
+					<tr>
+						<th>現場</th>
+						<td>{$location_shift->location_name}</td>
+					</tr>
+					<tr>
+						<th>現場シフト名</th>
+						<td>{$location_shift->shift_name}</td>
+					</tr>
+					<tr>
+						<th>シフト日時</th>
+						<td>
+							{$location_shift->location_date|date_format:'%Y年%m月%d日'}（{UtilCommon::get_yb($location_shift->location_date)}） {$location_shift->shift_date_from|date_format:'%-H:%M'} 〜 {$location_shift->shift_date_to|date_format:'%-H:%M'}
+						</td>
+					</tr>
+					<tr>
+						<th>備考</th>
+						<td>{$location_shift->note|nl2br}</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-default" onclick="location.href='/location/shiftList/'">戻る</button>
+			{if $is_del}
+				<button type="button" class="btn btn-primary" onclick="del_exec();">削除</button>
+			{else}
+				<button type="button" class="btn btn-primary" disabled>削除できません</button>
+			{/if}
+		</div>
+	</div>
+</div>

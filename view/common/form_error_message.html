@@ -1,7 +1,0 @@
-{if isset($error_messages) && $error_messages|@count}
-<div class="alert">
-    {foreach from=$error_messages item=$error_message}
-        {$error_message}<br />
-    {/foreach}
-</div>
-{/if}

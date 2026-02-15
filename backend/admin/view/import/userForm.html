@@ -1,0 +1,230 @@
+{* jsForm *}
+{include file="`$smarty.const.ADMIN_VIEW_DIR`/common/form_exec_js.html"}
+
+<div class="panel">
+	
+	<div class="panel-heading">
+		<h3 class="panel-title">従事者情報CSVインポート</h3>
+	</div>
+	
+	<div class="panel-body">
+
+		従事者情報のCSVファイルをアップロードしてください。<br />
+		<br />
+
+		{if isset($error_messages)}
+			{foreach from=$error_messages item=$error_message}
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<i class="fa fa-times-circle"></i> {$error_message}<br>
+			</div>
+			{/foreach}
+		{/if}
+
+		{* フォーム *}
+		<form method="post" action="/import/userFinish/" id="frm" name="frm" novalidate="novalidate" enctype="multipart/form-data">
+			<table class="input_form">
+				<tbody>
+					<tr>
+						<th>
+							CSVファイル<span class="reqire">*</span>
+						</th>
+						<td>
+							{assign var="input_csv_file" value=""}
+							{if isset($smarty.post.csv_file)}
+								{assign var="input_csv_file" value=$smarty.post.csv_file}
+							{/if}
+							<input type="file" name="csv_file" value="{$input_csv_file}" />
+						</td>
+					</tr>
+					<tr>
+						<th>
+							ヘッダ行<span class="reqire">*</span>
+						</th>
+						<td>
+							{assign var="input_is_ignore_header" value="1"}
+							{if isset($smarty.post.is_ignore_header)}
+								{assign var="input_is_ignore_header" value=$smarty.post.is_ignore_header}
+							{/if}
+							<label><input type="checkbox" name="is_ignore_header" value="1" {if $input_is_ignore_header}checked{/if} />
+							&nbsp;ヘッダ行は除外する</label>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-default" onclick="javascript:history.back();">戻る</button>
+			<button type="button" class="btn btn-primary" onclick="csv_imp_exec();">インポート</button>
+		</div>
+	</div>
+</div>
+
+<div class="panel">
+	
+	<div class="panel-heading">
+		<h3 class="panel-title">CSVファーマット</h3>
+	</div>
+	
+	<div class="panel-body">
+
+		{* CSVフォーマット *}
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<th style="width: 20%;">項目名</th>
+					<th style="width: 10%;">必須</th>
+					<th style="width: 70%;">説明</th>
+				</tr>
+				<tr>
+					<td>ID</td>
+					<td></td>
+					<td>
+						従事者の識別ID<br>
+						<ul>
+							<li>未設定の場合 : 新規登録</li>
+							<li>登録済みのIDの場合 : 更新</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>コード</td>
+					<td>◯</td>
+					<td>従事者の識別コード</td>
+				</tr>
+				<tr>
+					<td>ステータス種別</td>
+					<td>◯</td>
+					<td>
+						従事者のステータスの種別<br>
+						<ul>
+							{foreach from=$smarty.const.PARAM_CONST_USER_STATUS_TYPES key=user_status_type item=user_status_type_name}
+								<li>{$user_status_type} : {$user_status_type_name}</li>	
+							{/foreach}
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>ステータス種別名</td>
+					<td></td>
+					<td>従事者のステータス種別の名称</td>
+				</tr>
+				<tr>
+					<td>承認種別</td>
+					<td>◯</td>
+					<td>
+						従事者の承認種別<br>
+						<ul>
+							{foreach from=$smarty.const.PARAM_CONST_USER_APPROVE_TYPES key=user_approve_type item=user_approve_type_name}
+								<li>{$user_approve_type} : {$user_approve_type_name}</li>	
+							{/foreach}
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>承認種別名</td>
+					<td></td>
+					<td>従事者の承認種別の名称</td>
+				</tr>
+				<tr>
+					<td>氏名</td>
+					<td>◯</td>
+					<td>従事者の氏名</td>
+				</tr>
+				<tr>
+					<td>氏名（ふりがな）</td>
+					<td>◯</td>
+					<td>従事者の氏名のふりがな</td>
+				</tr>
+				<tr>
+					<td>電話番号</td>
+					<td></td>
+					<td>従事者の電話番号</td>
+				</tr>
+				<tr>
+					<td>メールアドレス</td>
+					<td></td>
+					<td>
+						従事者のメールアドレス（マイページを利用する場合は必須）<br>
+						※重複は不可
+					</td>
+				</tr>
+				<tr>
+					<td>パスワード</td>
+					<td></td>
+					<td>マイページへのログイン用パスワード<br>新規登録の場合のみ、取り込みの対象となる</td>
+				</tr>
+				<tr>
+					<td>郵便番号</td>
+					<td></td>
+					<td>従事者の郵便番号<br>ハイフンは不要</td>
+				</tr>
+				<tr>
+					<td>住所</td>
+					<td></td>
+					<td>従事者の住所</td>
+				</tr>
+				<tr>
+					<td>性別種別</td>
+					<td>◯</td>
+					<td>
+						従事者の性別の種別<br>
+						<ul>
+							{foreach from=$smarty.const.PARAM_CONST_GENDER_TYPES key=gender_type item=gender_type_name}
+								<li>{$gender_type} : {$gender_type_name}</li>	
+							{/foreach}
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>性別</td>
+					<td></td>
+					<td>従事者の性別</td>
+				</tr>
+				<tr>
+					<td>生年月日</td>
+					<td></td>
+					<td>従事者の生年月日</td>
+				</tr>
+				<tr>
+					<td>国籍ID</td>
+					<td>◯</td>
+					<td>従事者の国籍の名称</td>
+				</tr>
+				<tr>
+					<td>雇用形態種別</td>
+					<td>◯</td>
+					<td>
+						従事者の雇用形態の種別<br>
+						<ul>
+							{foreach from=$smarty.const.PARAM_CONST_EMPLOY_TYPES key=employ_type item=employ_type_name}
+								<li>{$employ_type} : {$employ_type_name}</li>	
+							{/foreach}
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td>雇用形態種別名</td>
+					<td></td>
+					<td>従事者の雇用形態種別の名称</td>
+				</tr>
+				<tr>
+					<td>所属会社ID</td>
+					<td>◯</td>
+					<td>従事者の所属会社のID</td>
+				</tr>
+				<tr>
+					<td>所属会社名</td>
+					<td></td>
+					<td>従事者の所属会社の名称</td>
+				</tr>
+				<tr>
+					<td>その他会社名</td>
+					<td></td>
+					<td>所属会社マスタにない会社名</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

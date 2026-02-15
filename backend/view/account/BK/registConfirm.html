@@ -1,0 +1,149 @@
+<div>
+	<div class="page_titile">新規従事者の登録</div>
+	<br>
+	ご登録完了後、ご入力いただいたメールアドレスに、ご登録の確認メールをお送りします。<br>
+	<br>
+	<hr>
+	<div class="h_form">入力内容</div>
+	<br>
+	<br>
+	<div class="alert">※まだ、登録は完了していません。</div>
+	<br>
+	入力内容に誤りがないか確認してください。<br>
+	会員登録を完了するためには送付される作業者番号とパスワードの認証が必要です。<br>
+	<br>
+	<form method="post" action="{UtilCommon::get_base_url('account', registFinish)}" enctype="multipart/form-data">
+		<div class="div_form">
+			<label class="lb_form">氏名</label>
+			<div class="input_form">{$input_data.name}</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">ふりがな</label>
+			<div class="input_form">{$input_data.furigana}</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">電話番号</label>
+			<div class="input_form">{$input_data.tel}</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">メールアドレス</label>
+			<div class="input_form">{$input_data.email}</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">パスワード</label>
+			<div class="input_form">*************</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">郵便番号</label>
+			<div class="input_form">{$input_data.postcode}</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">住所</label>
+			<div class="input_form">{$input_data.addr}</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">性別</label>
+			<div class="input_form">{$input_data.name}</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">生年月日</label>
+			<div class="input_form">{$input_data.bday|date_format:'%Y年%m月%d日'}生</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">国籍</label>
+			<div class="input_form">{$input_data.country_name}</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">雇用形態</label>
+			<div class="input_form">{$input_data.cont_name}</div>
+		</div>
+
+		<div class="div_form">
+			<label class="lb_form">所属会社</label>
+			<div class="input_form">
+				{if isset($input_data.company_name) && $input_data.company_name}
+					{$input_data.company_name}
+				{else}
+					その他（{$input_data.company_name}）
+				{/if}
+			</div>
+		</div>
+
+		{if $files}
+
+			{foreach from=$files item=file}
+
+				<div class="div_form">
+					<label class="lb_form">{$file.cert_name}</label>
+					<div class="input_form">
+						<img src="{UtilCommon::get_base_url('api', 'generateImage')}?cert_id={$file.cert_id}&cert_type={$file.cert_type}" width="200px">
+					</div>
+				</div>
+
+			{/foreach}
+
+		{/if}
+
+		<div class="div_form">
+			<label class="lb_form">同意書への同意</label>
+			<div class="input_form">同意する</div>
+		</div>
+		<div class="div_form">
+			<label class="lb_form">個人情報取り扱い同意書</label>
+			<div class="input_form">同意する</div>
+		</div>
+		<div class="div_form">
+			<label class="lb_form">秘密保持契約書（NDA）</label>
+			<div class="input_form">同意する</div>
+		</div>
+		<br>
+		<hr>
+		<div class="h_form">持ち物</div>
+		<br>
+		・着替え<br>
+		　汗をかく場合があります。非常に寒くなる場合があります。<br>
+		・軽食・飲み物<br>
+		　すぐに食べられる軽食を持参してください。<br>
+		・携帯電話・スマートフォン<br>
+		　緊急時の連絡が取れるように持参してください。<br>
+		・免許書・資格証・外国人登録証<br>
+		　　必ず持参してください。<br>
+		<br>
+		<br>
+		<div class="h_form">再確認同意</div>
+		<br>
+		以下の場合は作業に参加できません。<br>
+		<br>
+		・遅刻厳禁　バスが行ってしまいます。<br>
+		・発熱がある場合はお帰りいただきます。<br>
+		・ルールや決まり事を遵守できない場合は退場となります。<br>
+		・怠けている人には、リーダーの権限により退場していただきます。出入り禁止。<br>
+		・県庁職員さんや従事者同士での暴言、暴力は即退場、出入り禁止になります。<br>
+		・所定場所以外での喫煙は厳禁です。<br>
+		・貴重品はSSや農場内へ持ち込まないでください。一切保証できません。<br>
+		・駐車場内の事故や盗難におきましては一切責任を負えません。<br>
+		・車両や機械の運転は安全を最も重視して行ってください。<br>
+		<br>
+		<br>
+		<div class="div_input_button">
+			<input type="submit" value="同意して登録する" class="input_button">
+			<input type="button" value="　戻　　　　る　" class="input_button" onclick="window.history.back();">
+		</div>
+
+	</form>
+	
+<!-- 	<div class="div_input_button">
+		<button class="input_button" onclick="javascript:history.back();">戻　　る</button>
+	</div> -->
+
+</div>

@@ -1,0 +1,90 @@
+<script type="text/javascript">
+
+function exec() {
+	if(window.confirm('更新します。よろしいですか？')) {
+		document.frm.submit();
+	}
+}
+
+</script>
+
+<div class="panel">
+	
+	<div class="panel-heading">
+		<h3 class="panel-title">システムユーザ更新</h3>
+	</div>
+	
+	<div class="panel-body">
+
+		システムユーザ情報を入力してください。<br />
+		<br />
+
+		{if isset($error_messages)}
+			{foreach from=$error_messages item=$error_message}
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<i class="fa fa-times-circle"></i> {$error_message}<br>
+			</div>
+			{/foreach}
+		{/if}
+
+		{* フォーム *}
+		<form method="post" action="{UtilCommon::get_base_url('adminUser', 'updFinish')}" id="form" name="frm" novalidate="novalidate">
+			<input type="hidden" name="id" value="{$admin_user->id}" />
+			<table class="input_form">
+				<tbody>
+					<tr>
+						<th>
+							ユーザ名<span class="reqire">*</span>
+						</th>
+						<td>
+							{if isset($smarty.post.name)}
+								{assign var="input_name" value=$smarty.post.name}
+							{else}
+								{assign var="input_name" value=$admin_user->name}
+							{/if}
+							<input type="text" name="name" class="form-control" placeholder="やまだ たろう" value="{$input_name}">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							メールアドレス<span class="reqire">*</span>
+						</th>
+						<td>
+							{if isset($smarty.post.email)}
+								{assign var="input_email" value=$smarty.post.email}
+							{else}
+								{assign var="input_email" value=$admin_user->email}
+							{/if}
+							<input type="email" name="email" class="form-control" placeholder="taro@sample.com" value="{$input_email}">
+						</td>
+					</tr>
+					<tr>
+						<th>
+							権限<span class="reqire">*</span>
+						</th>
+						<td>
+							{if isset($smarty.post.auth_level)}
+								{assign var="input_auth_level" value=$smarty.post.auth_level}
+							{else}
+								{assign var="input_auth_level" value=$admin_user->auth_level}
+							{/if}
+							{if $auth_levels}
+								<select class="form-control" name="auth_level" style="width: 100px;">
+									{foreach from=$auth_levels key=auth_level item=auth_level_name}
+										<option value="{$auth_level}" {if $input_auth_level == $auth_level}selected{/if}>{$auth_level_name}</option>
+									{/foreach}
+								</select>
+							{/if}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-default" onclick="javascript:history.back();">戻る</button>
+			<button type="button" class="btn btn-primary" onclick="exec();">更新</button>
+		</div>
+	</div>
+</div>

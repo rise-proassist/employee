@@ -1,0 +1,35 @@
+extends: default
+
+font:
+  catalog:
+    IPAexGothic:
+      normal: ipaexg.ttf
+      bold: ipaexg.ttf
+      italic: ipaexg.ttf
+      bold_italic: ipaexg.ttf
+    IPAexMincho:
+      normal: ipaexm.ttf
+      bold: ipaexm.ttf
+      italic: ipaexm.ttf
+      bold_italic: ipaexm.ttf
+  fallbacks:
+    - IPAexGothic
+
+base:
+  font-family: IPAexMincho
+  font-size: 12
+
+heading:
+  font-family: IPAexGothic
+  font-style: bold
+
+codespan:
+  font-family: IPAexGothic
+
+code:
+  font-family: IPAexGothic
+
+table:
+  head:
+    font-family: IPAexGothic
+    font-style: bold

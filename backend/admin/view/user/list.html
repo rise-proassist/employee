@@ -1,0 +1,165 @@
+<script>
+
+$(function(){
+
+	$('#button_csv_export').click(function() {
+		$('#csv_search_name').val($('#search_name').val());
+		$('#csv_search_name_kana').val($('#search_name_kana').val());
+		$('#csv_search_name_email').val($('#search_name_email').val());
+		$('#csv_search_name_tel').val($('#search_name_tel').val());
+		$('#csv_search_name_code').val($('#search_name_code').val());
+		$('#csv_export').submit();
+	});
+
+});
+	
+</script>
+
+<div class="panel">
+	
+	<div class="panel-body">
+
+		{* 検索フォーム *}
+		<form method="get" action="/user/list/" id="form" name="frm" novalidate="novalidate">
+			<table class="search_form">
+				<tbody>
+					<tr>
+						<th>氏名</th>
+						<td>
+							{assign var="input_name" value=""}
+							{if isset($smarty.get.name)}
+								{assign var="input_name" value=$smarty.get.name}
+							{/if}
+							<input type="text" name="name" id="search_name" class="form-control" placeholder="" value="{$input_name}">
+						</td>
+						<th>氏名（ふりがな）</th>
+						<td>
+							{assign var="input_name_kana" value=""}
+							{if isset($smarty.get.name_kana)}
+								{assign var="input_name_kana" value=$smarty.get.name_kana}
+							{/if}
+							<input type="text" name="name_kana" id="search_name_kana" class="form-control" placeholder="" value="{$input_name_kana}">
+						</td>
+					</tr>
+					<tr>
+						<th>メールアドレス</th>
+						<td>
+							{assign var="input_email" value=""}
+							{if isset($smarty.get.email)}
+								{assign var="input_email" value=$smarty.get.email}
+							{/if}
+							<input type="text" name="email" id="search_name_email" class="form-control" placeholder="" value="{$input_email}">
+						</td>
+						<th>電話番号</th>
+						<td>
+							{assign var="input_tel" value=""}
+							{if isset($smarty.get.tel)}
+								{assign var="input_tel" value=$smarty.get.tel}
+							{/if}
+							<input type="text" name="tel" id="search_name_tel" class="form-control" placeholder="" value="{$input_tel}">
+						</td>
+					</tr>
+					<tr>
+						<th>コード</th>
+						<td>
+							{assign var="input_code" value=""}
+							{if isset($smarty.get.code)}
+								{assign var="input_code" value=$smarty.get.code}
+							{/if}
+							<input type="text" name="code" id="search_name_code" class="form-control" placeholder="" value="{$input_code}">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<form method="post" action="/user/csvExport/" id="csv_export" name="frmCsv" novalidate="novalidate">
+			<input type="hidden" name="name" id="csv_search_name" value="" />
+			<input type="hidden" name="name_kana" id="csv_search_name_kana" value="" />
+			<input type="hidden" name="email" id="csv_search_email" value="" />
+			<input type="hidden" name="tel" id="csv_search_tel" value="" />
+			<input type="hidden" name="code" id="csv_search_code" value="" />
+		</form>
+		<br />
+		<div class="frm_btn_area">
+			<button type="button" class="btn btn-primary" onclick="frm.submit();">検索</button>
+			<button type="button" class="btn btn-primary" id="button_csv_export">CSV出力</button>
+		</div>
+	</div>
+</div>
+
+<div class="panel">
+	<div class="panel-heading">
+		<div class="div_title_are">
+			<h3 class="panel-title">従事者 一覧</h3>
+		</div>
+	</div>
+	<div class="panel-body">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th style="width: 5%;">
+						{UtilCommon::gen_sort_button('#', 'u.id')}
+					</th>
+					<th style="width: 15%;">
+						{UtilCommon::gen_sort_button('氏名', 'u.name')}
+					</th>
+					<th style="width: 15%;">
+						{UtilCommon::gen_sort_button('メールアドレス', 'u.email')}
+					</th>
+					<th style="width: 12%;">
+						{UtilCommon::gen_sort_button('コード', 'u.code')}
+					</th>
+					<th style="width: 12%;">
+						{UtilCommon::gen_sort_button('承認状態', 'u.approve_type')}
+					</th>
+					<th style="width: 12%;">
+						{UtilCommon::gen_sort_button('ステータス', 'u.status_type')}
+					</th>
+					<th style="width: 16%;">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{if $users}
+					{foreach from=$users item=user}
+						<tr>
+							<td>{$user->id}</td>
+							<td>
+								{if $smarty.const.PARAM_CONST_USER_STATUS_TYPE_DELETE == $user->status_type}
+									（退会ユーザー）
+								{else}
+									{$user->name}<br>
+									<span class="tag_gender_{$user->gender_type}">{$user->gender_type_name}</span>
+									{if $user->is_temporary}
+										<span class="tag_1">臨時</span>
+									{/if}
+									｜ 
+									{if $user->user_cert_short_names}
+										{$user->user_cert_short_names}
+									{else}
+										-
+									{/if}
+								{/if}
+							</td>
+							<td>{$user->email}</td>
+							<td>{$user->code}</td>
+							<td>{$user->approve_type_name}</td>
+							<td>{$user->status_type_name}</td>
+							<td>
+								<a href="/user/updForm/?id={$user->id}" class="btn btn-info btn-xs">詳細・更新</a>
+							</td>
+						</tr>
+					{/foreach}
+				{else}
+					<tr>
+						<td colspan="7">従事者が登録されていません。</td>
+					</tr>					
+				{/if}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{* ページャ *}
+<div align="center" style="margin-top: 10px; margin-bottom: 10px;">
+	{$pager->put_link_tag()}
+</div>

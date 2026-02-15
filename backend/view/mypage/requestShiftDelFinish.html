@@ -1,0 +1,32 @@
+<div>
+	
+	{* 従事者情報詳細 共通ヘッダ *}
+	{include file="`$smarty.const.VIEW_DIR`/common/mypage_forcast_header.html"}
+
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			希望シフト削除
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Delete desired shift
+		{/if}
+	</div>
+	<br>
+	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+		希望シフトを削除しました。
+	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+		The desired shift has been deleted.
+	{/if}
+	<br>
+	<br>
+	<br>
+	<div class="div_input_button">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			<input type="button" value="希望シフト一覧へ戻る" class="input_button" onclick="location.href='/mypage/requestShiftList/'">
+			<input type="button" value="従事者情報へ戻る" class="input_button" onclick="location.href='/mypage/'">
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			<input type="button" value="Return to desired shift list" class="input_button" onclick="location.href='/mypage/requestShiftList/'">
+			<input type="button" value="Return to information" class="input_button" onclick="location.href='/mypage/'">
+		{/if}
+	</div>
+
+</div>
