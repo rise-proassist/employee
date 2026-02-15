@@ -53,7 +53,7 @@
 			$targetDateList.empty();
 			$.each(targetDates, function(_, targetDate) {
 				$targetDateList.append(
-					$('<li>').text(String(targetDate).replace(/-/g, '/'))
+					$('<div class="shift-popup-target-date-item">').text(String(targetDate).replace(/-/g, '/'))
 				);
 			});
 
@@ -273,7 +273,7 @@
 		<div class="shift-popup-window" role="dialog" aria-modal="true">
 			<div class="shift-popup-target-date-block">
 				<div class="shift-popup-target-date-label">{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Target date(s){else}登録対象日{/if}</div>
-				<ul class="shift-popup-target-date-list"></ul>
+				<div class="shift-popup-target-date-list"></div>
 			</div>
 			<div class="shift-popup-slider-block">
 				<label class="shift-popup-label" for="shift-start-hour">時刻範囲</label>

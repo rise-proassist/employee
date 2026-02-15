@@ -1287,11 +1287,9 @@ a:focus-visible {
 
 .shift-popup-target-date-list {
     margin: 0;
-    padding: 0;
-    list-style: none;
 }
 
-.shift-popup-target-date-list li {
+.shift-popup-target-date-item {
     font-size: 12px;
     line-height: 1.5;
 }
