@@ -1633,6 +1633,13 @@ body.login-page .login-note-area li:last-child {
     word-break: inherit;
 }
 
+.query-log-textbox .hljs-keyword,
+.query-log-textbox .hljs-selector-tag,
+.query-log-textbox .hljs-literal,
+.query-log-textbox .hljs-built_in {
+    color: #32cd32 !important;
+}
+
 .query-log-empty {
     font-size: 13px;
     color: #e5e7eb;

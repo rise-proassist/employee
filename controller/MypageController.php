@@ -146,6 +146,7 @@ class MypageController extends BaseController {
 			$sql = wordwrap($sql, 110, "\n      ", false);
 			$formatted_query_logs[] = '-- Query ' . str_pad((string)($index + 1), 3, '0', STR_PAD_LEFT) . "\n" . '   ' . $sql;
 		}
+		$formatted_query_logs = array_reverse($formatted_query_logs);
 
 		$this->_view->assign('user', $user);
 		$this->_view->assign('query_logs', $formatted_query_logs);
