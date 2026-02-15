@@ -61,15 +61,6 @@
 	<div class="wrap">
 		{assign var="is_en" value=($selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN)}
 
-		<div class="page_titile">{if $is_en}Log in{else}ログイン{/if}</div>
-		<br>
-		{if $is_en}
-			This website is for worker registration related to avian influenza culling operations in Chiba Prefecture.<br>
-			Please enter your registered email address and password.<br>
-		{else}
-			従事者のメールアドレスとパスワードをご入力ください。<br>
-		{/if}
-
 		{* ログインフォーム *}
 		<form method="post" id="login_exec" action="/login/exec/">
 			<div class="div_form">
@@ -109,6 +100,22 @@
 			{else}
 				<a href="/account/langForm/">新規登録</a>　　
 				<a href="/login/reissuePasswordForm/">パスワードリセット</a>
+			{/if}
+		</div>
+
+		<div class="login-note-area">
+			{if $is_en}
+				<ul>
+					<li>This website is for worker registration related to avian influenza culling operations in Chiba Prefecture.</li>
+					<li>Please complete your profile information after signing in.</li>
+					<li>If you forgot your password, use the reset password link above.</li>
+				</ul>
+			{else}
+				<ul>
+					<li>このサイトは、千葉県の鳥インフルエンザ殺処分作業に関する従事者登録サイトです。</li>
+					<li>ログイン後にプロフィール情報の入力・確認を行ってください。</li>
+					<li>パスワードを忘れた場合は、上部のパスワードリセットから手続きしてください。</li>
+				</ul>
 			{/if}
 		</div>
 	</div>

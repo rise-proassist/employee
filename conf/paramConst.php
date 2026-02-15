@@ -6,7 +6,7 @@
  */
 
 // サイト名
-const SITE_NAME = "千葉畜産";
+const SITE_NAME = "千葉県鳥インフル従事者登録";
 
 // 共通のモード
 const PARAM_CONST_COMMON_MODE_1 = 1;

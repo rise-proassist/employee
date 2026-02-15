@@ -963,3 +963,29 @@ body.login-page .lb_form {
     margin: 0 auto 8px;
     text-align: left;
 }
+
+body.login-page .login-note-area {
+    width: 100%;
+    max-width: 640px;
+    margin: 24px auto 0;
+    padding: 16px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+body.login-page .login-note-area ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+body.login-page .login-note-area li {
+    margin: 0 0 8px;
+    line-height: 1.6;
+}
+
+body.login-page .login-note-area li:last-child {
+    margin-bottom: 0;
+}
