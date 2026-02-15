@@ -1262,14 +1262,15 @@ a:focus-visible {
 }
 
 .shift-popup-window {
-    width: 300px;
+    width: 320px;
     background: #ffffff;
     border: 1px solid #d1d5db;
     border-radius: 10px;
-    padding: 12px;
+    padding: 16px;
 }
 
 .shift-popup-slider-block {
+    padding: 0 14px;
     margin-bottom: 8px;
 }
 
@@ -1385,6 +1386,7 @@ a:focus-visible {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
+    padding: 0 14px;
 }
 
 .shift-popup-ok,
