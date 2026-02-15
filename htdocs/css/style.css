@@ -1143,13 +1143,13 @@ a:focus-visible {
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 4px;
+    gap: 2px;
 }
 
 .calendar-shift-item {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     min-height: 22px;
     padding: 0;
 }
