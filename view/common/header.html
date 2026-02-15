@@ -29,6 +29,8 @@
 			{assign var=header_top_title value='希望シフト'}
 		{else if 'result-shift' == $header_active_tab || 'resultList' == $action}
 			{assign var=header_top_title value='確定シフト'}
+		{else if 'query-log' == $header_active_tab}
+			{assign var=header_top_title value='クエリログ'}
 		{else if 'settings' == $header_active_tab || 'detail' == $action || 'uploadCertForm' == $action || 'uploadCertConfirm' == $action || 'uploadCertFinish' == $action || 'editPasswordForm' == $action || 'editPasswordConfirm' == $action || 'editPasswordFinish' == $action || 'resignForm' == $action || 'resignFinish' == $action}
 			{assign var=header_top_title value='設定'}
 		{else}
@@ -129,6 +131,8 @@
 								Confirmed Shift
 							{else if 'settings' == $header_active_tab}
 								Settings
+							{else if 'query-log' == $header_active_tab}
+								Query Log
 							{else}
 								QR Code
 							{/if}
@@ -141,6 +145,8 @@
 								確定シフト
 							{else if 'settings' == $header_active_tab}
 								設定
+							{else if 'query-log' == $header_active_tab}
+								クエリログ
 							{else}
 								QRコード
 							{/if}

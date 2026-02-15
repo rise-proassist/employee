@@ -171,5 +171,18 @@
 		</li>
 	</ul>
 	</div>
+	<div class="mypage-tab-content {if 'query-log' != $active_tab}is-hidden{/if}" id="query-log-section">
+	<ul class="menu">
+		<li>
+			<p>
+				{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+					クエリログを確認します。ログファイルは log/app_YYYYMMDD.log を参照してください。
+				{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+					Check query logs from log/app_YYYYMMDD.log.
+				{/if}
+			</p>
+		</li>
+	</ul>
+	</div>
 
 </div>
