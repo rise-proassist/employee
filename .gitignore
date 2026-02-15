@@ -1,0 +1,6 @@
+conf/systemConst.local.php
+conf/DBConst.local.php
+admin/conf/systemConst.local.php
+.env
+tmp/*
+!tmp/.gitkeep
