@@ -4,6 +4,11 @@ html, body {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
   font-size: 14px;
   line-height: 1.6;
+  font-weight: 400;
+}
+
+p, span, li, td, input, select, textarea, .form-control {
+  font-weight: 400;
 }
 
 .navbar-default,
