@@ -967,6 +967,22 @@ a:focus-visible {
     outline-offset: 2px;
 }
 
+.icon-delete-button {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    padding: 0;
+    margin-left: 8px;
+    border-radius: 8px;
+    line-height: 1;
+}
+
+.icon-delete-button svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+}
+
 .input_form input[type="text"],
 .input_form input[type="email"],
 .input_form input[type="date"],
