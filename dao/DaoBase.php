@@ -106,6 +106,8 @@ abstract class DaoBase {
 
 	protected function log_sql($sql) {
 
+		$this->flush_footer_pending_sql(array());
+
 		$message = '[SQL] ' . $sql;
 		$this->_logger->info($message);
 		$this->_footer_pending_sql = (string)$sql;
@@ -116,13 +118,28 @@ abstract class DaoBase {
 		$params = is_array($params) ? $params : array();
 		$message = '[SQL-Params] ' . implode(', ', $params);
 		$this->_logger->info($message);
+		$this->flush_footer_pending_sql($params);
+	}
+
+	private function normalize_footer_sql($sql) {
+
+		$sql = str_replace("\t", ' ', (string)$sql);
+		$sql = preg_replace('/\s*\r?\n\s*/', ' ', $sql);
+		$sql = preg_replace('/\s{2,}/', ' ', $sql);
+
+		return trim($sql);
+	}
+
+	private function flush_footer_pending_sql($params = array()) {
+
+		$params = is_array($params) ? $params : array();
 
 		$expanded_sql = (string)$this->_footer_pending_sql;
 		if ($expanded_sql !== '') {
 			foreach ($params as $param) {
 				$expanded_sql = preg_replace('/\?/', $this->to_sql_literal($param), $expanded_sql, 1);
 			}
-			$this->append_debug_footer_log_line('[SQL] ' . $expanded_sql);
+			$this->append_debug_footer_log_line('[SQL] ' . $this->normalize_footer_sql($expanded_sql));
 			$this->_footer_pending_sql = '';
 		}
 	}
