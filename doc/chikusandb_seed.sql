@@ -62,4 +62,15 @@ ON DUPLICATE KEY UPDATE
   `lang_type` = VALUES(`lang_type`),
   `update_date` = NOW();
 
+INSERT INTO `user_request_shift` (`id`, `user_id`, `shift_date_from`, `shift_date_to`, `create_date`, `update_date`)
+VALUES
+  (90001, 1, DATE_ADD(DATE(NOW()), INTERVAL 2 DAY) + INTERVAL 9 HOUR,  DATE_ADD(DATE(NOW()), INTERVAL 2 DAY) + INTERVAL 12 HOUR, NOW(), NOW()),
+  (90002, 1, DATE_ADD(DATE(NOW()), INTERVAL 4 DAY) + INTERVAL 13 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 4 DAY) + INTERVAL 17 HOUR, NOW(), NOW()),
+  (90003, 1, DATE_ADD(DATE(NOW()), INTERVAL 6 DAY) + INTERVAL 8 HOUR,  DATE_ADD(DATE(NOW()), INTERVAL 6 DAY) + INTERVAL 11 HOUR, NOW(), NOW())
+ON DUPLICATE KEY UPDATE
+  `user_id` = VALUES(`user_id`),
+  `shift_date_from` = VALUES(`shift_date_from`),
+  `shift_date_to` = VALUES(`shift_date_to`),
+  `update_date` = NOW();
+
 COMMIT;
