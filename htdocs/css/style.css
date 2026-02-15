@@ -812,6 +812,49 @@ header {
     padding: 16px 0;
 }
 
+.mypage-footer-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #ffffff;
+    border-top: 1px solid #d1d5db;
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+    z-index: 1000;
+}
+
+.mypage-footer-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 68px;
+    padding: 4px 6px;
+    color: #1f2937;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.mypage-footer-nav-item svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+}
+
+.mypage-footer-nav-item:hover,
+.mypage-footer-nav-item:focus-visible {
+    color: dodgerblue;
+}
+
+.mypage-footer-spacer {
+    height: 88px;
+}
+
 .site_name,
 .site_name a {
     color: #ffffff;

@@ -8,53 +8,37 @@ $(function(){
 </script>
 
 <div>
-	<div class="page_titile">
-		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-			従事者マイページ
-		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-			Mypage
-		{/if}
-	</div>
-	<br>
 
 	{* QRコード*}
-	<div class="div_qr_code">
+	<div class="div_qr_code" id="qr-section">
 		{if $smarty.const.PARAM_CONST_USER_APPROVE_TYPE_PASSED == $login_user->approve_type}
-
 			{if $smarty.const.IS_DISPLAY_MEMBER_CODE_QR}
 				<img src="{UtilCommon::get_base_url('api', 'generateQr')}" class="qr_code">
 				<div>{$login_user->code}</div>
-				<br>
 			{/if}
 
 			{if $smarty.const.IS_DISPLAY_MEMBER_CODE_BAR}
 				<img src="{UtilCommon::get_base_url('api', 'generateBar')}" class="qr_code">
 				<div>{$login_user->code}</div>
-				<br>
 			{/if}
 
 		{else if $smarty.const.PARAM_CONST_USER_APPROVE_TYPE_WAIT == $login_user->approve_type}
 			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-				<span class="notice_s">現在、受付済みとなります。承認までしばらくお待ちください。</span>
+				<span class="notice_s">承認待ち</span>
 			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-				<span class="notice_s">Your application has now been accepted. Please wait for approval.</span>
+				<span class="notice_s">Pending</span>
 			{/if}
 			<br>
 		{else}
 			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-				<span class="notice_s">承認が見送られたため、QRコードは表示されません。</span>
+				<span class="notice_s">承認見送り</span>
 			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-				<span class="notice_s">The QR code will not be displayed because approval has been declined.</span>
+				<span class="notice_s">Declined</span>
 			{/if}
-		{/if}
-		<br>
-		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-			{$login_user->name} 様
-		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-			Hi {$login_user->name},
 		{/if}
 	</div>
 	<br>
+	<div id="work-rule-section">
 	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
 		作業参加ルール・注意事項は<a href="#" id="aShowHide">こちら</a>
 		<div id="caution" style="display:none;">
@@ -114,7 +98,7 @@ $(function(){
 			・Please always prioritize safety when operating vehicles or machinery.<br>
 		</div>
 	{/if}
-	<br>
+	</div>
 	<br>
 	<div class="h_form">
 		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
