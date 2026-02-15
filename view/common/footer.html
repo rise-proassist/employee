@@ -192,19 +192,30 @@
 
 		var savedHeight = parseInt(localStorage.getItem(storageKey), 10);
 		applyHeight(isNaN(savedHeight) ? defaultHeight : savedHeight);
-		renderLogText('');
+
+		var initialLogText = queryBody ? queryBody.textContent : '';
+		var navigationEntries = (window.performance && window.performance.getEntriesByType) ? window.performance.getEntriesByType('navigation') : [];
+		var isReload = navigationEntries.length > 0 ? navigationEntries[0].type === 'reload' : false;
+
+		if (isReload) {
+			renderLogText('');
+		} else {
+			renderLogText(initialLogText);
+		}
 		scrollToBottom();
 
-		fetch('/mypage/clearDebugFooterLog/', {
-			method: 'POST',
-			credentials: 'same-origin'
-		}).then(function() {
-			renderLogText('');
-			scrollToBottom();
-		}).catch(function() {
-			renderLogText('');
-			scrollToBottom();
-		});
+		if (isReload) {
+			fetch('/mypage/clearDebugFooterLog/', {
+				method: 'POST',
+				credentials: 'same-origin'
+			}).then(function() {
+				renderLogText('');
+				scrollToBottom();
+			}).catch(function() {
+				renderLogText('');
+				scrollToBottom();
+			});
+		}
 
 		window.addEventListener('resize', function() {
 			applyHeight(parseInt(footer.style.height, 10) || defaultHeight);
