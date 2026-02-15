@@ -69,9 +69,6 @@
 	{/if}
 	</div>
 	</div>
-	<div class="mypage-tab-content {if 'rules' != $active_tab}is-hidden{/if}" id="work-rule-section">
-	<div></div>
-	</div>
 	<div class="mypage-tab-content {if 'request-shift' != $active_tab}is-hidden{/if}" id="request-shift-section">
 	<ul class="menu">
 		<li>
@@ -92,21 +89,6 @@
 						一覧
 					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
 						List
-					{/if}
-				</p>
-			</a>
-		</li>
-	</ul>
-	</div>
-	<div class="mypage-tab-content {if 'result-shift' != $active_tab}is-hidden{/if}" id="result-shift-section">
-	<ul class="menu">
-		<li>
-			<a href="/mypage/resultList/">
-				<p>
-					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-						確定シフト一覧ページ
-					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-						Confirmed shift list page
 					{/if}
 				</p>
 			</a>
