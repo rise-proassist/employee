@@ -349,6 +349,13 @@
 				<div class="shift-popup-target-date-list"></div>
 			</div>
 			<div class="shift-popup-overwrite-warning" style="display:none;">
+				<span class="shift-popup-overwrite-warning-icon" aria-hidden="true">
+					<svg viewBox="0 0 24 24" fill="none">
+						<path d="M12 3L22 21H2L12 3Z" stroke="currentColor" stroke-width="1.8"/>
+						<path d="M12 9V14" stroke="currentColor" stroke-width="1.8"/>
+						<circle cx="12" cy="17" r="1" fill="currentColor"/>
+					</svg>
+				</span>
 				{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Overwrite desired shift?{else}希望シフトを上書きしますか？{/if}
 			</div>
 			<div class="shift-popup-buttons">

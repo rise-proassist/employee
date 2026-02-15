@@ -1444,11 +1444,28 @@ a:focus-visible {
 }
 
 .shift-popup-overwrite-warning {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     padding: 0 14px;
     margin: 0 0 10px;
     color: #dc2626;
     font-size: 13px;
     font-weight: 700;
+}
+
+.shift-popup-overwrite-warning-icon {
+    width: 14px;
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shift-popup-overwrite-warning-icon svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
 }
 
 .shift-popup-ok,
