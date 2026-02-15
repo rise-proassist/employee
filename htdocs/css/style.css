@@ -1603,3 +1603,48 @@ body.login-page .login-note-area li {
 body.login-page .login-note-area li:last-child {
     margin-bottom: 0;
 }
+
+.query-log-panel {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.query-log-meta {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.query-log-item {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.query-log-item:first-of-type {
+    border-top: 0;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.query-log-time {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.query-log-item pre {
+    margin: 0;
+    overflow-x: auto;
+}
+
+.query-log-sub {
+    font-size: 12px;
+    margin-top: 4px;
+    word-break: break-all;
+}
+
+.query-log-empty {
+    font-size: 13px;
+}

@@ -102,7 +102,62 @@ class MypageController extends BaseController {
 		if (!$user)
 			echo false;
 
+		$query_logs = array();
+		$log_file = LOG_DIR . '/app_' . date('Ymd') . '.log';
+		if (is_readable($log_file)) {
+			$lines = @file($log_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+			if (is_array($lines)) {
+
+				$current = null;
+				foreach ($lines as $line) {
+					if (false !== strpos($line, '[SQL] ')) {
+						if ($current && !empty($current['sql'])) {
+							$query_logs[] = $current;
+						}
+
+						$time = '';
+						if (preg_match('/^(\d{4}-\d{2}-\d{2} [0-9:\.]+)/', $line, $matches)) {
+							$time = $matches[1];
+						}
+
+						$sql = trim(substr($line, strpos($line, '[SQL] ') + 6));
+						$current = array(
+							'time' => $time,
+							'sql' => $sql,
+							'params' => '',
+							'result' => '',
+						);
+
+						continue;
+					}
+
+					if (!$current)
+						continue;
+
+					if (false !== strpos($line, '[SQL-Params] ')) {
+						$current['params'] = trim(substr($line, strpos($line, '[SQL-Params] ') + 13));
+						continue;
+					}
+
+					if (false !== strpos($line, '[SQL-Result] ')) {
+						$current['result'] = trim(substr($line, strpos($line, '[SQL-Result] ') + 13));
+						continue;
+					}
+				}
+
+				if ($current && !empty($current['sql'])) {
+					$query_logs[] = $current;
+				}
+			}
+		}
+
+		if (count($query_logs) > 100) {
+			$query_logs = array_slice($query_logs, -100);
+		}
+
 		$this->_view->assign('user', $user);
+		$this->_view->assign('query_logs', $query_logs);
+		$this->_view->assign('query_log_file', basename($log_file));
 	}
 
 	/**

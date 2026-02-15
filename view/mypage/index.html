@@ -172,17 +172,46 @@
 	</ul>
 	</div>
 	<div class="mypage-tab-content {if 'query-log' != $active_tab}is-hidden{/if}" id="query-log-section">
-	<ul class="menu">
-		<li>
-			<p>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+		<script defer>
+			document.addEventListener('DOMContentLoaded', function() {
+				if (window.hljs) {
+					window.hljs.highlightAll();
+				}
+			});
+		</script>
+		<div class="query-log-panel">
+			<div class="query-log-meta">
 				{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-					クエリログを確認します。ログファイルは log/app_YYYYMMDD.log を参照してください。
+					表示ログ: {$query_log_file|escape}（最新100件）
 				{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-					Check query logs from log/app_YYYYMMDD.log.
+					Log file: {$query_log_file|escape} (latest 100)
 				{/if}
-			</p>
-		</li>
-	</ul>
+			</div>
+			{if $query_logs}
+				{foreach from=$query_logs item=query_log}
+					<div class="query-log-item">
+						<div class="query-log-time">{$query_log.time|escape}</div>
+						<pre><code class="language-sql">{$query_log.sql|escape}</code></pre>
+						{if $query_log.params}
+							<div class="query-log-sub">Params: {$query_log.params|escape}</div>
+						{/if}
+						{if $query_log.result}
+							<div class="query-log-sub">Result: {$query_log.result|escape}</div>
+						{/if}
+					</div>
+				{/foreach}
+			{else}
+				<div class="query-log-empty">
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						クエリログが見つかりません。
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						No query logs found.
+					{/if}
+				</div>
+			{/if}
+		</div>
 	</div>
 
 </div>
