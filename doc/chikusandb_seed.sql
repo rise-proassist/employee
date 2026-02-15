@@ -64,9 +64,10 @@ ON DUPLICATE KEY UPDATE
 
 INSERT INTO `user_request_shift` (`id`, `user_id`, `shift_date_from`, `shift_date_to`, `create_date`, `update_date`)
 VALUES
-  (90001, 1, DATE_ADD(DATE(NOW()), INTERVAL 2 DAY) + INTERVAL 9 HOUR,  DATE_ADD(DATE(NOW()), INTERVAL 2 DAY) + INTERVAL 12 HOUR, NOW(), NOW()),
-  (90002, 1, DATE_ADD(DATE(NOW()), INTERVAL 4 DAY) + INTERVAL 13 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 4 DAY) + INTERVAL 17 HOUR, NOW(), NOW()),
-  (90003, 1, DATE_ADD(DATE(NOW()), INTERVAL 6 DAY) + INTERVAL 8 HOUR,  DATE_ADD(DATE(NOW()), INTERVAL 6 DAY) + INTERVAL 11 HOUR, NOW(), NOW())
+  (90001, 1, DATE(NOW()) + INTERVAL 9 HOUR, DATE(NOW()) + INTERVAL 12 HOUR, NOW(), NOW()),
+  (90002, 1, DATE_ADD(DATE(NOW()), INTERVAL 30 DAY) + INTERVAL 13 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 30 DAY) + INTERVAL 17 HOUR, NOW(), NOW()),
+  (90003, 1, DATE_ADD(DATE(NOW()), INTERVAL 60 DAY) + INTERVAL 8 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 60 DAY) + INTERVAL 11 HOUR, NOW(), NOW()),
+  (90004, 1, DATE_ADD(DATE(NOW()), INTERVAL 89 DAY) + INTERVAL 9 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 89 DAY) + INTERVAL 12 HOUR, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `user_id` = VALUES(`user_id`),
   `shift_date_from` = VALUES(`shift_date_from`),
@@ -75,7 +76,8 @@ ON DUPLICATE KEY UPDATE
 
 INSERT INTO `location` (`id`, `name`, `location_date`, `address`, `detail`, `is_assigned`, `is_closed`, `create_date`, `update_date`)
 VALUES
-  (91001, 'テスト農場A', DATE_ADD(DATE(NOW()), INTERVAL 3 DAY), '千葉県千葉市中央区 1-1-1', 'seed confirmed shift location', 1, 0, NOW(), NOW())
+  (91001, 'テスト農場A', DATE(NOW()), '千葉県千葉市中央区 1-1-1', 'seed confirmed shift location', 1, 0, NOW(), NOW()),
+  (91002, 'テスト農場B', DATE_ADD(DATE(NOW()), INTERVAL 88 DAY), '千葉県千葉市中央区 2-2-2', 'seed confirmed shift location', 1, 0, NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `name` = VALUES(`name`),
   `location_date` = VALUES(`location_date`),
@@ -87,8 +89,8 @@ ON DUPLICATE KEY UPDATE
 
 INSERT INTO `location_shift` (`id`, `location_id`, `name`, `shift_date_from`, `shift_date_to`, `request_num`, `note`, `create_date`, `update_date`)
 VALUES
-  (91001, 91001, '午前シフト', DATE_ADD(DATE(NOW()), INTERVAL 3 DAY) + INTERVAL 9 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 3 DAY) + INTERVAL 12 HOUR, 5, 'seed confirmed shift', NOW(), NOW()),
-  (91002, 91001, '午後シフト', DATE_ADD(DATE(NOW()), INTERVAL 5 DAY) + INTERVAL 13 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 5 DAY) + INTERVAL 17 HOUR, 5, 'seed confirmed shift', NOW(), NOW())
+  (91001, 91001, '午前シフト', DATE(NOW()) + INTERVAL 9 HOUR, DATE(NOW()) + INTERVAL 12 HOUR, 5, 'seed confirmed shift', NOW(), NOW()),
+  (91002, 91002, '午後シフト', DATE_ADD(DATE(NOW()), INTERVAL 88 DAY) + INTERVAL 13 HOUR, DATE_ADD(DATE(NOW()), INTERVAL 88 DAY) + INTERVAL 17 HOUR, 5, 'seed confirmed shift', NOW(), NOW())
 ON DUPLICATE KEY UPDATE
   `location_id` = VALUES(`location_id`),
   `name` = VALUES(`name`),
