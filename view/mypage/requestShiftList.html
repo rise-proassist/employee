@@ -123,6 +123,7 @@
 				.attr('data-date', dateKey)
 				.attr('data-dates', targetDates.join(','))
 				.addClass('is-open');
+			$popupOkButton.prop('disabled', false);
 			$startSlider.val(9);
 			$endSlider.val(17);
 			updateShiftPopupPreview();
@@ -145,7 +146,7 @@
 		var deleteShiftButton = function($button) {
 			var deleteUrl = $button.data('deleteUrl');
 			if (!deleteUrl || $button.prop('disabled')) {
-				return $.Deferred().reject().promise();
+				return $.Deferred().resolve().promise();
 			}
 
 			$button.prop('disabled', true);
