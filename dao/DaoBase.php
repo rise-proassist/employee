@@ -8,6 +8,10 @@
  */
 
 abstract class DaoBase {
+
+	const DEBUG_FOOTER_LOG_FILE = 'debug_query_footer.log';
+	const DEBUG_FOOTER_META_FILE = 'debug_query_footer.meta';
+	const DEBUG_FOOTER_MAX_BYTES = 262144;
 	
 	protected $_dba;
 
@@ -27,6 +31,90 @@ abstract class DaoBase {
 		$this->_logger = Logger::getLogger(basename(__FILE__));
 		$this->_logger->setLevel(LoggerLevel::getLevelInfo());
 
+	}
+
+	private function get_debug_footer_log_file_path() {
+
+		return TMP_DIR . '/' . self::DEBUG_FOOTER_LOG_FILE;
+	}
+
+	private function get_debug_footer_meta_file_path() {
+
+		return TMP_DIR . '/' . self::DEBUG_FOOTER_META_FILE;
+	}
+
+	private function get_app_started_at() {
+
+		$started_at = @filectime('/proc/1');
+		if (!$started_at) {
+			$started_at = time();
+		}
+
+		return (int)$started_at;
+	}
+
+	private function ensure_debug_footer_scope() {
+
+		$meta_file = $this->get_debug_footer_meta_file_path();
+		$log_file = $this->get_debug_footer_log_file_path();
+		$current_started_at = $this->get_app_started_at();
+
+		$stored_started_at = 0;
+		if (is_readable($meta_file)) {
+			$stored_started_at = (int)trim((string)@file_get_contents($meta_file));
+		}
+
+		if ($stored_started_at !== $current_started_at) {
+			@file_put_contents($log_file, '', LOCK_EX);
+			@file_put_contents($meta_file, (string)$current_started_at, LOCK_EX);
+		}
+	}
+
+	private function append_debug_footer_log_line($line) {
+
+		$this->ensure_debug_footer_scope();
+
+		$log_file = $this->get_debug_footer_log_file_path();
+		$current = '';
+		if (is_readable($log_file)) {
+			$current = (string)@file_get_contents($log_file);
+		}
+
+		if ($current !== '' && substr($current, -1) !== "\n") {
+			$current .= "\n";
+		}
+		$current .= (string)$line;
+
+		if (strlen($current) > self::DEBUG_FOOTER_MAX_BYTES) {
+			$current = substr($current, -self::DEBUG_FOOTER_MAX_BYTES);
+			$first_new_line = strpos($current, "\n");
+			if (false !== $first_new_line) {
+				$current = substr($current, $first_new_line + 1);
+			}
+		}
+
+		@file_put_contents($log_file, $current, LOCK_EX);
+	}
+
+	protected function log_sql($sql) {
+
+		$message = '[SQL] ' . $sql;
+		$this->_logger->info($message);
+		$this->append_debug_footer_log_line($message);
+	}
+
+	protected function log_sql_params($params) {
+
+		$message = '[SQL-Params] ' . $params;
+		$this->_logger->info($message);
+		$this->append_debug_footer_log_line($message);
+	}
+
+	protected function log_sql_result($result) {
+
+		$message = '[SQL-Result] ' . $result;
+		$this->_logger->info($message);
+		$this->append_debug_footer_log_line($message);
 	}
 
 	/**
@@ -81,8 +169,8 @@ abstract class DaoBase {
 		$query = $this->_dba->from($this->_table_name)
 							->where($this->_primary_key, $value);
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -110,8 +198,8 @@ abstract class DaoBase {
 		$query = $this->_dba->from($this->_table_name)
 							->where($this->_primary_key, $values);
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -140,8 +228,8 @@ abstract class DaoBase {
 							->where($this->_primary_key, $value)
 							->forUpdate();
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -184,8 +272,8 @@ abstract class DaoBase {
 			
 		}
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -248,8 +336,8 @@ abstract class DaoBase {
 			
 		}
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -305,8 +393,8 @@ abstract class DaoBase {
 
 		$query->limit(1);
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -352,8 +440,8 @@ abstract class DaoBase {
 			}
 		}
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 
 		return (int)$query->fetchAll()[0]['num'];
 
@@ -380,12 +468,12 @@ abstract class DaoBase {
 		$query = $this->_dba->insertInto($this->_table_name)
 							->values($values);
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 
 		// 登録
 		$last_id = $query->execute();
-		$this->_logger->info('[SQL-Result] Last Insert Id : ' . $last_id);
+		$this->log_sql_result('Last Insert Id : ' . $last_id);
 
 		return $last_id;
 		
@@ -414,12 +502,12 @@ abstract class DaoBase {
 			}
 		}
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 		
 		// 更新
 		$result = $query->execute();
-		$this->_logger->info('[SQL-Result] Update Record Num : ' . $result);
+		$this->log_sql_result('Update Record Num : ' . $result);
 
 		return $result;
 		
@@ -440,12 +528,12 @@ abstract class DaoBase {
 			}
 		}
 
-		$this->_logger->info('[SQL] ' . $query->getQuery(false));
-		$this->_logger->info('[SQL-Params] ' . implode(', ', $query->getParameters()));
+		$this->log_sql($query->getQuery(false));
+		$this->log_sql_params(implode(', ', $query->getParameters()));
 
 		// 削除
 		$result = $query->execute();
-		$this->_logger->info('[SQL-Result] Delete Record Num : ' . $result);
+		$this->log_sql_result('Delete Record Num : ' . $result);
 
 		return $result;
 		
@@ -459,15 +547,15 @@ abstract class DaoBase {
 	 */
 	public function execute_raw_select($sql) {
 
-		$this->_logger->info('[SQL] ' . $sql);
-		$this->_logger->info('[SQL-Params]');
+		$this->log_sql($sql);
+		$this->log_sql_params('');
 
 		$pdo = $this->_dba->getPdo();
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		$this->_logger->info('[SQL-Result] Select Record Num : ' . count((array)$rows));
+		$this->log_sql_result('Select Record Num : ' . count((array)$rows));
 
 		return $rows;
 	}
@@ -480,15 +568,15 @@ abstract class DaoBase {
 	 */
 	public function execute_raw_mutation($sql) {
 
-		$this->_logger->info('[SQL] ' . $sql);
-		$this->_logger->info('[SQL-Params]');
+		$this->log_sql($sql);
+		$this->log_sql_params('');
 
 		$pdo = $this->_dba->getPdo();
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute();
 		$affected = (int)$stmt->rowCount();
 
-		$this->_logger->info('[SQL-Result] Affected Record Num : ' . $affected);
+		$this->log_sql_result('Affected Record Num : ' . $affected);
 
 		return $affected;
 	}
@@ -502,7 +590,7 @@ abstract class DaoBase {
 		$query = $this->_dba->getPdo()
 							->exec('TRUNCATE ' . $this->_table_name);
 
-		$this->_logger->info('[SQL-Result] Truncated Table :' . $this->_table_name);
+		$this->log_sql_result('Truncated Table :' . $this->_table_name);
 		
 	}
 	

@@ -251,13 +251,17 @@ class MypageController extends BaseController {
 
 	private function get_debug_history_text() {
 
-		$data = $this->load_debug_history_data();
-		$entries = isset($data['entries']) ? $data['entries'] : array();
-		if (!$entries) {
+		$log_file = TMP_DIR . '/' . DaoBase::DEBUG_FOOTER_LOG_FILE;
+		if (!is_readable($log_file)) {
 			return '';
 		}
 
-		return $this->get_debug_history_text_from_entries($entries);
+		$text = (string)@file_get_contents($log_file);
+		if ($text === '') {
+			return '';
+		}
+
+		return rtrim($text, "\n");
 	}
 
 	private function normalize_debug_query($query) {
@@ -767,10 +771,6 @@ class MypageController extends BaseController {
 			$result['ok'] = true;
 		} catch (Exception $e) {
 			$result['output'] = $e->getMessage();
-		}
-
-		if ($query !== '') {
-			$this->append_debug_history_entry($query, $result['output'], $executed_at);
 		}
 
 		header('Content-type: application/json; charset=utf-8');
