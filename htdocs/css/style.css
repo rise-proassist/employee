@@ -1329,6 +1329,8 @@ a:focus-visible {
     position: relative;
     height: 44px;
     margin-top: 8px;
+    margin-left: 108px;
+    width: calc(100% - 108px);
 }
 
 .shift-popup-slider-track {
