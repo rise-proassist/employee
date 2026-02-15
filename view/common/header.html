@@ -55,25 +55,31 @@
 					<a class="header-breadcrumb-item" href="/mypage/?tab=qr">
 						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}My Page{else}マイページ{/if}
 					</a>
-					<a class="header-breadcrumb-item" href="/mypage/?tab=shift">
-						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Shift{else}シフト{/if}
-					</a>
+					{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action || 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
+						<a class="header-breadcrumb-item" href="/mypage/?tab=request-shift">
+							{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Desired Shift{else}希望シフト{/if}
+						</a>
+					{else}
+						<a class="header-breadcrumb-item" href="/mypage/?tab=result-shift">
+							{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Confirmed Shift{else}確定シフト{/if}
+						</a>
+					{/if}
 					<span class="header-breadcrumb-item is-current" aria-current="page">
 						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}
 							{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action}
-								Register desired shift
+								Register
 							{else if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
-								Desired shift list
+								List
 							{else}
-								Confirmed shift list
+								Confirmed shift list page
 							{/if}
 						{else}
 							{if 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action}
-								希望シフト登録
+								登録
 							{else if 'requestShiftList' == $action || 'requestShiftDelFinish' == $action}
-								希望シフト一覧
+								一覧
 							{else}
-								確定シフト一覧
+								確定シフト一覧ページ
 							{/if}
 						{/if}
 					</span>
@@ -85,8 +91,10 @@
 						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}
 							{if 'rules' == $header_active_tab}
 								Work Rules
-							{else if 'shift' == $header_active_tab}
-								Shift
+							{else if 'request-shift' == $header_active_tab}
+								Desired Shift
+							{else if 'result-shift' == $header_active_tab}
+								Confirmed Shift
 							{else if 'settings' == $header_active_tab}
 								Settings
 							{else}
@@ -95,8 +103,10 @@
 						{else}
 							{if 'rules' == $header_active_tab}
 								作業ルール
-							{else if 'shift' == $header_active_tab}
-								シフト
+							{else if 'request-shift' == $header_active_tab}
+								希望シフト
+							{else if 'result-shift' == $header_active_tab}
+								確定シフト
 							{else if 'settings' == $header_active_tab}
 								設定
 							{else}

@@ -71,15 +71,15 @@
 	{/if}
 	</div>
 	</div>
-	<div class="mypage-tab-content {if 'shift' != $active_tab}is-hidden{/if}" id="shift-section">
+	<div class="mypage-tab-content {if 'request-shift' != $active_tab}is-hidden{/if}" id="request-shift-section">
 	<ul class="menu">
 		<li>
 			<a href="/mypage/requestShiftAddForm/">
 				<p>
 					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-						希望シフト登録
+						登録
 					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-						Register desired shift
+						Register
 					{/if}
 				</p>
 			</a>
@@ -88,20 +88,24 @@
 			<a href="/mypage/requestShiftList/">
 				<p>
 					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-						希望シフト一覧
+						一覧
 					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-						Desired shift
+						List
 					{/if}
 				</p>
 			</a>
 		</li>
+	</ul>
+	</div>
+	<div class="mypage-tab-content {if 'result-shift' != $active_tab}is-hidden{/if}" id="result-shift-section">
+	<ul class="menu">
 		<li>
 			<a href="/mypage/resultList/">
 				<p>
 					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-						確定シフト一覧
+						確定シフト一覧ページ
 					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-						Confirmed shift
+						Confirmed shift list page
 					{/if}
 				</p>
 			</a>
