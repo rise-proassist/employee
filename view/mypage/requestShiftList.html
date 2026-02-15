@@ -183,6 +183,23 @@
 			});
 		};
 
+		var runDeferredList = function(requests) {
+			if (!requests.length) {
+				return $.Deferred().resolve().promise();
+			}
+			return $.when.apply($, requests);
+		};
+
+		var getRequestDeleteButtonsForDates = function(targetDates) {
+			var $buttons = $();
+			$.each(targetDates, function(_, dateKey) {
+				$buttons = $buttons.add(
+					$('.calendar-day-cell[data-date="' + dateKey + '"] .calendar-shift-item.is-request .icon-delete-button')
+				);
+			});
+			return $buttons;
+		};
+
 		var setCellSelected = function($cell, selected) {
 			$cell.toggleClass('is-selected', selected);
 		};
@@ -319,17 +336,28 @@
 
 			$popupOkButton.prop('disabled', true);
 
-			var requests = $.map(targetDates, function(dateKey) {
-				return registerShiftForDate(dateKey);
+			var deleteRequests = $.map(getRequestDeleteButtonsForDates(targetDates), function(buttonElement) {
+				return deleteShiftButton($(buttonElement));
 			});
 
-			$.when.apply($, requests)
+			runDeferredList(deleteRequests)
 				.done(function() {
-					window.location.reload();
+					var addRequests = $.map(targetDates, function(dateKey) {
+						return registerShiftForDate(dateKey);
+					});
+
+					runDeferredList(addRequests)
+						.done(function() {
+							window.location.reload();
+						})
+						.fail(function() {
+							$popupOkButton.prop('disabled', false);
+							alert('登録に失敗しました。再度お試しください。');
+						});
 				})
 				.fail(function() {
 					$popupOkButton.prop('disabled', false);
-					alert('登録に失敗しました。再度お試しください。');
+					alert('上書きの前処理に失敗しました。再度お試しください。');
 				});
 		});
 
