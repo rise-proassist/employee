@@ -1,4 +1,5 @@
 <div>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" defer></script>
 	<script type="text/javascript">
 	$(function() {
 		var isDragging = false;
@@ -131,6 +132,34 @@
 			$popupOverlay.removeClass('is-open');
 		};
 
+		var removeShiftItemFromView = function($button) {
+			var $shiftItem = $button.closest('.calendar-shift-item');
+			var $shiftList = $shiftItem.closest('.calendar-shift-list');
+			$shiftItem.remove();
+
+			if ($shiftList.find('.calendar-shift-item').length === 0) {
+				$shiftList.remove();
+			}
+		};
+
+		var deleteShiftButton = function($button) {
+			var deleteUrl = $button.data('deleteUrl');
+			if (!deleteUrl || $button.prop('disabled')) {
+				return $.Deferred().reject().promise();
+			}
+
+			$button.prop('disabled', true);
+
+			return $.ajax({
+				url: deleteUrl,
+				type: 'GET'
+			}).done(function() {
+				removeShiftItemFromView($button);
+			}).fail(function() {
+				$button.prop('disabled', false);
+			});
+		};
+
 		var getPopupTargetDates = function() {
 			var dates = String($popupOverlay.attr('data-dates') || '').split(',');
 			return $.grep(dates, function(dateKey) {
@@ -220,28 +249,42 @@
 			e.preventDefault();
 			e.stopPropagation();
 
-			var $button = $(this);
-			var deleteUrl = $button.data('deleteUrl');
-			if (!deleteUrl || $button.prop('disabled')) {
+			deleteShiftButton($(this)).fail(function() {
+				alert('削除に失敗しました。再度お試しください。');
+			});
+		});
+
+		$(document).on('keydown', function(e) {
+			if ((e.key !== 'Delete' && e.keyCode !== 46) || $popupOverlay.hasClass('is-open')) {
 				return;
 			}
 
-			$button.prop('disabled', true);
+			var $selectedRequestButtons = $('.calendar-day-cell.is-selected .calendar-shift-item.is-request .icon-delete-button');
+			if ($selectedRequestButtons.length === 0) {
+				return;
+			}
 
-			$.ajax({
-				url: deleteUrl,
-				type: 'GET'
-			}).done(function() {
-				var $shiftItem = $button.closest('.calendar-shift-item');
-				var $shiftList = $shiftItem.closest('.calendar-shift-list');
-				$shiftItem.remove();
+			e.preventDefault();
 
-				if ($shiftList.find('.calendar-shift-item').length === 0) {
-					$shiftList.remove();
+			swal({
+				title: '{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Delete desired shift?{else}希望シフトを削除しますか？{/if}',
+				text: '{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Selected desired shifts will be deleted.{else}選択中の日付にある希望シフトを削除します。{/if}',
+				icon: 'warning',
+				buttons: ['{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Cancel{else}キャンセル{/if}', '{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Delete{else}削除{/if}'],
+				dangerMode: true
+			}).then(function(willDelete) {
+				if (!willDelete) {
+					return;
 				}
-			}).fail(function() {
-				$button.prop('disabled', false);
-				alert('削除に失敗しました。再度お試しください。');
+
+				var requests = [];
+				$selectedRequestButtons.each(function() {
+					requests.push(deleteShiftButton($(this)));
+				});
+
+				$.when.apply($, requests).fail(function() {
+					alert('{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Failed to delete desired shift.{else}希望シフトの削除に失敗しました。{/if}');
+				});
 			});
 		});
 
