@@ -308,10 +308,20 @@ abstract class BaseController {
 		$model_session->set_dir(SESSION_DIR);
 		$model_session->open();
 		$login_user = $model_session->get('user');
+		$session_lang_type = $model_session->get('lang_type');
 		$model_session->close();
+
+		$selected_lang_type = PARAM_CONST_LANG_TYPE_JP;
+		if (isset(PARAM_CONST_LANG_TYPES[$session_lang_type])) {
+			$selected_lang_type = $session_lang_type;
+		}
+		if ($login_user && isset(PARAM_CONST_LANG_TYPES[$login_user->lang_type])) {
+			$selected_lang_type = $login_user->lang_type;
+		}
 
 		$this->_view->assign('login_user', $login_user);
 		$this->_view->assign('lang_types', PARAM_CONST_ALL_LANG_TYPES);
+		$this->_view->assign('selected_lang_type', $selected_lang_type);
 		// $this->_template_path = sprintf('%s/%s.html', $this->_controller, $this->_action);
 
 	}

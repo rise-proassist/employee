@@ -194,7 +194,10 @@ class LoginController extends BaseController {
 		$model_session->open();
 		$user = $model_session->get('user');
 
-		if ($user && isset(PARAM_CONST_LANG_TYPES[$request_lang_type])) {
+		if (isset(PARAM_CONST_LANG_TYPES[$request_lang_type])) {
+			$model_session->set('lang_type', $request_lang_type);
+
+			if ($user) {
 			$dao_user = new DaoUser();
 			$sets['lang_type'] = $request_lang_type;
 			$wheres['id'] = $user->id;
@@ -202,12 +205,13 @@ class LoginController extends BaseController {
 
 			$user->lang_type = $request_lang_type;
 			$model_session->set('user', $user);
+			}
 		}
 
 		$model_session->close();
 
 		if (!$redirect_url || '/' !== substr($redirect_url, 0, 1)) {
-			$redirect_url = '/mypage/';
+			$redirect_url = ($user) ? '/mypage/' : '/login/';
 		}
 
 		header('Location: ' . $redirect_url);

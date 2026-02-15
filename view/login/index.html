@@ -25,6 +25,17 @@
 <header>
 
 	<div class="site_name"><a href="{$smarty.const.WEB_SRC}" class="site_name">{$smarty.const.SITE_NAME}</a></div>
+	{if isset($lang_types)}
+		<form method="post" action="/login/changeLang/" class="header-lang-form">
+			<input type="hidden" name="redirect_url" value="{$smarty.server.REQUEST_URI|escape}">
+			<label for="header_lang_type" class="header-lang-label">Language</label>
+			<select id="header_lang_type" name="lang_type" onchange="this.form.submit()">
+				{foreach from=$lang_types key=lang_type item=lang_name}
+					<option value="{$lang_type}" {if $selected_lang_type == $lang_type}selected="selected"{/if}>{$lang_name}</option>
+				{/foreach}
+			</select>
+		</form>
+	{/if}
 
 </header>
 
