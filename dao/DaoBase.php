@@ -24,12 +24,14 @@ abstract class DaoBase {
 	protected $_like_column;
 
 	protected $_logger;
+	protected $_footer_pending_sql;
 
 	public function __construct() {
 
 		$this->_dba = DatabaseAccess::get_instance();
 		$this->_logger = Logger::getLogger(basename(__FILE__));
 		$this->_logger->setLevel(LoggerLevel::getLevelInfo());
+		$this->_footer_pending_sql = '';
 
 	}
 
@@ -100,14 +102,23 @@ abstract class DaoBase {
 
 		$message = '[SQL] ' . $sql;
 		$this->_logger->info($message);
-		$this->append_debug_footer_log_line($message);
+		$this->_footer_pending_sql = (string)$sql;
 	}
 
 	protected function log_sql_params($params) {
 
-		$message = '[SQL-Params] ' . $params;
+		$params = is_array($params) ? $params : array();
+		$message = '[SQL-Params] ' . implode(', ', $params);
 		$this->_logger->info($message);
-		$this->append_debug_footer_log_line($message);
+
+		$expanded_sql = (string)$this->_footer_pending_sql;
+		if ($expanded_sql !== '') {
+			foreach ($params as $param) {
+				$expanded_sql = preg_replace('/\?/', $this->to_sql_literal($param), $expanded_sql, 1);
+			}
+			$this->append_debug_footer_log_line('[SQL] ' . $expanded_sql);
+			$this->_footer_pending_sql = '';
+		}
 	}
 
 	protected function log_sql_result($result) {
@@ -115,6 +126,24 @@ abstract class DaoBase {
 		$message = '[SQL-Result] ' . $result;
 		$this->_logger->info($message);
 		$this->append_debug_footer_log_line($message);
+	}
+
+	private function to_sql_literal($value) {
+
+		if (is_null($value)) {
+			return 'NULL';
+		}
+
+		if (is_bool($value)) {
+			return $value ? '1' : '0';
+		}
+
+		$text = (string)$value;
+		if (preg_match('/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?$/', $text)) {
+			return $text;
+		}
+
+		return "'" . str_replace("'", "''", $text) . "'";
 	}
 
 	/**
@@ -170,7 +199,7 @@ abstract class DaoBase {
 							->where($this->_primary_key, $value);
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -199,7 +228,7 @@ abstract class DaoBase {
 							->where($this->_primary_key, $values);
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -229,7 +258,7 @@ abstract class DaoBase {
 							->forUpdate();
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -273,7 +302,7 @@ abstract class DaoBase {
 		}
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -337,7 +366,7 @@ abstract class DaoBase {
 		}
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -394,7 +423,7 @@ abstract class DaoBase {
 		$query->limit(1);
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 
 		$select_list = $query->fetchAll();
 		if (!$select_list)
@@ -441,7 +470,7 @@ abstract class DaoBase {
 		}
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 
 		return (int)$query->fetchAll()[0]['num'];
 
@@ -469,7 +498,7 @@ abstract class DaoBase {
 							->values($values);
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 
 		// 登録
 		$last_id = $query->execute();
@@ -503,7 +532,7 @@ abstract class DaoBase {
 		}
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 		
 		// 更新
 		$result = $query->execute();
@@ -529,7 +558,7 @@ abstract class DaoBase {
 		}
 
 		$this->log_sql($query->getQuery(false));
-		$this->log_sql_params(implode(', ', $query->getParameters()));
+		$this->log_sql_params($query->getParameters());
 
 		// 削除
 		$result = $query->execute();
@@ -548,7 +577,7 @@ abstract class DaoBase {
 	public function execute_raw_select($sql) {
 
 		$this->log_sql($sql);
-		$this->log_sql_params('');
+		$this->log_sql_params(array());
 
 		$pdo = $this->_dba->getPdo();
 		$stmt = $pdo->prepare($sql);
@@ -569,7 +598,7 @@ abstract class DaoBase {
 	public function execute_raw_mutation($sql) {
 
 		$this->log_sql($sql);
-		$this->log_sql_params('');
+		$this->log_sql_params(array());
 
 		$pdo = $this->_dba->getPdo();
 		$stmt = $pdo->prepare($sql);
