@@ -1,0 +1,158 @@
+html, body {
+  background: #f8fafc;
+  color: #1f2937;
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.navbar-default,
+.navbar-default .brand {
+  background-color: #333333;
+  box-shadow: none;
+}
+
+.navbar-default .brand a,
+.navbar-default .navbar-nav > li > a,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus,
+.navbar-default .navbar-btn button {
+  color: #ffffff;
+}
+
+.navbar-default .navbar-nav > li > .dropdown-menu {
+  border-top: 2px solid dodgerblue;
+}
+
+.main-content {
+  padding: 32px 24px;
+}
+
+.panel,
+.auth-box .left,
+.auth-box .right {
+  border-radius: 10px;
+}
+
+th {
+  font-weight: 700;
+  background-color: #eef2f7;
+}
+
+.btn,
+button,
+input[type="submit"],
+input[type="button"],
+.btn-primary,
+.btn-info,
+.btn-success {
+  background-color: dodgerblue;
+  border-color: dodgerblue;
+  color: #ffffff;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.btn:hover,
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.btn-primary:hover,
+.btn-info:hover,
+.btn-success:hover,
+.btn:focus,
+.btn-primary:focus,
+.btn-info:focus,
+.btn-success:focus {
+  background-color: #187bcd;
+  border-color: #187bcd;
+  color: #ffffff;
+}
+
+.btn:active,
+.btn-primary:active,
+.btn-info:active,
+.btn-success:active {
+  background-color: #0d5ea6;
+  border-color: #0d5ea6;
+}
+
+.btn.disabled,
+.btn[disabled],
+button:disabled,
+input[type="submit"]:disabled,
+input[type="button"]:disabled {
+  opacity: .55;
+}
+
+.form-control,
+input.form-control,
+select.form-control,
+textarea.form-control {
+  height: 44px;
+  border-radius: 8px;
+  border-color: #d1d5db;
+  box-shadow: none;
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 120px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.control-label,
+label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+a:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid rgba(30, 144, 255, 0.35);
+  outline-offset: 2px;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.footer {
+  background: #333333;
+  color: #ffffff;
+  padding: 16px 24px;
+}
+
+.copyright {
+  color: #ffffff;
+}
+
+@media screen and (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .main-content {
+    padding: 24px 12px;
+  }
+
+  .navbar-default .navbar-nav > li > a {
+    padding: 12px 10px;
+  }
+}
