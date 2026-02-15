@@ -32,36 +32,57 @@
 	</div>
 	<br>
 	<div class="div_form">
-		{if $user_request_shifts}
-			<table class="input_list request-shift-list-table">
-				{foreach from=$user_request_shifts item=user_request_shift}
-					<tr>
-						<td class="left">
-							<div class="request-shift-row">
-								<span class="request-shift-row-text">
-									{assign var=shift_from_ymd value=$user_request_shift->shift_date_from|date_format:"%Y%m%d"}
-									{assign var=shift_to_ymd value=$user_request_shift->shift_date_to|date_format:"%Y%m%d"}
-									{$user_request_shift->shift_date_from|date_format:"%Y/%m/%d"}({UtilCommon::get_yb($user_request_shift->shift_date_from)})
-									{$user_request_shift->shift_date_from|date_format:"%H:%M"} 〜
-									{if $shift_from_ymd == $shift_to_ymd}
-										{$user_request_shift->shift_date_to|date_format:"%H:%M"}
-									{else}
-										(翌) {$user_request_shift->shift_date_to|date_format:"%H:%M"}
-									{/if}
-								</span>
-								<button type="button" class="icon-delete-button" onclick="location.href='/mypage/requestShiftDelFinish/?id={$user_request_shift->id}'" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Delete{else}削除{/if}">
-									<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-										<path d="M4 7H20" stroke="currentColor" stroke-width="1.8"/>
-										<path d="M9 7V5C9 4.45 9.45 4 10 4H14C14.55 4 15 4.45 15 5V7" stroke="currentColor" stroke-width="1.8"/>
-										<path d="M7 7L8 20H16L17 7" stroke="currentColor" stroke-width="1.8"/>
-										<path d="M10 11V17M14 11V17" stroke="currentColor" stroke-width="1.8"/>
-									</svg>
-								</button>
-							</div>
-						</td>
-					</tr>
+		{if $request_shift_calendar_months}
+			<div class="request-shift-calendar-list">
+				{foreach from=$request_shift_calendar_months item=calendar_month}
+					<div class="request-shift-calendar-block">
+						<div class="request-shift-calendar-title">{$calendar_month.month_label}</div>
+						<table class="request-shift-calendar" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Desired shift calendar{else}希望シフトカレンダー{/if}">
+							<thead>
+								<tr>
+									<th class="is-sunday">{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Sun{else}日{/if}</th>
+									<th>{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Mon{else}月{/if}</th>
+									<th>{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Tue{else}火{/if}</th>
+									<th>{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Wed{else}水{/if}</th>
+									<th>{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Thu{else}木{/if}</th>
+									<th>{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Fri{else}金{/if}</th>
+									<th class="is-saturday">{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Sat{else}土{/if}</th>
+								</tr>
+							</thead>
+							<tbody>
+								{foreach from=$calendar_month.weeks item=calendar_week}
+									{strip}
+									<tr>
+										{foreach from=$calendar_week item=calendar_day}
+											<td class="{if !$calendar_day.in_month}is-other-month{/if} {if $calendar_day.is_sunday}is-sunday{/if} {if $calendar_day.is_saturday}is-saturday{/if}">
+												<div class="calendar-day-number">{$calendar_day.day}</div>
+												{if $calendar_day.shifts}
+													<div class="calendar-shift-list">{strip}
+														{foreach from=$calendar_day.shifts item=calendar_shift}
+															<div class="calendar-shift-item">
+																<span class="calendar-shift-label">{$calendar_shift.label}</span>
+																<button type="button" class="icon-delete-button" onclick="location.href='/mypage/requestShiftDelFinish/?id={$calendar_shift.id}'" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Delete{else}削除{/if}">
+																	<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+																		<path d="M4 7H20" stroke="currentColor" stroke-width="1.8"/>
+																		<path d="M9 7V5C9 4.45 9.45 4 10 4H14C14.55 4 15 4.45 15 5V7" stroke="currentColor" stroke-width="1.8"/>
+																		<path d="M7 7L8 20H16L17 7" stroke="currentColor" stroke-width="1.8"/>
+																		<path d="M10 11V17M14 11V17" stroke="currentColor" stroke-width="1.8"/>
+																	</svg>
+																</button>
+															</div>
+														{/foreach}
+													{/strip}</div>
+												{/if}
+											</td>
+										{/foreach}
+									</tr>
+									{/strip}
+								{/foreach}
+							</tbody>
+						</table>
+					</div>
 				{/foreach}
-			</table>
+			</div>
 		{else}
 			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
 				希望シフトの登録がありません。

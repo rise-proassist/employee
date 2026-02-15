@@ -1042,6 +1042,102 @@ a:focus-visible {
     color: #187bcd;
 }
 
+.request-shift-calendar-list {
+    display: grid;
+    gap: 16px;
+}
+
+.request-shift-calendar-block {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.request-shift-calendar-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.request-shift-calendar {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.request-shift-calendar th,
+.request-shift-calendar td {
+    border: 1px solid #e5e7eb;
+}
+
+.request-shift-calendar th {
+    padding: 6px 4px;
+    text-align: center;
+    background: #f9fafb;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.request-shift-calendar td {
+    min-height: 92px;
+    height: 92px;
+    vertical-align: top;
+    padding: 4px;
+}
+
+.request-shift-calendar th.is-sunday,
+.request-shift-calendar td.is-sunday {
+    background: #fff1f2;
+}
+
+.request-shift-calendar th.is-saturday,
+.request-shift-calendar td.is-saturday {
+    background: rgba(30, 144, 255, 0.12);
+}
+
+.request-shift-calendar td.is-other-month {
+    color: #9ca3af;
+}
+
+.calendar-day-number {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.calendar-shift-list {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+}
+
+.calendar-shift-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.calendar-shift-label {
+    flex: 1;
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.calendar-shift-list .icon-delete-button {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: 6px;
+    margin-left: 0;
+}
+
+.calendar-shift-list .icon-delete-button svg {
+    width: 13px;
+    height: 13px;
+}
+
 .input_form input[type="text"],
 .input_form input[type="email"],
 .input_form input[type="date"],

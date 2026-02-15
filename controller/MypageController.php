@@ -121,7 +121,70 @@ class MypageController extends BaseController {
 			array('shift_date_from' => 'ASC')
 		);
 
+		$shift_calendar_map = array();
+		foreach ((array)$user_request_shifts as $user_request_shift) {
+			$from = strtotime($user_request_shift->shift_date_from);
+			$to = strtotime($user_request_shift->shift_date_to);
+			$date_key = date('Y-m-d', $from);
+			$from_ymd = date('Ymd', $from);
+			$to_ymd = date('Ymd', $to);
+
+			$time_label = date('H:i', $from) . ' 〜 ';
+			if ($from_ymd == $to_ymd) {
+				$time_label .= date('H:i', $to);
+			} else {
+				$time_label .= '(翌) ' . date('H:i', $to);
+			}
+
+			$shift_calendar_map[$date_key][] = array(
+				'id' => $user_request_shift->id,
+				'label' => $time_label,
+			);
+		}
+
+		$calendar_months = array();
+		$base_month = strtotime(date('Y-m-01'));
+		for ($month_index = 0; $month_index < 3; $month_index++) {
+
+			$month_start = strtotime(date('Y-m-01', strtotime('+' . $month_index . ' month', $base_month)));
+			$month_end = strtotime(date('Y-m-t', $month_start));
+
+			$start_week = (int)date('w', $month_start);
+			$end_week = (int)date('w', $month_end);
+
+			$grid_start = strtotime('-' . $start_week . ' day', $month_start);
+			$grid_end = strtotime('+' . (6 - $end_week) . ' day', $month_end);
+
+			$weeks = array();
+			$week = array();
+			for ($cursor = $grid_start; $cursor <= $grid_end; $cursor = strtotime('+1 day', $cursor)) {
+
+				$date_key = date('Y-m-d', $cursor);
+				$cell_week = (int)date('w', $cursor);
+
+				$week[] = array(
+					'date_key' => $date_key,
+					'day' => date('j', $cursor),
+					'in_month' => date('Ym', $cursor) == date('Ym', $month_start),
+					'is_sunday' => $cell_week === 0,
+					'is_saturday' => $cell_week === 6,
+					'shifts' => isset($shift_calendar_map[$date_key]) ? $shift_calendar_map[$date_key] : array(),
+				);
+
+				if (count($week) === 7) {
+					$weeks[] = $week;
+					$week = array();
+				}
+			}
+
+			$calendar_months[] = array(
+				'month_label' => date('Y年n月', $month_start),
+				'weeks' => $weeks,
+			);
+		}
+
 		$this->_view->assign('user_request_shifts', $user_request_shifts);
+		$this->_view->assign('request_shift_calendar_months', $calendar_months);
 
 	}
 
