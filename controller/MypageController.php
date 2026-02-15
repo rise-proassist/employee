@@ -133,6 +133,97 @@ class MypageController extends BaseController {
 		return array_reverse($formatted_query_logs);
 	}
 
+	private function get_debug_history_file_path() {
+
+		return TMP_DIR . '/debug_query_history.json';
+	}
+
+	private function get_app_started_at() {
+
+		$started_at = @filectime('/proc/1');
+		if (!$started_at) {
+			$started_at = time();
+		}
+
+		return (int)$started_at;
+	}
+
+	private function load_debug_history_data() {
+
+		$app_started_at = $this->get_app_started_at();
+		$data = array(
+			'app_started_at' => $app_started_at,
+			'entries' => array(),
+		);
+
+		$file = $this->get_debug_history_file_path();
+		if (!is_readable($file)) {
+			return $data;
+		}
+
+		$json = @file_get_contents($file);
+		$loaded = json_decode((string)$json, true);
+		if (!is_array($loaded)) {
+			return $data;
+		}
+
+		$loaded_started_at = isset($loaded['app_started_at']) ? (int)$loaded['app_started_at'] : 0;
+		if ($loaded_started_at !== $app_started_at) {
+			return $data;
+		}
+
+		$entries = isset($loaded['entries']) && is_array($loaded['entries']) ? $loaded['entries'] : array();
+		$data['entries'] = $entries;
+
+		return $data;
+	}
+
+	private function save_debug_history_data($data) {
+
+		$file = $this->get_debug_history_file_path();
+		$dir = dirname($file);
+		if (!is_dir($dir)) {
+			@mkdir($dir, 0777, true);
+		}
+
+		@file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT), LOCK_EX);
+	}
+
+	private function append_debug_history_entry($command, $output, $executed_at) {
+
+		$data = $this->load_debug_history_data();
+		$data['entries'][] = array(
+			'executed_at' => (string)$executed_at,
+			'command' => (string)$command,
+			'output' => (string)$output,
+		);
+
+		if (count($data['entries']) > 500) {
+			$data['entries'] = array_slice($data['entries'], -500);
+		}
+
+		$this->save_debug_history_data($data);
+	}
+
+	private function get_debug_history_text() {
+
+		$data = $this->load_debug_history_data();
+		$entries = isset($data['entries']) ? $data['entries'] : array();
+		if (!$entries) {
+			return '';
+		}
+
+		$lines = array();
+		foreach ($entries as $entry) {
+			$executed_at = isset($entry['executed_at']) ? $entry['executed_at'] : '';
+			$command = isset($entry['command']) ? $entry['command'] : '';
+			$output = isset($entry['output']) ? $entry['output'] : '';
+			$lines[] = '[' . $executed_at . '] > ' . $command . "\n" . $output;
+		}
+
+		return implode("\n\n", $lines);
+	}
+
 	private function normalize_debug_query($query) {
 
 		$query = trim((string)$query);
@@ -254,8 +345,7 @@ class MypageController extends BaseController {
 
 		$this->_view->assign('login_user', $user);
 		$this->_login_user = $user;
-		$formatted_query_logs = $this->get_formatted_query_logs(100);
-		$this->_view->assign('debug_query_log_text', implode("\n\n", $formatted_query_logs));
+		$this->_view->assign('debug_query_log_text', $this->get_debug_history_text());
 
 		// サイトタイトル（ヘッダ）
 		switch ($this->_action) {
@@ -611,6 +701,8 @@ class MypageController extends BaseController {
 			'output' => '',
 		);
 
+		$query = '';
+
 		try {
 			$query = $this->normalize_debug_query($this->_request->getPost('query'));
 			if ($query === '') {
@@ -640,6 +732,10 @@ class MypageController extends BaseController {
 			$result['ok'] = true;
 		} catch (Exception $e) {
 			$result['output'] = $e->getMessage();
+		}
+
+		if ($query !== '') {
+			$this->append_debug_history_entry($query, $result['output'], $executed_at);
 		}
 
 		header('Content-type: application/json; charset=utf-8');
