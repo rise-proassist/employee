@@ -28,6 +28,50 @@ class MypageController extends BaseController {
 
 	const RESULT_LIST_LIMIT = 6;
 
+	private function to_sql_literal($value) {
+
+		$trimmed = trim((string)$value);
+		if (strtoupper($trimmed) === 'NULL') {
+			return 'NULL';
+		}
+
+		if (preg_match('/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?$/', $trimmed)) {
+			return $trimmed;
+		}
+
+		return "'" . str_replace("'", "''", $trimmed) . "'";
+	}
+
+	private function parse_log_params($param_text) {
+
+		$param_text = trim((string)$param_text);
+		if ($param_text === '') {
+			return array();
+		}
+
+		$parts = preg_split('/\s*,\s*/', $param_text);
+		if (!is_array($parts)) {
+			return array();
+		}
+
+		$params = array();
+		foreach ($parts as $part) {
+			$params[] = $part;
+		}
+
+		return $params;
+	}
+
+	private function expand_sql_with_params($sql, $params) {
+
+		$expanded = $sql;
+		foreach ((array)$params as $param) {
+			$expanded = preg_replace('/\?/', $this->to_sql_literal($param), $expanded, 1);
+		}
+
+		return $expanded;
+	}
+
 	private function get_formatted_query_logs($limit = 100) {
 
 		$query_logs = array();
@@ -52,12 +96,20 @@ class MypageController extends BaseController {
 					continue;
 				}
 
-				$current = $sql;
+				$current = array(
+					'sql' => $sql,
+					'params' => array(),
+				);
 				continue;
 			}
 
 			if (!$current)
 				continue;
+
+			if (false !== strpos($line, '[SQL-Params] ')) {
+				$current['params'] = $this->parse_log_params(substr($line, strpos($line, '[SQL-Params] ') + 13));
+				continue;
+			}
 		}
 
 		if ($current && !empty($current)) {
@@ -70,7 +122,10 @@ class MypageController extends BaseController {
 
 		$formatted_query_logs = array();
 		foreach ($query_logs as $index => $query_log) {
-			$sql = preg_replace('/\s+/', ' ', trim($query_log));
+			$raw_sql = isset($query_log['sql']) ? $query_log['sql'] : '';
+			$params = isset($query_log['params']) ? $query_log['params'] : array();
+			$sql = $this->expand_sql_with_params($raw_sql, $params);
+			$sql = preg_replace('/\s+/', ' ', trim($sql));
 			$sql = wordwrap($sql, 110, "\n      ", false);
 			$formatted_query_logs[] = '-- Query ' . str_pad((string)($index + 1), 3, '0', STR_PAD_LEFT) . "\n" . '   ' . $sql;
 		}
