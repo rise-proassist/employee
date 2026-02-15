@@ -740,6 +740,39 @@ body {
     justify-content: space-between;
 }
 
+.header-main-tools {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-shift-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 999px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.legend-request {
+    background: dodgerblue;
+}
+
+.legend-confirmed {
+    background: #ff00ff;
+    font-weight: 700;
+}
+
 .header-sub-row {
     height: 32px;
     display: flex;

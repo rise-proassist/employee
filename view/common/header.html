@@ -38,7 +38,14 @@
 
 	<div class="header-main-row">
 		<div class="site_name"><a href="{$smarty.const.WEB_SRC}" class="site_name">{if isset($controller) && 'mypage' == $controller}{$header_top_title}{elseif $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Chiba Avian Flu{else}{$smarty.const.SITE_NAME}{/if}</a></div>
-		{if isset($lang_types)}
+		<div class="header-main-tools">
+			{if isset($controller) && 'mypage' == $controller && ('request-shift' == $header_active_tab || 'requestShiftList' == $action || 'requestShiftAddForm' == $action || 'requestShiftAddFinish' == $action || 'requestShiftDelFinish' == $action)}
+				<div class="header-shift-legend">
+					<span class="legend-chip legend-request">希望シフト</span>
+					<span class="legend-chip legend-confirmed">確定シフト</span>
+				</div>
+			{/if}
+			{if isset($lang_types)}
 			<details class="header-lang-toggle">
 				<summary class="header-lang-button" aria-label="Language selector">
 					<svg class="header-lang-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -61,7 +68,8 @@
 					{/foreach}
 				</div>
 			</details>
-		{/if}
+			{/if}
+		</div>
 	</div>
 	<div class="header-sub-row">
 		{if isset($controller) && 'mypage' == $controller}
