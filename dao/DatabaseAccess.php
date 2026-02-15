@@ -30,7 +30,10 @@ class DatabaseAccess {
 	public static function get_instance() {
 		if(is_null(self::$_pdo)) {
 			self::$_instance = new self();
-			self::$_instance->connection();
+			$connection_result = self::$_instance->connection();
+			if (0 !== $connection_result || is_null(self::$_pdo)) {
+				throw new RuntimeException('Database connection failed. Please check conf/DBConst.local.php');
+			}
 		}
 	
 		return self::$_pdo;
