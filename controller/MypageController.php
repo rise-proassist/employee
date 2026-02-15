@@ -110,16 +110,27 @@ class MypageController extends BaseController {
 	 *
 	 */
 	public function requestShiftListAction() {
+		$calendar_range_from = date("Y-m-d 00:00:00");
+		$calendar_range_to = date("Y-m-t 23:59:59", strtotime('+2 month', strtotime(date('Y-m-01'))));
 
 		// 作業者の希望シフト（本日以降）
 		$dao_user_request_shift = new DaoUserRequestShift();
 		$user_request_shifts = $dao_user_request_shift->select_where_with_user(
 			array(
 				'urs.user_id' => $this->_login_user->id,
-				'urs.shift_date_to' => date("Y-m-d H:i:s"),
+				'urs.shift_date_to' => $calendar_range_from,
 			),
 			array('shift_date_from' => 'ASC')
 		);
+
+		$model_location_assign_user_search = new ModelLocationAssignUserSearch();
+		$model_location_assign_user_search->set_code($this->_login_user->code);
+		$model_location_assign_user_search->set_shift_date_from($calendar_range_from);
+		$model_location_assign_user_search->set_shift_date_to($calendar_range_to);
+		$model_location_assign_user_search->set_sort_key("ls.shift_date_from");
+		$model_location_assign_user_search->set_sort_type(PARAM_CONST_LIST_SORT_ASC);
+		$model_location_assign_user_search->search();
+		$confirmed_shifts = $model_location_assign_user_search->get();
 
 		$shift_calendar_map = array();
 		foreach ((array)$user_request_shifts as $user_request_shift) {
@@ -139,6 +150,28 @@ class MypageController extends BaseController {
 			$shift_calendar_map[$date_key][] = array(
 				'id' => $user_request_shift->id,
 				'label' => $time_label,
+				'type' => 'request',
+			);
+		}
+
+		foreach ((array)$confirmed_shifts as $confirmed_shift) {
+			$from = strtotime($confirmed_shift->shift_date_from);
+			$to = strtotime($confirmed_shift->shift_date_to);
+			$date_key = date('Y-m-d', $from);
+			$from_ymd = date('Ymd', $from);
+			$to_ymd = date('Ymd', $to);
+
+			$time_label = date('H:i', $from) . ' 〜 ';
+			if ($from_ymd == $to_ymd) {
+				$time_label .= date('H:i', $to);
+			} else {
+				$time_label .= '(翌) ' . date('H:i', $to);
+			}
+
+			$shift_calendar_map[$date_key][] = array(
+				'id' => null,
+				'label' => $time_label,
+				'type' => 'confirmed',
 			);
 		}
 

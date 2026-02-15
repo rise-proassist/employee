@@ -1150,6 +1150,20 @@ a:focus-visible {
     display: flex;
     align-items: center;
     gap: 4px;
+    min-height: 22px;
+    border-radius: 6px;
+    padding: 0 4px;
+}
+
+.calendar-shift-item.is-request {
+    background: dodgerblue;
+    color: #ffffff;
+}
+
+.calendar-shift-item.is-confirmed {
+    background: #ff00ff;
+    color: #ffffff;
+    font-weight: 700;
 }
 
 .calendar-shift-label {
@@ -1164,6 +1178,7 @@ a:focus-visible {
     min-width: 22px;
     border-radius: 6px;
     margin-left: 0;
+    color: #ffffff;
 }
 
 .calendar-shift-list .icon-delete-button svg {
