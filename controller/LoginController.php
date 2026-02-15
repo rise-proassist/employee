@@ -40,20 +40,28 @@ class LoginController extends BaseController {
 			$this->_login_user = $user;
 		}
 
+		$lang_type = $model_session->get('lang_type');
+		if ($user && isset($user->lang_type)) {
+			$lang_type = $user->lang_type;
+		}
+		if (!isset(PARAM_CONST_LANG_TYPES[$lang_type])) {
+			$lang_type = PARAM_CONST_LANG_TYPE_JP;
+		}
+
 		// サイトタイトル（ヘッダ）
 		switch ($this->_action) {
 			case 'index':
 			case 'exec':
-				$this->_view->assign('site_title', 'ログイン');
+				$this->_view->assign('site_title', (PARAM_CONST_LANG_TYPE_EN == $lang_type) ? 'Log in' : 'ログイン');
 				break;
 			case 'logout':
-				$this->_view->assign('site_title', 'ログアウト');
+				$this->_view->assign('site_title', (PARAM_CONST_LANG_TYPE_EN == $lang_type) ? 'Log out' : 'ログアウト');
 				break;
 			case 'reissuePasswordForm':
 			case 'reissuePasswordConfirm':
 			case 'reissuePasswordEditFinish':			
 			default:
-				$this->_view->assign('site_title', 'パスワードの再発行');
+				$this->_view->assign('site_title', (PARAM_CONST_LANG_TYPE_EN == $lang_type) ? 'Reset password' : 'パスワードの再発行');
 				break;
 		}
 		

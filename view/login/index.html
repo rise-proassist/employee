@@ -59,32 +59,36 @@
 	<div class="watermark"></div>
 
 	<div class="wrap">
+		{assign var="is_en" value=($selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN)}
 
-		<div class="page_titile">ログイン / Log in</div>
+		<div class="page_titile">{if $is_en}Log in{else}ログイン{/if}</div>
 		<br>
-		従事者のメールアドレスとパスワードをご入力ください。<br>
-		Please enter your employee's email address and password.<br>
+		{if $is_en}
+			Please enter your employee's email address and password.<br>
+		{else}
+			従事者のメールアドレスとパスワードをご入力ください。<br>
+		{/if}
 
 		{* ログインフォーム *}
 		<form method="post" id="login_exec" action="/login/exec/">
 			<div class="div_form">
-				<label class="lb_form">メールアドレス / Email</label>
+				<label class="lb_form">{if $is_en}Email{else}メールアドレス{/if}</label>
 				<div class="input_form">
 					{assign var="input_email" value=""}
 					{if isset($smarty.post.email)}
 						{assign var="input_email" value=$smarty.post.email}
 					{/if}
-					<input type="email" name="email" value="{$input_email}">
+					<input type="email" name="email" value="{$input_email}" placeholder="{if $is_en}Email{else}メールアドレス{/if}">
 				</div>
 			</div>
 			<div class="div_form">
-				<label class="lb_form">パスワード / Password</label>
+				<label class="lb_form">{if $is_en}Password{else}パスワード{/if}</label>
 				<div class="input_form">
 					{assign var="input_password" value=""}
 					{if isset($smarty.post.password)}
 						{assign var="input_password" value=$smarty.post.password}
 					{/if}
-					<input type="password" name="password" value="{$input_password}">
+					<input type="password" name="password" value="{$input_password}" placeholder="{if $is_en}Password{else}パスワード{/if}">
 				</div>
 			</div>
 			{if isset($error_message)}
@@ -93,14 +97,20 @@
 			<br>
 			<div class="div_input_button">
 				<input type="hidden" name="csrf_token" value="{$csrf_token}">
-				<input type="submit" value="ログイン / Log in" class="input_button">
+				<input type="submit" value="{if $is_en}Log in{else}ログイン{/if}" class="input_button">
 			</div>
 		</form>
 		<br>
 		<div class="login-links">
-			▶︎新規従事者登録は、<a href="/account/langForm/">こちら</a>（ New registration <a href="/account/langForm/">here</a> ）<br>
-			<br>
-			▶︎パスワードを忘れた方は、<a href="/login/reissuePasswordForm/">こちら</a>（ Forgotten your password, <a href="/login/reissuePasswordForm/">here</a> ）
+			{if $is_en}
+				▶︎New registration is <a href="/account/langForm/">here</a><br>
+				<br>
+				▶︎Forgotten your password? Click <a href="/login/reissuePasswordForm/">here</a>
+			{else}
+				▶︎新規従事者登録は、<a href="/account/langForm/">こちら</a><br>
+				<br>
+				▶︎パスワードを忘れた方は、<a href="/login/reissuePasswordForm/">こちら</a>
+			{/if}
 		</div>
 	</div>
 
