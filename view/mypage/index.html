@@ -1,15 +1,14 @@
-<script type="text/javascript">
-$(function(){
-    //表示非表示切替
-    $("#aShowHide").on("click",function(){
-        $("#caution").slideToggle(500);
-    });//
-});
-</script>
-
 <div>
 
 	{* QRコード*}
+	<div class="h_form">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			QRコード
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			QR Code
+		{/if}
+	</div>
+	<br>
 	<div class="div_qr_code" id="qr-section">
 		{if $smarty.const.PARAM_CONST_USER_APPROVE_TYPE_PASSED == $login_user->approve_type}
 			{if $smarty.const.IS_DISPLAY_MEMBER_CODE_QR}
@@ -38,73 +37,59 @@ $(function(){
 		{/if}
 	</div>
 	<br>
-	<div id="work-rule-section">
+	<div class="h_form" id="work-rule-section">
+		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+			作業ルール
+		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+			Work Rules
+		{/if}
+	</div>
+	<br>
+	<div>
 	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-		作業参加ルール・注意事項は<a href="#" id="aShowHide">こちら</a>
-		<div id="caution" style="display:none;">
-			<br>
-			＜作業の持ち物＞<br>
-			<br>
-			・着替え<br>
-			　　汗をかく場合があります。非常に寒くなる場合があります。<br>
-			・軽食・飲み物<br>
-			　　すぐに食べられる軽食を持参してください。<br>
-			・携帯電話・スマートフォン<br>
-			　　緊急時の連絡が取れるように持参してください。<br>
-			・免許書・資格証・外国人登録証<br>
-			　　必ず持参してください。<br>
-			<br>
-			＜作業参加のルール＞<br>
-			<br>
-			以下の場合は作業に参加できません。<br>
-			<br>
-			・遅刻厳禁　バスが行ってしまいます。<br>
-			・発熱がある場合はお帰りいただきます。<br>
-			・ルールや決まり事を遵守できない場合は退場となります。<br>
-			・怠けている人には、リーダーの権限により退場していただきます。出入り禁止。<br>
-			・県庁職員さんや従事者同士での暴言、暴力は即退場、出入り禁止になります。<br>
-			・所定場所以外での喫煙は厳禁です。<br>
-			・貴重品はSSや農場内へ持ち込まないでください。一切保証できません。<br>
-			・駐車場内の事故や盗難におきましては一切責任を負えません。<br>
-			・車両や機械の運転は安全を最も重視して行ってください。<br>
-		</div>
+		<ul class="menu">
+			<li><p>作業の持ち物</p></li>
+			<li><p>着替え（汗をかく場合があります。非常に寒くなる場合があります。）</p></li>
+			<li><p>軽食・飲み物（すぐに食べられる軽食を持参してください。）</p></li>
+			<li><p>携帯電話・スマートフォン（緊急時の連絡が取れるように持参してください。）</p></li>
+			<li><p>免許書・資格証・外国人登録証（必ず持参してください。）</p></li>
+			<li><p>作業参加のルール</p></li>
+			<li><p>遅刻厳禁（バスが行ってしまいます。）</p></li>
+			<li><p>発熱がある場合はお帰りいただきます。</p></li>
+			<li><p>ルールや決まり事を遵守できない場合は退場となります。</p></li>
+			<li><p>怠けている人には、リーダーの権限により退場していただきます。出入り禁止。</p></li>
+			<li><p>県庁職員さんや従事者同士での暴言、暴力は即退場、出入り禁止になります。</p></li>
+			<li><p>所定場所以外での喫煙は厳禁です。</p></li>
+			<li><p>貴重品はSSや農場内へ持ち込まないでください。一切保証できません。</p></li>
+			<li><p>駐車場内の事故や盗難におきましては一切責任を負えません。</p></li>
+			<li><p>車両や機械の運転は安全を最も重視して行ってください。</p></li>
+		</ul>
 	{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-		<a href="#" id="aShowHide"> Click here</a> for work participation rules and precautions
-		<div id="caution" style="display:none;">
-			<br>
-			＜What to bring to work＞<br>
-			<br>
-			・Change of clothes<br>
-			　　You may sweat. It may get very cold.<br>
-			・Snacks and drinks<br>
-			　　Please bring snacks that you can eat quickly.<br>
-			・Cell phone/smartphone<br>
-			　　Please be sure to bring it with you as a means of emergency contact.<br>
-			・Driver's license/certificate of qualification/alien registration card<br>
-			　　Please be sure to bring it with you.<br>
-			<br>
-			＜Rules for participating in work＞<br>
-			<br>
-			You cannot participate in the work if:<br>
-			<br>
-			・Being late is strictly prohibited or the bus will leave.<br>
-			・If you have a fever, you will be asked to leave.<br>
-			・If you do not follow the rules and regulations, you will be asked to leave.<br>
-			・Anyone who is lazy will be asked to leave by the leader. No entry or exit.<br>
-			・Abusive language or violence between prefectural government employees or other workers will result in immediate expulsion and a ban on entry.<br>
-			・Smoking is strictly prohibited outside designated areas.<br>
-			・Please do not bring valuables into the service station or farm. We cannot guarantee their safety.<br>
-			・We cannot be held responsible for any accidents or thefts that occur in the parking lot.<br>
-			・Please always prioritize safety when operating vehicles or machinery.<br>
-		</div>
+		<ul class="menu">
+			<li><p>What to bring to work</p></li>
+			<li><p>Change of clothes (You may sweat. It may get very cold.)</p></li>
+			<li><p>Snacks and drinks (Please bring snacks that you can eat quickly.)</p></li>
+			<li><p>Cell phone/smartphone (Please be sure to bring it with you as a means of emergency contact.)</p></li>
+			<li><p>Driver's license/certificate of qualification/alien registration card (Please be sure to bring it with you.)</p></li>
+			<li><p>Rules for participating in work</p></li>
+			<li><p>Being late is strictly prohibited or the bus will leave.</p></li>
+			<li><p>If you have a fever, you will be asked to leave.</p></li>
+			<li><p>If you do not follow the rules and regulations, you will be asked to leave.</p></li>
+			<li><p>Anyone who is lazy will be asked to leave by the leader. No entry or exit.</p></li>
+			<li><p>Abusive language or violence between prefectural government employees or other workers will result in immediate expulsion and a ban on entry.</p></li>
+			<li><p>Smoking is strictly prohibited outside designated areas.</p></li>
+			<li><p>Please do not bring valuables into the service station or farm. We cannot guarantee their safety.</p></li>
+			<li><p>We cannot be held responsible for any accidents or thefts that occur in the parking lot.</p></li>
+			<li><p>Please always prioritize safety when operating vehicles or machinery.</p></li>
+		</ul>
 	{/if}
 	</div>
 	<br>
-	<div class="h_form">
+	<div class="h_form" id="shift-section">
 		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-			マイメニュー
+			シフト
 		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-			Menu
+			Shift
 		{/if}
 	</div>
 	<br>
@@ -145,11 +130,11 @@ $(function(){
 	</ul>
 	<br>
 	<br>
-	<div class="h_form">
+	<div class="h_form" id="setting-section">
 		{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-			従事者情報の確認・変更
+			設定
 		{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-			Checking and modifing information
+			Settings
 		{/if}
 	</div>
 	<br>
@@ -166,17 +151,6 @@ $(function(){
 			</a>
 		</li>
 		<li>
-			<a href="/mypage/editPasswordForm/">
-				<p>
-					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-						パスワードの変更
-					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-						Change password
-					{/if}
-				</p>
-			</a>
-		</li>
-		<li>
 			<a href="/mypage/uploadCertForm/">
 				<p>
 					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
@@ -188,12 +162,23 @@ $(function(){
 			</a>
 		</li>
 		<li>
+			<a href="/mypage/editPasswordForm/">
+				<p>
+					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
+						パスワードの変更
+					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
+						Change password
+					{/if}
+				</p>
+			</a>
+		</li>
+		<li>
 			<a href="/mypage/resignForm/">
 				<p>
 					{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-						退会をご希望の方
+						退会
 					{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-						Cancel your membership
+						Resign
 					{/if}
 				</p>
 			</a>
