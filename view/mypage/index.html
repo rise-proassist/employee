@@ -154,6 +154,34 @@
 		</li>
 	</ul>
 	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var settingSection = document.getElementById('setting-section');
+			if (!settingSection || settingSection.classList.contains('is-hidden')) {
+				return;
+			}
+
+			var links = settingSection.querySelectorAll('a[href]');
+			for (var i = 0; i < links.length; i++) {
+				links[i].addEventListener('click', function(event) {
+					if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+						return;
+					}
+
+					event.preventDefault();
+					var href = this.getAttribute('href');
+					if (!href) {
+						return;
+					}
+
+					settingSection.classList.add('is-push-transition');
+					setTimeout(function() {
+						window.location.href = href;
+					}, 220);
+				});
+			}
+		});
+	</script>
 	<div class="mypage-tab-content {if 'query-log' != $active_tab}is-hidden{/if}" id="query-log-section">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>

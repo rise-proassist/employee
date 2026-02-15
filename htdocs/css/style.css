@@ -943,6 +943,44 @@ body {
     padding: 8px;
 }
 
+#setting-section {
+    position: relative;
+    overflow: hidden;
+}
+
+#setting-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: 100%;
+    background: #ffffff;
+    pointer-events: none;
+}
+
+#setting-section .menu {
+    transition: transform .22s ease, opacity .22s ease;
+}
+
+#setting-section.is-push-transition .menu {
+    transform: translateX(-18%);
+    opacity: .45;
+}
+
+#setting-section.is-push-transition::after {
+    animation: settings-push-in .22s ease forwards;
+}
+
+@keyframes settings-push-in {
+    from {
+        left: 100%;
+    }
+    to {
+        left: 0;
+    }
+}
+
 .mypage-tab-content.is-hidden {
     display: none;
 }
