@@ -28,14 +28,6 @@
 				確定シフトはございません。
 			{/if}
 		</div>
-		<br>
-		<div class="div_input_button">
-			{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
-				<input type="button" value="マイページへ戻る" class="input_button" onclick="location.href='/mypage'">
-			{else if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}
-				<input type="button" value="Return to Mypage" class="input_button" onclick="location.href='/mypage'">
-			{/if}
-		</div>
 
 	</form>
 
