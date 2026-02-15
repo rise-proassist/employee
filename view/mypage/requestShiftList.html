@@ -29,10 +29,15 @@
 						<td class="left">
 							<div class="request-shift-row">
 								<span class="request-shift-row-text">
-									{$user_request_shift->shift_date_from|date_format:"%Y年%m月%d日"}({UtilCommon::get_yb($user_request_shift->shift_date_from)}）
-									{$user_request_shift->shift_date_from|date_format:"%-H:%M"} 〜 
-									{$user_request_shift->shift_date_to|date_format:"%Y年%m月%d日"}({UtilCommon::get_yb($user_request_shift->shift_date_from)}）
-									{$user_request_shift->shift_date_to|date_format:"%-H:%M"}
+									{assign var=shift_from_ymd value=$user_request_shift->shift_date_from|date_format:"%Y%m%d"}
+									{assign var=shift_to_ymd value=$user_request_shift->shift_date_to|date_format:"%Y%m%d"}
+									{$user_request_shift->shift_date_from|date_format:"%Y/%m/%d"}({UtilCommon::get_yb($user_request_shift->shift_date_from)})
+									{$user_request_shift->shift_date_from|date_format:"%H:%M"} 〜
+									{if $shift_from_ymd == $shift_to_ymd}
+										{$user_request_shift->shift_date_to|date_format:"%H:%M"}
+									{else}
+										(翌) {$user_request_shift->shift_date_to|date_format:"%H:%M"}
+									{/if}
 								</span>
 								<button type="button" class="icon-delete-button" onclick="location.href='/mypage/requestShiftDelFinish/?id={$user_request_shift->id}'" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Delete{else}削除{/if}">
 									<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
