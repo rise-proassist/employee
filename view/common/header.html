@@ -50,29 +50,38 @@
 	<div class="header-sub-row">
 		{if isset($controller) && 'mypage' == $controller}
 			{assign var=header_active_tab value=$smarty.get.tab|default:'qr'}
-			<span class="header-tab-name">
-				{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}
-					{if 'rules' == $header_active_tab}
-						Work Rules
-					{else if 'shift' == $header_active_tab}
-						Shift
-					{else if 'settings' == $header_active_tab}
-						Settings
-					{else}
-						QR Code
-					{/if}
-				{else}
-					{if 'rules' == $header_active_tab}
-						作業ルール
-					{else if 'shift' == $header_active_tab}
-						シフト
-					{else if 'settings' == $header_active_tab}
-						設定
-					{else}
-						QRコード
-					{/if}
-				{/if}
-			</span>
+			<nav class="header-breadcrumb" aria-label="Breadcrumb">
+				<ol>
+					<li>
+						<a href="/mypage/?tab=qr">
+							{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}My Page{else}マイページ{/if}
+						</a>
+					</li>
+					<li aria-current="page">
+						{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}
+							{if 'rules' == $header_active_tab}
+								Work Rules
+							{else if 'shift' == $header_active_tab}
+								Shift
+							{else if 'settings' == $header_active_tab}
+								Settings
+							{else}
+								QR Code
+							{/if}
+						{else}
+							{if 'rules' == $header_active_tab}
+								作業ルール
+							{else if 'shift' == $header_active_tab}
+								シフト
+							{else if 'settings' == $header_active_tab}
+								設定
+							{else}
+								QRコード
+							{/if}
+						{/if}
+					</li>
+				</ol>
+			</nav>
 		{/if}
 	</div>
 
