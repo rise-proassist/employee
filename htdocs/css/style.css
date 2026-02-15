@@ -878,6 +878,10 @@ body {
     color: dodgerblue;
 }
 
+.mypage-tab-content {
+    padding: 8px;
+}
+
 .mypage-tab-content.is-hidden {
     display: none;
 }
