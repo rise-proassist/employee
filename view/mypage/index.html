@@ -29,8 +29,6 @@
 			{/if}
 		{/if}
 	</div>
-	</div>
-	<div class="mypage-tab-content {if 'rules' != $active_tab}is-hidden{/if}" id="work-rule-section">
 	<div>
 	{if $smarty.const.PARAM_CONST_LANG_TYPE_JP == $login_user->lang_type}
 		<ul class="menu">
@@ -70,6 +68,9 @@
 		</ul>
 	{/if}
 	</div>
+	</div>
+	<div class="mypage-tab-content {if 'rules' != $active_tab}is-hidden{/if}" id="work-rule-section">
+	<div></div>
 	</div>
 	<div class="mypage-tab-content {if 'request-shift' != $active_tab}is-hidden{/if}" id="request-shift-section">
 	<ul class="menu">
