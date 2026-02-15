@@ -3,6 +3,43 @@
 	$(function() {
 		var isDragging = false;
 		var dragStartDate = null;
+		var $popupOverlay = $('.shift-popup-overlay');
+		var $startSlider = $('#shift-start-hour');
+		var $endSlider = $('#shift-end-hour');
+		var $timeLabel = $('.shift-popup-time-label');
+		var $timeRange = $('.shift-popup-time-range');
+
+		var updateShiftPopupPreview = function() {
+			var startHour = parseInt($startSlider.val(), 10);
+			var endHour = parseInt($endSlider.val(), 10);
+
+			if (endHour < startHour) {
+				endHour = startHour;
+				$endSlider.val(endHour);
+			}
+
+			var startLabel = ('0' + startHour).slice(-2);
+			var endLabel = ('0' + endHour).slice(-2);
+			$timeLabel.text(startLabel + ':00 - ' + endLabel + ':00');
+
+			var leftPercent = (startHour / 24) * 100;
+			var widthPercent = ((endHour - startHour) / 24) * 100;
+			$timeRange.css({
+				left: leftPercent + '%',
+				width: (widthPercent > 0 ? widthPercent : 1.5) + '%'
+			});
+		};
+
+		var openShiftPopup = function(dateKey) {
+			$popupOverlay.attr('data-date', dateKey).addClass('is-open');
+			$startSlider.val(9);
+			$endSlider.val(17);
+			updateShiftPopupPreview();
+		};
+
+		var closeShiftPopup = function() {
+			$popupOverlay.removeClass('is-open');
+		};
 
 		var setCellSelected = function($cell, selected) {
 			$cell.toggleClass('is-selected', selected);
@@ -21,7 +58,7 @@
 		};
 
 		$('.request-shift-calendar').on('mousedown', '.calendar-day-cell', function(e) {
-			if ($(e.target).closest('.icon-delete-button').length) {
+			if ($(e.target).closest('.icon-delete-button, .calendar-add-button').length) {
 				return;
 			}
 
@@ -57,6 +94,36 @@
 				e.preventDefault();
 				$('.calendar-day-cell.is-selected').removeClass('is-selected');
 				$(this).addClass('is-selected');
+			}
+		});
+
+		$('.request-shift-calendar').on('click', '.calendar-add-button', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			openShiftPopup($(this).closest('.calendar-day-cell').data('date'));
+		});
+
+		$startSlider.on('input change', function() {
+			if (parseInt($startSlider.val(), 10) > parseInt($endSlider.val(), 10)) {
+				$endSlider.val($startSlider.val());
+			}
+			updateShiftPopupPreview();
+		});
+
+		$endSlider.on('input change', function() {
+			if (parseInt($endSlider.val(), 10) < parseInt($startSlider.val(), 10)) {
+				$startSlider.val($endSlider.val());
+			}
+			updateShiftPopupPreview();
+		});
+
+		$('.shift-popup-cancel, .shift-popup-ok').on('click', function() {
+			closeShiftPopup();
+		});
+
+		$popupOverlay.on('click', function(e) {
+			if ($(e.target).is('.shift-popup-overlay')) {
+				closeShiftPopup();
 			}
 		});
 	});
@@ -117,6 +184,11 @@
 									<tr>
 										{foreach from=$calendar_week item=calendar_day}
 											<td class="calendar-day-cell {if !$calendar_day.in_month}is-other-month{/if} {if $calendar_day.is_sunday}is-sunday{/if} {if $calendar_day.is_saturday}is-saturday{/if}" tabindex="0" data-date="{$calendar_day.date_key}">
+												<button type="button" class="calendar-add-button" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Add shift{else}シフト追加{/if}">
+													<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+														<path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="1.8"/>
+													</svg>
+												</button>
 												<div class="calendar-day-number">{$calendar_day.day}</div>
 												{if $calendar_day.shifts}
 													<div class="calendar-shift-list">{strip}
@@ -166,6 +238,27 @@
 				There is no desired shift registered.
 			{/if}
 		{/if}
+	</div>
+
+	<div class="shift-popup-overlay" aria-hidden="true">
+		<div class="shift-popup-window" role="dialog" aria-modal="true">
+			<div class="shift-popup-slider-block">
+				<label class="shift-popup-label" for="shift-start-hour">開始時刻</label>
+				<input id="shift-start-hour" class="shift-popup-slider" type="range" min="0" max="23" step="1" value="9">
+			</div>
+			<div class="shift-popup-slider-block">
+				<label class="shift-popup-label" for="shift-end-hour">終了時刻</label>
+				<input id="shift-end-hour" class="shift-popup-slider" type="range" min="0" max="23" step="1" value="17">
+			</div>
+			<div class="shift-popup-graph">
+				<div class="shift-popup-time-range"></div>
+			</div>
+			<div class="shift-popup-time-label">09:00 - 17:00</div>
+			<div class="shift-popup-buttons">
+				<button type="button" class="shift-popup-ok">OK</button>
+				<button type="button" class="shift-popup-cancel">キャンセル</button>
+			</div>
+		</div>
 	</div>
 
 </div>
