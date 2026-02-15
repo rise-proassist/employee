@@ -183,7 +183,8 @@
 		</script>
 		<div class="query-log-panel">
 			{if $query_logs}
-				<pre class="query-log-textbox"><code class="language-sql">{foreach from=$query_logs item=query_log}{$query_log.sql|escape}
+				<pre class="query-log-textbox"><code class="language-sql">{foreach from=$query_logs item=query_log}{$query_log|escape}
+
 {/foreach}</code></pre>
 			{else}
 				<div class="query-log-empty">

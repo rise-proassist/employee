@@ -111,41 +111,26 @@ class MypageController extends BaseController {
 				$current = null;
 				foreach ($lines as $line) {
 					if (false !== strpos($line, '[SQL] ')) {
-						if ($current && !empty($current['sql'])) {
+						if ($current && !empty($current)) {
 							$query_logs[] = $current;
 						}
 
-						$time = '';
-						if (preg_match('/^(\d{4}-\d{2}-\d{2} [0-9:\.]+)/', $line, $matches)) {
-							$time = $matches[1];
+						$sql = trim(substr($line, strpos($line, '[SQL] ') + 6));
+						if (preg_match('/^SELECT\b/i', ltrim($sql))) {
+							$current = null;
+							continue;
 						}
 
-						$sql = trim(substr($line, strpos($line, '[SQL] ') + 6));
-						$current = array(
-							'time' => $time,
-							'sql' => $sql,
-							'params' => '',
-							'result' => '',
-						);
+						$current = $sql;
 
 						continue;
 					}
 
 					if (!$current)
 						continue;
-
-					if (false !== strpos($line, '[SQL-Params] ')) {
-						$current['params'] = trim(substr($line, strpos($line, '[SQL-Params] ') + 13));
-						continue;
-					}
-
-					if (false !== strpos($line, '[SQL-Result] ')) {
-						$current['result'] = trim(substr($line, strpos($line, '[SQL-Result] ') + 13));
-						continue;
-					}
 				}
 
-				if ($current && !empty($current['sql'])) {
+				if ($current && !empty($current)) {
 					$query_logs[] = $current;
 				}
 			}
@@ -155,8 +140,15 @@ class MypageController extends BaseController {
 			$query_logs = array_slice($query_logs, -100);
 		}
 
+		$formatted_query_logs = array();
+		foreach ($query_logs as $index => $query_log) {
+			$sql = preg_replace('/\s+/', ' ', trim($query_log));
+			$sql = wordwrap($sql, 110, "\n      ", false);
+			$formatted_query_logs[] = '-- Query ' . str_pad((string)($index + 1), 3, '0', STR_PAD_LEFT) . "\n" . '   ' . $sql;
+		}
+
 		$this->_view->assign('user', $user);
-		$this->_view->assign('query_logs', $query_logs);
+		$this->_view->assign('query_logs', $formatted_query_logs);
 		$this->_view->assign('query_log_file', basename($log_file));
 	}
 
