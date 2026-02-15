@@ -452,6 +452,48 @@ abstract class DaoBase {
 	}
 
 	/**
+	 * 任意SELECT実行
+	 *
+	 * @param string $sql SQL
+	 * @return array
+	 */
+	public function execute_raw_select($sql) {
+
+		$this->_logger->info('[SQL] ' . $sql);
+		$this->_logger->info('[SQL-Params]');
+
+		$pdo = $this->_dba->getPdo();
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		$this->_logger->info('[SQL-Result] Select Record Num : ' . count((array)$rows));
+
+		return $rows;
+	}
+
+	/**
+	 * 任意更新系SQL実行
+	 *
+	 * @param string $sql SQL
+	 * @return int
+	 */
+	public function execute_raw_mutation($sql) {
+
+		$this->_logger->info('[SQL] ' . $sql);
+		$this->_logger->info('[SQL-Params]');
+
+		$pdo = $this->_dba->getPdo();
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute();
+		$affected = (int)$stmt->rowCount();
+
+		$this->_logger->info('[SQL-Result] Affected Record Num : ' . $affected);
+
+		return $affected;
+	}
+
+	/**
 	 * 全削除
 	 * @see DaoBase::truncate()
 	 */

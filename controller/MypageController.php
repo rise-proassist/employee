@@ -27,6 +27,8 @@ class MypageController extends BaseController {
 	const PASSWORD_LENGTH = 16;
 
 	const RESULT_LIST_LIMIT = 6;
+	const DEBUG_HISTORY_MAX_BYTES = 262144;
+	const DEBUG_HISTORY_MAX_ENTRY_BYTES = 32768;
 
 	private function to_sql_literal($value) {
 
@@ -192,17 +194,59 @@ class MypageController extends BaseController {
 	private function append_debug_history_entry($command, $output, $executed_at) {
 
 		$data = $this->load_debug_history_data();
-		$data['entries'][] = array(
+		$entry = array(
 			'executed_at' => (string)$executed_at,
-			'command' => (string)$command,
-			'output' => (string)$output,
+			'command' => $this->trim_debug_text((string)$command, self::DEBUG_HISTORY_MAX_ENTRY_BYTES),
+			'output' => $this->trim_debug_text((string)$output, self::DEBUG_HISTORY_MAX_ENTRY_BYTES),
 		);
 
-		if (count($data['entries']) > 500) {
-			$data['entries'] = array_slice($data['entries'], -500);
-		}
+		$data['entries'][] = $entry;
+		$data['entries'] = $this->trim_debug_history_entries_by_size($data['entries'], self::DEBUG_HISTORY_MAX_BYTES);
 
 		$this->save_debug_history_data($data);
+	}
+
+	private function trim_debug_text($text, $max_bytes) {
+
+		$text = (string)$text;
+		if (strlen($text) <= $max_bytes) {
+			return $text;
+		}
+
+		return substr($text, -$max_bytes);
+	}
+
+	private function format_debug_history_entry_text($entry) {
+
+		$executed_at = isset($entry['executed_at']) ? $entry['executed_at'] : '';
+		$command = isset($entry['command']) ? $entry['command'] : '';
+		$output = isset($entry['output']) ? $entry['output'] : '';
+
+		return '[' . $executed_at . '] > ' . $command . "\n" . $output;
+	}
+
+	private function trim_debug_history_entries_by_size($entries, $max_bytes) {
+
+		$entries = is_array($entries) ? $entries : array();
+		while ($entries) {
+			$text = $this->get_debug_history_text_from_entries($entries);
+			if (strlen($text) <= $max_bytes) {
+				break;
+			}
+			array_shift($entries);
+		}
+
+		return $entries;
+	}
+
+	private function get_debug_history_text_from_entries($entries) {
+
+		$lines = array();
+		foreach ((array)$entries as $entry) {
+			$lines[] = $this->format_debug_history_entry_text($entry);
+		}
+
+		return implode("\n\n", $lines);
 	}
 
 	private function get_debug_history_text() {
@@ -213,15 +257,7 @@ class MypageController extends BaseController {
 			return '';
 		}
 
-		$lines = array();
-		foreach ($entries as $entry) {
-			$executed_at = isset($entry['executed_at']) ? $entry['executed_at'] : '';
-			$command = isset($entry['command']) ? $entry['command'] : '';
-			$output = isset($entry['output']) ? $entry['output'] : '';
-			$lines[] = '[' . $executed_at . '] > ' . $command . "\n" . $output;
-		}
-
-		return implode("\n\n", $lines);
+		return $this->get_debug_history_text_from_entries($entries);
 	}
 
 	private function normalize_debug_query($query) {
@@ -718,15 +754,14 @@ class MypageController extends BaseController {
 				throw new Exception('Only SELECT/SHOW TABLES/INSERT/UPDATE/DELETE queries are supported.');
 			}
 
-			$pdo = DatabaseAccess::get_instance()->getPdo();
-			$stmt = $pdo->prepare($query);
-			$stmt->execute();
+			$dao_debug_query = new DaoDebugQuery();
 
 			if ($query_type === 'select') {
-				$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$rows = $dao_debug_query->execute_raw_select($query);
 				$result['output'] = $this->format_ascii_table($rows);
 			} else {
-				$result['output'] = $stmt->rowCount() . ' rows affected.';
+				$affected_rows = $dao_debug_query->execute_raw_mutation($query);
+				$result['output'] = $affected_rows . ' rows affected.';
 			}
 
 			$result['ok'] = true;
