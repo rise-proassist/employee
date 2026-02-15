@@ -968,9 +968,9 @@ a:focus-visible {
 }
 
 .icon-delete-button {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
     padding: 0;
     margin-left: 8px;
     border-radius: 8px;
@@ -993,13 +993,15 @@ a:focus-visible {
     color: #dc2626;
 }
 
-.request-shift-list-table td {
-    height: 32px;
-    padding-top: 0;
-    padding-bottom: 0;
+.request-shift-list-table td,
+.request-shift-list-table td.left {
+    height: 32px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .request-shift-row {
+    height: 32px;
     min-height: 32px;
     display: flex;
     align-items: center;
