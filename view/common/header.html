@@ -32,7 +32,7 @@
 		{else if 'query-log' == $header_active_tab}
 			{assign var=header_top_title value='クエリログ'}
 		{else if 'settings' == $header_active_tab || 'detail' == $action || 'uploadCertForm' == $action || 'uploadCertConfirm' == $action || 'uploadCertFinish' == $action || 'editPasswordForm' == $action || 'editPasswordConfirm' == $action || 'editPasswordFinish' == $action || 'resignForm' == $action || 'resignFinish' == $action}
-			{assign var=header_top_title value='設定'}
+			{assign var=header_top_title value='アカウント設定'}
 		{else}
 			{assign var=header_top_title value="`$login_user->name` (`$login_user->code`)"}
 		{/if}
@@ -130,7 +130,7 @@
 							{else if 'result-shift' == $header_active_tab}
 								Confirmed Shift
 							{else if 'settings' == $header_active_tab}
-								Settings
+								Account Settings
 							{else if 'query-log' == $header_active_tab}
 								Query Log
 							{else}
@@ -144,7 +144,7 @@
 							{else if 'result-shift' == $header_active_tab}
 								確定シフト
 							{else if 'settings' == $header_active_tab}
-								設定
+								アカウント設定
 							{else if 'query-log' == $header_active_tab}
 								クエリログ
 							{else}
