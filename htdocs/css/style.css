@@ -1628,12 +1628,6 @@ body.login-page .login-note-area li:last-child {
     padding-top: 0;
 }
 
-.query-log-time {
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 6px;
-}
-
 .query-log-item pre {
     margin: 0;
     overflow-x: auto;

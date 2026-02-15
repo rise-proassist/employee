@@ -192,7 +192,6 @@
 			{if $query_logs}
 				{foreach from=$query_logs item=query_log}
 					<div class="query-log-item">
-						<div class="query-log-time">{$query_log.time|escape}</div>
 						<pre><code class="language-sql">{$query_log.sql|escape}</code></pre>
 						{if $query_log.params}
 							<div class="query-log-sub">Params: {$query_log.params|escape}</div>
