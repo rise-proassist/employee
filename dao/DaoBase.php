@@ -98,6 +98,12 @@ abstract class DaoBase {
 		@file_put_contents($log_file, $current, LOCK_EX);
 	}
 
+	public function clear_debug_footer_log() {
+
+		$this->ensure_debug_footer_scope();
+		@file_put_contents($this->get_debug_footer_log_file_path(), '', LOCK_EX);
+	}
+
 	protected function log_sql($sql) {
 
 		$message = '[SQL] ' . $sql;

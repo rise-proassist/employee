@@ -192,8 +192,19 @@
 
 		var savedHeight = parseInt(localStorage.getItem(storageKey), 10);
 		applyHeight(isNaN(savedHeight) ? defaultHeight : savedHeight);
-		renderLogText(queryBody ? queryBody.textContent : '');
+		renderLogText('');
 		scrollToBottom();
+
+		fetch('/mypage/clearDebugFooterLog/', {
+			method: 'POST',
+			credentials: 'same-origin'
+		}).then(function() {
+			renderLogText('');
+			scrollToBottom();
+		}).catch(function() {
+			renderLogText('');
+			scrollToBottom();
+		});
 
 		window.addEventListener('resize', function() {
 			applyHeight(parseInt(footer.style.height, 10) || defaultHeight);

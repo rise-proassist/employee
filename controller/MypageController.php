@@ -783,6 +783,16 @@ class MypageController extends BaseController {
 		exit;
 	}
 
+	public function clearDebugFooterLogAction() {
+
+		$dao_debug_query = new DaoDebugQuery();
+		$dao_debug_query->clear_debug_footer_log();
+
+		header('Content-type: application/json; charset=utf-8');
+		echo json_encode(array('ok' => true, 'logText' => ''), JSON_UNESCAPED_UNICODE);
+		exit;
+	}
+
 	/**
 	 * 確定作業一覧アクション
 	 *
