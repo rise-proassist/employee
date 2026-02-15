@@ -1292,7 +1292,7 @@ a:focus-visible {
     left: 0;
     right: 0;
     top: 50%;
-    height: 8px;
+    height: 16px;
     border-radius: 999px;
     background: #e5e7eb;
     transform: translateY(-50%);
@@ -1320,36 +1320,36 @@ a:focus-visible {
 }
 
 .shift-popup-slider::-webkit-slider-runnable-track {
-    height: 8px;
+    height: 16px;
     background: transparent;
 }
 
 .shift-popup-slider::-moz-range-track {
-    height: 8px;
+    height: 16px;
     background: transparent;
 }
 
 .shift-popup-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 16px;
-    height: 16px;
-    margin-top: -4px;
+    width: 10px;
+    height: 10px;
+    margin-top: 3px;
     border-radius: 50%;
-    border: 2px solid #10b981;
-    background: #ffffff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    border: 1px solid #10b981;
+    background: #10b981;
+    box-shadow: none;
     cursor: pointer;
     pointer-events: auto;
 }
 
 .shift-popup-slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    border: 2px solid #10b981;
-    background: #ffffff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    border: 1px solid #10b981;
+    background: #10b981;
+    box-shadow: none;
     cursor: pointer;
     pointer-events: auto;
 }
@@ -1365,7 +1365,7 @@ a:focus-visible {
 .shift-popup-time-range {
     position: absolute;
     top: 50%;
-    height: 8px;
+    height: 16px;
     transform: translateY(-50%);
     background: #10b981;
     border-radius: 999px;
