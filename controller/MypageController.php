@@ -462,7 +462,7 @@ class MypageController extends BaseController {
 				throw new Exception("Error Processing Request", 1);	
 
 			$entity_user_request_shift = new EntityUserRequestShift();
-			$entity_user_request_shift->id = null;
+			unset($entity_user_request_shift->id);
 			$entity_user_request_shift->user_id = $this->_login_user->id;
 			$entity_user_request_shift->shift_date_from = $shift_date_from;
 			$entity_user_request_shift->shift_date_to = $shift_date_to;
