@@ -9,6 +9,7 @@
 		var $timeRange = $('.shift-popup-time-range');
 		var $startTimeLabel = $('.shift-popup-handle-label.is-start');
 		var $endTimeLabel = $('.shift-popup-handle-label.is-end');
+		var $targetDateList = $('.shift-popup-target-date-list');
 
 		var updateShiftPopupPreview = function() {
 			var startHour = parseInt($startSlider.val(), 10);
@@ -36,7 +37,30 @@
 		};
 
 		var openShiftPopup = function(dateKey) {
-			$popupOverlay.attr('data-date', dateKey).addClass('is-open');
+			var $selectedCells = $('.calendar-day-cell.is-selected');
+			var targetDates = [];
+
+			if ($selectedCells.length > 1 && $selectedCells.filter('[data-date="' + dateKey + '"]').length) {
+				$selectedCells.each(function() {
+					targetDates.push($(this).data('date'));
+				});
+			} else {
+				targetDates.push(dateKey);
+			}
+
+			targetDates.sort();
+
+			$targetDateList.empty();
+			$.each(targetDates, function(_, targetDate) {
+				$targetDateList.append(
+					$('<li>').text(String(targetDate).replace(/-/g, '/'))
+				);
+			});
+
+			$popupOverlay
+				.attr('data-date', dateKey)
+				.attr('data-dates', targetDates.join(','))
+				.addClass('is-open');
 			$startSlider.val(9);
 			$endSlider.val(17);
 			updateShiftPopupPreview();
@@ -247,6 +271,10 @@
 
 	<div class="shift-popup-overlay" aria-hidden="true">
 		<div class="shift-popup-window" role="dialog" aria-modal="true">
+			<div class="shift-popup-target-date-block">
+				<div class="shift-popup-target-date-label">{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Target date(s){else}登録対象日{/if}</div>
+				<ul class="shift-popup-target-date-list"></ul>
+			</div>
 			<div class="shift-popup-slider-block">
 				<label class="shift-popup-label" for="shift-start-hour">時刻範囲</label>
 				<div class="shift-popup-dual-slider">
