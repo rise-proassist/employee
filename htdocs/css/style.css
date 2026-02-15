@@ -1149,8 +1149,8 @@ a:focus-visible {
 .calendar-shift-item {
     display: flex;
     align-items: center;
-    gap: 4px;
-    min-height: 22px;
+    gap: 3px;
+    min-height: 16px;
     padding: 0;
 }
 
@@ -1164,37 +1164,37 @@ a:focus-visible {
 }
 
 .calendar-shift-type-icon {
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
 .calendar-shift-type-icon svg {
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
     stroke: currentColor;
 }
 
 .calendar-shift-label {
     flex: 1;
-    font-size: 11px;
-    line-height: 1.2;
+    font-size: 10px;
+    line-height: 1;
 }
 
 .calendar-shift-list .icon-delete-button {
-    width: 22px;
-    height: 22px;
-    min-width: 22px;
-    border-radius: 6px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border-radius: 4px;
     margin-left: 0;
     color: #6b7280;
 }
 
 .calendar-shift-list .icon-delete-button svg {
-    width: 13px;
-    height: 13px;
+    width: 9px;
+    height: 9px;
 }
 
 .input_form input[type="text"],
