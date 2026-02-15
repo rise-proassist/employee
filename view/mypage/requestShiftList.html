@@ -192,6 +192,35 @@
 			openShiftPopup($(this).closest('.calendar-day-cell').data('date'));
 		});
 
+		$('.request-shift-calendar').on('click', '.icon-delete-button', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			var $button = $(this);
+			var deleteUrl = $button.data('deleteUrl');
+			if (!deleteUrl || $button.prop('disabled')) {
+				return;
+			}
+
+			$button.prop('disabled', true);
+
+			$.ajax({
+				url: deleteUrl,
+				type: 'GET'
+			}).done(function() {
+				var $shiftItem = $button.closest('.calendar-shift-item');
+				var $shiftList = $shiftItem.closest('.calendar-shift-list');
+				$shiftItem.remove();
+
+				if ($shiftList.find('.calendar-shift-item').length === 0) {
+					$shiftList.remove();
+				}
+			}).fail(function() {
+				$button.prop('disabled', false);
+				alert('削除に失敗しました。再度お試しください。');
+			});
+		});
+
 		$startSlider.on('input change', function() {
 			if (parseInt($startSlider.val(), 10) > parseInt($endSlider.val(), 10)) {
 				$startSlider.val($endSlider.val());
@@ -297,7 +326,7 @@
 																</span>
 																<span class="calendar-shift-label">{$calendar_shift.label}</span>
 																{if 'request' == $calendar_shift.type}
-																<button type="button" class="icon-delete-button" onclick="location.href='/mypage/requestShiftDelFinish/?id={$calendar_shift.id}'" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Delete{else}削除{/if}">
+																<button type="button" class="icon-delete-button" data-delete-url="/mypage/requestShiftDelFinish/?id={$calendar_shift.id}" aria-label="{if $smarty.const.PARAM_CONST_LANG_TYPE_EN == $login_user->lang_type}Delete{else}削除{/if}">
 																	<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
 																		<path d="M4 7H20" stroke="currentColor" stroke-width="1.8"/>
 																		<path d="M9 7V5C9 4.45 9.45 4 10 4H14C14.55 4 15 4.45 15 5V7" stroke="currentColor" stroke-width="1.8"/>
