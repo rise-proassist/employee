@@ -1151,19 +1151,30 @@ a:focus-visible {
     align-items: center;
     gap: 4px;
     min-height: 22px;
-    border-radius: 6px;
-    padding: 0 4px;
+    padding: 0;
 }
 
 .calendar-shift-item.is-request {
-    background: dodgerblue;
-    color: #ffffff;
+    color: dodgerblue;
 }
 
 .calendar-shift-item.is-confirmed {
-    background: #ff00ff;
-    color: #ffffff;
+    color: #ff00ff;
     font-weight: 700;
+}
+
+.calendar-shift-type-icon {
+    width: 14px;
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-shift-type-icon svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
 }
 
 .calendar-shift-label {
@@ -1178,7 +1189,7 @@ a:focus-visible {
     min-width: 22px;
     border-radius: 6px;
     margin-left: 0;
-    color: #ffffff;
+    color: #6b7280;
 }
 
 .calendar-shift-list .icon-delete-button svg {
