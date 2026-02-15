@@ -13,7 +13,11 @@ class Dispatcher {
 	function __construct() {
 
 		// ログ設定ファイル
-		Logger::configure(LIB_DIR . '/log4php/src/log4php.properties');
+		$log4php_config = LIB_DIR . '/log4php/src/log4php.local.properties';
+		if (!file_exists($log4php_config)) {
+			$log4php_config = LIB_DIR . '/log4php/src/log4php.properties';
+		}
+		Logger::configure($log4php_config);
 
 		// ホスト情報をロギング
 		LoggerMDC::put('ADDR', isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '-');
