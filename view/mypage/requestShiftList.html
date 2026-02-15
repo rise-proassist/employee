@@ -175,6 +175,7 @@
 			return $.ajax({
 				url: '/mypage/requestShiftAddFinish/',
 				type: 'POST',
+				dataType: 'html',
 				data: {
 					shift_date_from: dateKey,
 					shift_time_from: startHour + ':00',
@@ -184,21 +185,53 @@
 			});
 		};
 
-		var runDeferredList = function(requests) {
-			if (!requests.length) {
-				return $.Deferred().resolve().promise();
+		var extractRegisterErrorMessage = function(responseText) {
+			var $response = $('<div>').html(responseText || '');
+			var $alert = $response.find('.alert').first();
+
+			if ($alert.length) {
+				return $.trim($alert.text());
 			}
-			return $.when.apply($, requests);
+
+			return '';
 		};
 
-		var getRequestDeleteButtonsForDates = function(targetDates) {
-			var $buttons = $();
-			$.each(targetDates, function(_, dateKey) {
-				$buttons = $buttons.add(
-					$('.calendar-day-cell[data-date="' + dateKey + '"] .calendar-shift-item.is-request .icon-delete-button')
-				);
-			});
-			return $buttons;
+		var isRegisterSuccessResponse = function(responseText) {
+			if (!responseText) {
+				return false;
+			}
+
+			return responseText.indexOf('希望シフトを登録しました') !== -1 ||
+				responseText.indexOf('Your desired shift has been registered') !== -1;
+		};
+
+		var registerShiftsSequentially = function(targetDates) {
+			var deferred = $.Deferred();
+			var index = 0;
+
+			var next = function() {
+				if (index >= targetDates.length) {
+					deferred.resolve();
+					return;
+				}
+
+				registerShiftForDate(targetDates[index])
+					.done(function(responseText) {
+						if (!isRegisterSuccessResponse(responseText)) {
+							deferred.reject(extractRegisterErrorMessage(responseText));
+							return;
+						}
+
+						index += 1;
+						next();
+					})
+					.fail(function() {
+						deferred.reject('');
+					});
+			};
+
+			next();
+			return deferred.promise();
 		};
 
 		var setCellSelected = function($cell, selected) {
@@ -337,28 +370,17 @@
 
 			$popupOkButton.prop('disabled', true);
 
-			var deleteRequests = $.map(getRequestDeleteButtonsForDates(targetDates), function(buttonElement) {
-				return deleteShiftButton($(buttonElement));
-			});
-
-			runDeferredList(deleteRequests)
+			registerShiftsSequentially(targetDates)
 				.done(function() {
-					var addRequests = $.map(targetDates, function(dateKey) {
-						return registerShiftForDate(dateKey);
-					});
-
-					runDeferredList(addRequests)
-						.done(function() {
-							window.location.reload();
-						})
-						.fail(function() {
-							$popupOkButton.prop('disabled', false);
-							alert('登録に失敗しました。再度お試しください。');
-						});
+					window.location.reload();
 				})
-				.fail(function() {
+				.fail(function(errorMessage) {
 					$popupOkButton.prop('disabled', false);
-					alert('上書きの前処理に失敗しました。再度お試しください。');
+					if (errorMessage) {
+						alert(errorMessage);
+						return;
+					}
+					alert('登録に失敗しました。再度お試しください。');
 				});
 		});
 
