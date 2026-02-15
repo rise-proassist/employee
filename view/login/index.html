@@ -24,7 +24,7 @@
 
 <header>
 
-	<div class="site_name"><a href="{$smarty.const.WEB_SRC}" class="site_name">{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Chiba Chikusan{else}{$smarty.const.SITE_NAME}{/if}</a></div>
+	<div class="site_name"><a href="{$smarty.const.WEB_SRC}" class="site_name">{if $selected_lang_type == $smarty.const.PARAM_CONST_LANG_TYPE_EN}Chiba Avian Influenza Worker Registration{else}{$smarty.const.SITE_NAME}{/if}</a></div>
 	{if isset($lang_types)}
 		<details class="header-lang-toggle">
 			<summary class="header-lang-button" aria-label="Language selector">
@@ -64,7 +64,8 @@
 		<div class="page_titile">{if $is_en}Log in{else}ログイン{/if}</div>
 		<br>
 		{if $is_en}
-			Please enter your employee's email address and password.<br>
+			This website is for worker registration related to avian influenza culling operations in Chiba Prefecture.<br>
+			Please enter your registered email address and password.<br>
 		{else}
 			従事者のメールアドレスとパスワードをご入力ください。<br>
 		{/if}
