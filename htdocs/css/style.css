@@ -969,6 +969,7 @@ body.login-page .login-note-area {
     max-width: 640px;
     margin: 24px auto 0;
     padding: 16px;
+    font-size: 12px;
     background: #ffffff;
     border: 1px solid #d1d5db;
     border-radius: 8px;
