@@ -6,3 +6,8 @@ tmp/*
 !tmp/.gitkeep
 docker/certs/*
 !docker/certs/.gitkeep
+
+.DS_Store
+**/.DS_Store
+log/*.log
+session/sess_*
